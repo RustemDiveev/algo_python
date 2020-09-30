@@ -5,6 +5,7 @@ import unittest
 # from r_1_1 import is_multiple
 
 from ex_1.r_1_1 import is_multiple
+from ex_1.r_1_2 import is_even
 
 class Test_r_1_1(unittest.TestCase):
 
@@ -18,6 +19,17 @@ class Test_r_1_1(unittest.TestCase):
         with self.assertRaises(TypeError):
             is_multiple('a', 'b')
 
+class Test_r_1_2(unittest.TestCase):
+
+    def test_is_100_even(self):
+        self.assertTrue(is_even(100))
+
+    def test_is_65_even(self):
+        self.assertFalse(is_even(65))
+
+    def test_is_even_if_string_specified(self):
+        with self.assertRaises(TypeError):
+            is_even('blablabla')
+
 if __name__ == '__main__':
     unittest.main()
-    
