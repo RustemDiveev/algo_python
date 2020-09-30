@@ -1,11 +1,14 @@
 import unittest
+from random import randint
 
 # WTF
 # To run this file use: 
 # from r_1_1 import is_multiple
+# VSC issue afaiu
 
 from ex_1.r_1_1 import is_multiple
 from ex_1.r_1_2 import is_even
+from ex_1.r_1_3 import minmax
 
 class Test_r_1_1(unittest.TestCase):
 
@@ -30,6 +33,28 @@ class Test_r_1_2(unittest.TestCase):
     def test_is_even_if_string_specified(self):
         with self.assertRaises(TypeError):
             is_even('blablabla')
+
+class Test_r_1_3(unittest.TestCase):
+
+    def test_minmax_for_range_between_76_and_835(self):
+        self.assertEqual((76, 835), minmax(list(range(76, 836))))
+
+    def test_minmax_for_list_of_random_numbers(self):
+        v_list_length = randint(100, 10000)
+        v_list = [randint(1, 9999) for elem in range(v_list_length)]
+        v_min = min(v_list)
+        v_max = max(v_list)
+        self.assertEqual((v_min, v_max), minmax(v_list))
+
+    def test_minmax_if_there_is_a_one_string_in_list(self):
+        v_list = ["kill me plz"]
+        with self.assertRaises(ValueError):
+            minmax(v_list)
+
+    def test_minmax_if_some_list_elements_are_strings(self):
+        v_list = [111, 222, "aaa", "bbb", 333]
+        with self.assertRaises(TypeError):
+            minmax(v_list)
 
 if __name__ == '__main__':
     unittest.main()
