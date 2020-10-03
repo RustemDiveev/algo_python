@@ -12,6 +12,7 @@ from ex_1.r_1_3 import minmax
 from ex_1.r_1_4 import get_sum_of_squares
 from ex_1.r_1_5 import get_sum_of_squares_with_sum, \
     get_sum_of_squares_with_sum_and_iterator
+from ex_1.r_1_6 import get_sum_of_squares_of_odd_ints
 
 
 class Test_r_1_1(unittest.TestCase):
@@ -111,6 +112,23 @@ class Test_r_1_5(unittest.TestCase):
     def test_sum_of_squares_with_sum_and_iterator_with_input_is_string(self):
         with self.assertRaises(ValueError):
             get_sum_of_squares_with_sum_and_iterator("blah blah blah, mr Freeman!")
+
+class Test_r_1_6(unittest.TestCase):
+
+    def test_sum_of_squares_of_odd_ints_less_than_5(self):
+        v_sum = 1*1 + 3*3 
+        self.assertEqual(v_sum, get_sum_of_squares_of_odd_ints(5))
+
+    def test_sum_of_squares_of_odd_ints_less_than_1000(self):
+        v_sum = 0
+        for num in range(1000):
+            if num % 2 == 1:
+                v_sum += num * num
+        self.assertEqual(v_sum, get_sum_of_squares_of_odd_ints(1000))
+
+    def test_sum_of_squares_of_odd_ints_if_input_is_str(self):
+        with self.assertRaises(TypeError):
+            get_sum_of_squares_of_odd_ints("Salam!")
 
 if __name__ == '__main__':
     unittest.main()
