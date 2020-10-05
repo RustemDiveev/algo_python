@@ -14,6 +14,9 @@ from ex_1.r_1_5 import get_sum_of_squares_with_sum, \
     get_sum_of_squares_with_sum_and_iterator
 from ex_1.r_1_6 import get_sum_of_squares_of_odd_ints
 from ex_1.r_1_8 import get_str_positive_idx_by_negaive_idx
+from ex_1.r_1_9 import get_a_list_from_50_to_80_with_step_10
+from ex_1.r_1_10 import get_a_list_from_8_to_m8_with_step_m2
+from ex_1.r_1_11 import get_list_from_1_to_256_of_power_of_2
 
 class Test_r_1_1(unittest.TestCase):
 
@@ -146,6 +149,24 @@ class Test_r_1_8(unittest.TestCase):
     def test_get_str_positive_idx_if_neg_idx_exceeds_str_length(self):
         with self.assertRaises(ValueError):
             get_str_positive_idx_by_negaive_idx(str_length=5, neg_idx=-10) 
-     
+
+class Test_r_1_9(unittest.TestCase):
+
+    def test_get_a_list_from_50_to_80_with_step_10_result(self):
+        v_list = [50, 60, 70, 80]
+        self.assertEqual(v_list, get_a_list_from_50_to_80_with_step_10())
+
+class Test_r_1_10(unittest.TestCase):
+
+    def test_get_a_list_from_8_to_m8_with_step_m2_result(self):
+        v_list = [8, 6, 4, 2, 0, -2, -4, -6, -8]
+        self.assertEqual(v_list, get_a_list_from_8_to_m8_with_step_m2())
+
+class Test_r_1_11(unittest.TestCase):
+
+    def test_get_list_from_1_to_256_of_power_of_2(self):
+        v_list = [1, 2, 4, 8, 16, 32, 64, 128, 256]
+        self.assertEqual(v_list, get_list_from_1_to_256_of_power_of_2())
+
 if __name__ == '__main__':
     unittest.main()
