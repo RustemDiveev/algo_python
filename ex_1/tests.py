@@ -13,7 +13,7 @@ from ex_1.r_1_4 import get_sum_of_squares
 from ex_1.r_1_5 import get_sum_of_squares_with_sum, \
     get_sum_of_squares_with_sum_and_iterator
 from ex_1.r_1_6 import get_sum_of_squares_of_odd_ints
-
+from ex_1.r_1_8 import get_str_positive_idx_by_negaive_idx
 
 class Test_r_1_1(unittest.TestCase):
 
@@ -130,5 +130,22 @@ class Test_r_1_6(unittest.TestCase):
         with self.assertRaises(TypeError):
             get_sum_of_squares_of_odd_ints("Salam!")
 
+class Test_r_1_8(unittest.TestCase):
+
+    def test_get_str_positive_idx_of_str_confuse_a_cat(self):
+        v_str = "Confuse-a-cat!"
+        v_str_len = len(v_str)
+        v_neg_idx = randint(-1 * v_str_len, -1)
+        v_pos_idx = get_str_positive_idx_by_negaive_idx(v_str_len, v_neg_idx)
+        self.assertEqual(v_str[v_neg_idx], v_str[v_pos_idx])
+
+    def test_get_str_positive_idx_if_neg_idx_is_greater_than_zero(self):
+        with self.assertRaises(ValueError):
+            get_str_positive_idx_by_negaive_idx(str_length=5, neg_idx=5) 
+
+    def test_get_str_positive_idx_if_neg_idx_exceeds_str_length(self):
+        with self.assertRaises(ValueError):
+            get_str_positive_idx_by_negaive_idx(str_length=5, neg_idx=-10) 
+     
 if __name__ == '__main__':
     unittest.main()
