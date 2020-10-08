@@ -17,6 +17,7 @@ from ex_1.r_1_8 import get_str_positive_idx_by_negaive_idx
 from ex_1.r_1_9 import get_a_list_from_50_to_80_with_step_10
 from ex_1.r_1_10 import get_a_list_from_8_to_m8_with_step_m2
 from ex_1.r_1_11 import get_list_from_1_to_256_of_power_of_2
+from ex_1.r_1_12 import pseudo_choice
 
 class Test_r_1_1(unittest.TestCase):
 
@@ -167,6 +168,13 @@ class Test_r_1_11(unittest.TestCase):
     def test_get_list_from_1_to_256_of_power_of_2(self):
         v_list = [1, 2, 4, 8, 16, 32, 64, 128, 256]
         self.assertEqual(v_list, get_list_from_1_to_256_of_power_of_2())
+
+class Test_r_1_12(unittest.TestCase):
+
+    def test_pseudo_choice_with_list(self):
+        v_list = ["Konichiwa", 1122, "Salam", 500600, "bratishka"]
+        v_elem = pseudo_choice(v_list)
+        self.assertTrue(v_elem in v_list)
 
 if __name__ == '__main__':
     unittest.main()
