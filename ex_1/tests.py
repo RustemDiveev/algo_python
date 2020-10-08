@@ -6,6 +6,7 @@ from random import randint
 # from r_1_1 import is_multiple
 # VSC issue afaiu
 
+#Reinforcement
 from ex_1.r_1_1 import is_multiple
 from ex_1.r_1_2 import is_even
 from ex_1.r_1_3 import minmax
@@ -19,6 +20,10 @@ from ex_1.r_1_10 import get_a_list_from_8_to_m8_with_step_m2
 from ex_1.r_1_11 import get_list_from_1_to_256_of_power_of_2
 from ex_1.r_1_12 import pseudo_choice
 
+#Creativity
+from ex_1.c_1_13 import pseudo_reverse_list
+
+#Reinforcement
 class Test_r_1_1(unittest.TestCase):
 
     def test_is_100_multiple_of_2(self):
@@ -175,6 +180,14 @@ class Test_r_1_12(unittest.TestCase):
         v_list = ["Konichiwa", 1122, "Salam", 500600, "bratishka"]
         v_elem = pseudo_choice(v_list)
         self.assertTrue(v_elem in v_list)
+
+class Test_c_1_13(unittest.TestCase):
+
+    def test_pseudo_reverse_list(self):
+        v_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        result = pseudo_reverse_list(v_list)
+        v_list.reverse()
+        self.assertEqual(v_list, result)
 
 if __name__ == '__main__':
     unittest.main()
