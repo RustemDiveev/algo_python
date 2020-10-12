@@ -6,4 +6,4 @@ def pseudo_choice(i_seq: Sequence) -> Any:
         Returns random element from Sequence 
         with usage of randrange function 
     """
-    return i_seq[randrange(len(i_seq)+1)]
+    return i_seq[randrange(len(i_seq)-1)]

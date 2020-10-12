@@ -22,6 +22,7 @@ from ex_1.r_1_12 import pseudo_choice
 
 #Creativity
 from ex_1.c_1_13 import pseudo_reverse_list
+from ex_1.c_1_14 import is_there_a_distinct_pair_of_numbers_whose_product_id_odd
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -188,6 +189,23 @@ class Test_c_1_13(unittest.TestCase):
         result = pseudo_reverse_list(v_list)
         v_list.reverse()
         self.assertEqual(v_list, result)
+
+class Test_c_1_14(unittest.TestCase):
+
+    def test_is_there_a_distinct_pair_of_numbers_whose_product_is_odd(self):
+        # True
+        list_with_distinct_pair = [1, 2, 2, 3]
+        # False
+        list_with_only_even_numbers = [2, 4, 8, 16, 32]
+        # False
+        list_with_only_odd_but_repeatable_numbers = [3, 3, 3, 19, 19, 19, 29, 29]
+        # True 
+        list_with_many_distinct_pairs = [99, 101, 103, 105]
+
+        self.assertTrue(is_there_a_distinct_pair_of_numbers_whose_product_id_odd(list_with_distinct_pair))
+        self.assertFalse(is_there_a_distinct_pair_of_numbers_whose_product_id_odd(list_with_only_even_numbers))
+        self.assertFalse(is_there_a_distinct_pair_of_numbers_whose_product_id_odd(list_with_only_odd_but_repeatable_numbers))
+        self.assertTrue(is_there_a_distinct_pair_of_numbers_whose_product_id_odd(list_with_many_distinct_pairs))
 
 if __name__ == '__main__':
     unittest.main()
