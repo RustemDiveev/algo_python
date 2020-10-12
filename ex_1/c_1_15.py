@@ -8,5 +8,6 @@ def is_all_numbers_different_in_seq(v_seq: Sequence) -> bool:
     for num in v_seq:
         if v_seq.count(num) > 1:
             return False
-            
+
     return True
+    
