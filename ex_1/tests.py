@@ -24,6 +24,7 @@ from ex_1.r_1_12 import pseudo_choice
 from ex_1.c_1_13 import pseudo_reverse_list
 from ex_1.c_1_14 import is_there_a_distinct_pair_of_numbers_whose_product_id_odd
 from ex_1.c_1_15 import is_all_numbers_different_in_seq
+from ex_1.c_1_16 import scale, multiply_x_2
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -218,6 +219,42 @@ class Test_c_1_15(unittest.TestCase):
 
         self.assertFalse(is_all_numbers_different_in_seq(v_list_repeated_numbers))
         self.assertTrue(is_all_numbers_different_in_seq(v_list_distinct_numbers))
+
+class Test_c_1_16(unittest.TestCase):
+
+    def test_multiply_x_2(self):
+        a = 10
+
+        id_before = id(a)
+        value_before = a
+
+        multiply_x_2(a)
+
+        id_after = id(a)
+        value_after = a
+
+        self.assertEqual(id_before, id_after)
+        self.assertEqual(value_before, value_after)
+
+    def test_scale(self):
+        data = [1, 2]
+        factor = 2 
+        
+        # Copy values, not references
+        value_before = [elem for elem in data]
+        id_before = id(data)
+        ids_before = [id(elem) for elem in data]
+
+        scale(data, factor)
+
+        # Copy values, not references
+        value_after = [elem for elem in data]
+        id_after = id(data)
+        ids_after = [id(elem) for elem in data]
+
+        self.assertNotEqual(value_before, value_after)
+        self.assertEqual(id_before, id_after)
+        self.assertNotEqual(ids_before, ids_after)
 
 if __name__ == '__main__':
     unittest.main()
