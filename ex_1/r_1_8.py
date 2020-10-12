@@ -15,3 +15,4 @@ def get_str_positive_idx_by_negaive_idx(str_length: int, neg_idx: int) -> int:
         raise ValueError("neg_idx out of range")
 
     return str_length + neg_idx
+    
