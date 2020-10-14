@@ -13,7 +13,6 @@ def scale_correct(data: Sequence, factor: int) -> Sequence:
 
     # TODO:
     # Experiment 1: check what is fastest: str(type) vs isinstance 
-    # Experiment 2: zip vs assignment + for loop
 
     # Assume that possible datatypes of data are tuple, list, dict, set, frozenset
     # Very ugly determination of datatype, isinstance may be better
