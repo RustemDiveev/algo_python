@@ -25,6 +25,7 @@ from ex_1.c_1_13 import pseudo_reverse_list
 from ex_1.c_1_14 import is_there_a_distinct_pair_of_numbers_whose_product_id_odd
 from ex_1.c_1_15 import is_all_numbers_different_in_seq
 from ex_1.c_1_16 import scale, multiply_x_2
+from ex_1.c_1_17 import scale_incorrect, scale_correct
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -255,6 +256,47 @@ class Test_c_1_16(unittest.TestCase):
         self.assertNotEqual(value_before, value_after)
         self.assertEqual(id_before, id_after)
         self.assertNotEqual(ids_before, ids_after)
+
+class Test_c_1_17(unittest.TestCase):
+
+    def test_scale_incorrect_works_with_list(self):
+        v_input_list = [1, 2, 3]
+        for elem in v_input_list:
+            elem *= 2
+        v_data = [1, 2, 3]
+        scale_incorrect(v_data, 2)
+        self.assertEqual(v_input_list, v_data) 
+
+    def test_scale_incorrect_works_with_tuple(self):
+        v_input_list = (2, 4, 6)
+        v_data = (1, 2, 3)
+        scale_incorrect(v_data, 2)
+        self.assertNotEqual(v_input_list, v_data)
+
+    def test_scale_correct_works_with_list(self):
+        v_data = [1, 2, 3]
+        v_input_list = [2, 4, 6]
+        self.assertEqual(v_input_list, scale_correct(v_data, 2))
+
+    def test_scale_correct_works_with_tuple(self):
+        v_data = (1, 2, 3)
+        v_input_tuple = (2, 4, 6)
+        self.assertEqual(v_input_tuple, scale_correct(v_data, 2))
+
+    def test_scale_correct_works_with_set(self):
+        v_data = {1, 2, 3}
+        v_input_set = {2, 4, 6}
+        self.assertEqual(v_input_set, scale_correct(v_data, 2))
+
+    def test_scale_correct_works_with_frozenset(self):
+        v_data = {1, 2, 3}
+        v_input_frozenset = frozenset({2, 4, 6})
+        self.assertEqual(v_input_frozenset, scale_correct(v_data, 2))
+
+    def test_scale_correct_works_with_dict(self):
+        v_data = {"a": 1, "b": 2, "c": 3}
+        v_input_dict = {"a": 2, "b": 4, "c": 6}
+        self.assertEqual(v_input_dict, scale_correct(v_data, 2))
 
 if __name__ == '__main__':
     unittest.main()

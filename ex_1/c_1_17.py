@@ -5,6 +5,10 @@ from typing import Sequence
 # Check tests for proofs
 # Function can be changed by adding return final value 
 
+def scale_incorrect(data, factor):
+    for val in data:
+        val *= factor
+
 def scale_correct(data: Sequence, factor: int) -> Sequence:
 
     # TODO:
