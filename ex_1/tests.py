@@ -26,6 +26,7 @@ from ex_1.c_1_14 import is_there_a_distinct_pair_of_numbers_whose_product_id_odd
 from ex_1.c_1_15 import is_all_numbers_different_in_seq
 from ex_1.c_1_16 import scale, multiply_x_2
 from ex_1.c_1_17 import scale_incorrect, scale_correct
+from ex_1.c_1_18 import produce_list
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -185,6 +186,7 @@ class Test_r_1_12(unittest.TestCase):
         v_elem = pseudo_choice(v_list)
         self.assertTrue(v_elem in v_list)
 
+#Creativity
 class Test_c_1_13(unittest.TestCase):
 
     def test_pseudo_reverse_list(self):
@@ -297,6 +299,12 @@ class Test_c_1_17(unittest.TestCase):
         v_data = {"a": 1, "b": 2, "c": 3}
         v_input_dict = {"a": 2, "b": 4, "c": 6}
         self.assertEqual(v_input_dict, scale_correct(v_data, 2))
+
+class Test_c_1_18(unittest.TestCase):
+
+    def test_produce_list(self):
+        v_list = [0, 2, 6, 12, 20, 30, 42, 56, 72, 90]
+        self.assertEqual(v_list, produce_list())
 
 if __name__ == '__main__':
     unittest.main()
