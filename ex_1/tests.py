@@ -27,6 +27,7 @@ from ex_1.c_1_15 import is_all_numbers_different_in_seq
 from ex_1.c_1_16 import scale, multiply_x_2
 from ex_1.c_1_17 import scale_incorrect, scale_correct
 from ex_1.c_1_18 import produce_list
+from ex_1.c_1_19 import produce_list_of_alphabet
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -305,6 +306,12 @@ class Test_c_1_18(unittest.TestCase):
     def test_produce_list(self):
         v_list = [0, 2, 6, 12, 20, 30, 42, 56, 72, 90]
         self.assertEqual(v_list, produce_list())
+
+class Test_c_1_19(unittest.TestCase):
+
+    def test_produce_list_of_alphabet(self):
+        v_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+        self.assertEqual(v_list, produce_list_of_alphabet())
 
 if __name__ == '__main__':
     unittest.main()
