@@ -1,5 +1,6 @@
 import unittest
 from random import randint
+from statistics import mean
 
 # WTF
 # To run this file use: 
@@ -28,6 +29,7 @@ from ex_1.c_1_16 import scale, multiply_x_2
 from ex_1.c_1_17 import scale_incorrect, scale_correct
 from ex_1.c_1_18 import produce_list
 from ex_1.c_1_19 import produce_list_of_alphabet
+from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get_shuffle_probability 
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -312,6 +314,33 @@ class Test_c_1_19(unittest.TestCase):
     def test_produce_list_of_alphabet(self):
         v_list = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         self.assertEqual(v_list, produce_list_of_alphabet())
+
+class Test_c_1_20(unittest.TestCase):
+
+    def test_randint_version_of_shuffle(self):
+        # Len is same 
+        v_list = [1, "a", 2, "b"]
+        v_result = randint_version_of_shuffle(v_list)
+        self.assertEqual(len(v_list), len(v_result))
+
+        # All elements are same 
+        for elem in v_list:
+            self.assertTrue(elem in v_result)
+
+    def test_randint_and_shuttle_has_same_probability(self):
+        
+        # Some empiric method for determination of same probability
+        v_list = [1, 2, 3]
+        v_observation_num = 1000000
+        v_randint_defaultdict = get_randint_probability(i_list=v_list, i_observation_num=v_observation_num)
+        v_shuffle_defaultdict = get_shuffle_probability(i_list=v_list, i_observation_num=v_observation_num)
+        v_randint_defaultdict_avg_value = mean(v_randint_defaultdict.values())
+        v_shuffle_defaultdict_avg_value = mean(v_shuffle_defaultdict.values())
+
+        v_deviation_threshold = 0.005
+        v_observation_threshold = v_deviation_threshold * v_observation_num 
+
+        self.assertTrue(abs(v_randint_defaultdict_avg_value - v_shuffle_defaultdict_avg_value) < v_observation_threshold)
 
 if __name__ == '__main__':
     unittest.main()
