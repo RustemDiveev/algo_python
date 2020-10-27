@@ -10,7 +10,9 @@
     4. Mock 1 and 3 for testing
 """
 
-def reverse_output():
+# Not suitable for mock unit testing 
+# Want to avoid mess with os.system etc
+def reverse_output_old():
     """
     Reads lines from std until EOFError is raised 
     then outputs lines in reverse order
@@ -27,4 +29,32 @@ def reverse_output():
         for line in v_list:
             print(line)
 
-reverse_output()
+def get_input() -> str:
+    """
+    Helper - reads and returns input then EOFError raises
+    """
+    v_str = ""
+
+    try:
+        while True: 
+            v_line = str(input)
+            v_str += "\n" + v_line
+    except EOFError:
+        return v_str
+
+def reverse_str(i_str: str) -> str:
+    """
+    Helper - reverses string
+    """
+    return i_str[::-1]
+
+def reverse_output():
+    """
+    Reads lines from std until EOFError is raised 
+    then outputs lines in reverse order, and returns v_str
+    """
+    v_str = get_input()
+    v_str = reverse_str(i_str=v_str)
+    print(v_str)
+    # For unit tests
+    return v_str

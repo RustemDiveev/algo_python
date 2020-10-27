@@ -1,9 +1,8 @@
 import unittest
-import os 
+from unittest.mock import patch
 from platform import system
 from random import randint
 from statistics import mean
-from pathlib import Path
 
 # WTF
 # To run this file use: 
@@ -33,7 +32,7 @@ from ex_1.c_1_17 import scale_incorrect, scale_correct
 from ex_1.c_1_18 import produce_list
 from ex_1.c_1_19 import produce_list_of_alphabet
 from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get_shuffle_probability 
-from ex_1.c_1_21 import reverse_output
+from ex_1.c_1_21 import get_input, reverse_str, reverse_output
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -348,29 +347,10 @@ class Test_c_1_20(unittest.TestCase):
 
 class Test_c_1_21(unittest.TestCase):
 
-    def test_reverse_output(self):
-        
-        # Looks like shit!
-        def create_test_input_file():
-            os.system("type NUL > test_input.txt")
-            os.system("echo Hello, kitty!>> test_input.txt")
-            os.system("echo Konichiwa!>> test_input.txt")
-
-        def run_py_file():
-            if os.system("py c_1_21.py < test_input.txt > test_output.txt") == 1:
-                raise OSError  
-
-        def delete_test_txt():
-            os.system("del test_input.txt")
-            os.system("del test_output.txt")
-       
-        if system() == "Windows":
-            create_test_input_file()
-            run_py_file()
-            v_text = Path('test_output.txt').read_text()
-            delete_test_txt()
-
-            self.assertEqual(v_text, 'AZAZAZA')
+    @patch('ex_1.c_1_21.get_input', return_value="Hello, kitty!\nKonichiwa!")
+    # Wtf is input?
+    def test_reverse_output(self, input):
+        self.assertEqual("!awihcinoK\n!yttik ,olleH", reverse_output())
 
 if __name__ == '__main__':
     unittest.main()
