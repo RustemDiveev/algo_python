@@ -33,6 +33,7 @@ from ex_1.c_1_18 import produce_list
 from ex_1.c_1_19 import produce_list_of_alphabet
 from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get_shuffle_probability 
 from ex_1.c_1_21 import get_input, reverse_str, reverse_output
+from ex_1.c_1_22 import dot_product_of_lists
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -350,7 +351,28 @@ class Test_c_1_21(unittest.TestCase):
     @patch('ex_1.c_1_21.get_input', return_value="Hello, kitty!\nKonichiwa!")
     # Wtf is input?
     def test_reverse_output(self, input):
-        self.assertEqual("!awihcinoK\n!yttik ,olleH", reverse_output())
+        self.assertEqual("!awihcinoK\n!yttik ,olleH", reverse_output(print_flg=0))
+
+class Test_c_1_22(unittest.TestCase):
+
+    def test_dot_product_of_lists_correct_result(self):
+        a_list = [1, 2, 3, 4, 5]
+        b_list = [5, 4, 3, 2, 1]
+        result_list = [5, 8, 9, 8, 5]
+
+        self.assertEqual(result_list, dot_product_of_lists(a_list=a_list,b_list=b_list))
+
+    def test_dot_product_of_lists_one_of_list_do_not_contains_int(self):
+        a_list = ["a", 2 , 3]
+        b_list = []
+        with self.assertRaises(ValueError):
+            dot_product_of_lists(a_list=a_list,b_list=b_list)
+
+    def test_dot_product_of_lists_input_lists_have_different_lengths(self):
+        a_list = [1, 2]        
+        b_list = [1]
+        with self.assertRaises(ValueError):
+            dot_product_of_lists(a_list=a_list,b_list=b_list)
 
 if __name__ == '__main__':
     unittest.main()

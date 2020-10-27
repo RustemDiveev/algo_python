@@ -48,13 +48,14 @@ def reverse_str(i_str: str) -> str:
     """
     return i_str[::-1]
 
-def reverse_output():
+def reverse_output(print_flg:int=1):
     """
     Reads lines from std until EOFError is raised 
     then outputs lines in reverse order, and returns v_str
     """
     v_str = get_input()
     v_str = reverse_str(i_str=v_str)
-    print(v_str)
+    if print_flg == 1:
+        print(v_str)
     # For unit tests
     return v_str
