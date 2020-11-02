@@ -1,4 +1,6 @@
 import unittest
+import io
+import sys
 from unittest.mock import patch
 from platform import system
 from random import randint
@@ -34,6 +36,7 @@ from ex_1.c_1_19 import produce_list_of_alphabet
 from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get_shuffle_probability 
 from ex_1.c_1_21 import get_input, reverse_str, reverse_output
 from ex_1.c_1_22 import dot_product_of_lists
+from ex_1.c_1_23 import list_index_out_of_bounds
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -373,6 +376,18 @@ class Test_c_1_22(unittest.TestCase):
         b_list = [1]
         with self.assertRaises(ValueError):
             dot_product_of_lists(a_list=a_list,b_list=b_list)
+
+class Test_c_1_23(unittest.TestCase):
+
+    def test_compare_print_output(self):
+        # Here comes something dangerous
+        # Copied from stackoverflow: 
+        # https://stackoverflow.com/questions/33767627/python-write-unittest-for-console-print
+        v_captured_output = io.StringIO()
+        sys.stdout = v_captured_output
+        list_index_out_of_bounds()
+        sys.stdout = sys.__stdout__ 
+        self.assertEqual("Don't try buffer overflow attacks in Python!\n", v_captured_output.getvalue())
 
 if __name__ == '__main__':
     unittest.main()
