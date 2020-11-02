@@ -37,6 +37,7 @@ from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get
 from ex_1.c_1_21 import get_input, reverse_str, reverse_output
 from ex_1.c_1_22 import dot_product_of_lists
 from ex_1.c_1_23 import list_index_out_of_bounds
+from ex_1.c_1_24 import count_vowels_in_str
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -388,6 +389,18 @@ class Test_c_1_23(unittest.TestCase):
         list_index_out_of_bounds()
         sys.stdout = sys.__stdout__ 
         self.assertEqual("Don't try buffer overflow attacks in Python!\n", v_captured_output.getvalue())
+
+class Test_c_1_24(unittest.TestCase):
+
+    def test_count_vowels_in_str_english(self):
+        v_str = "One apple a day keeps a doctor away!"
+        v_result = 15
+        self.assertEqual(v_result, count_vowels_in_str(i_str=v_str))
+
+    def test_count_vowels_in_str_russian(self):
+        v_str = "Хочу литровый фобо!"
+        v_result = 7
+        self.assertEqual(v_result, count_vowels_in_str(i_str=v_str))
 
 if __name__ == '__main__':
     unittest.main()
