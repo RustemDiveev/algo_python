@@ -38,6 +38,7 @@ from ex_1.c_1_21 import get_input, reverse_str, reverse_output
 from ex_1.c_1_22 import dot_product_of_lists
 from ex_1.c_1_23 import list_index_out_of_bounds
 from ex_1.c_1_24 import count_vowels_in_str
+from ex_1.c_1_25 import get_remove_punctuation
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -401,6 +402,13 @@ class Test_c_1_24(unittest.TestCase):
         v_str = "Хочу литровый фобо!"
         v_result = 7
         self.assertEqual(v_result, count_vowels_in_str(i_str=v_str))
+
+class Test_c_1_25(unittest.TestCase):
+
+    def test_get_remove_punctuation(self):
+        v_str = "Let's try, Mike."
+        v_result = "Lets try Mike"
+        self.assertEqual(v_result, get_remove_punctuation(i_str=v_str))
 
 if __name__ == '__main__':
     unittest.main()
