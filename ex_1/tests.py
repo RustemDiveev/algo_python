@@ -5,6 +5,7 @@ from unittest.mock import patch
 from platform import system
 from random import randint
 from statistics import mean
+from math import sqrt
 
 # WTF
 # To run this file use: 
@@ -41,6 +42,7 @@ from ex_1.c_1_24 import count_vowels_in_str
 from ex_1.c_1_25 import get_remove_punctuation
 from ex_1.c_1_26 import check_correct_arithmetic_formula
 from ex_1.c_1_27 import factors_increase_order
+from ex_1.c_1_28 import norm 
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -427,6 +429,16 @@ class Test_c_1_27(unittest.TestCase):
     def test_factors_of_100(self):
         v_test = [1,2,4,5,10,20,25,50,100]
         self.assertEqual(v_test, [factor for factor in factors_increase_order(100)])
+
+class Test_c_1_28(unittest.TestCase):
+
+    def test_euclidean_norm_3_4(self):
+        v_result = sqrt(3 * 3 + 4 * 4)
+        self.assertEqual(v_result, norm([3,4]))
+
+    def test_triple_root_3_4_5(self):
+        v_result = (3 * 3 * 3 + 4 * 4 * 4 + 5 * 5 * 5) ** (1/3)
+        self.assertEqual(v_result, norm([3,4,5], 3))
 
 if __name__ == '__main__':
     unittest.main()
