@@ -40,6 +40,7 @@ from ex_1.c_1_23 import list_index_out_of_bounds
 from ex_1.c_1_24 import count_vowels_in_str
 from ex_1.c_1_25 import get_remove_punctuation
 from ex_1.c_1_26 import check_correct_arithmetic_formula
+from ex_1.c_1_27 import factors_increase_order
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -420,6 +421,12 @@ class Test_c_1_26(unittest.TestCase):
     def test_check_correct_arithmetic_formula_incorrect_equation(self):
         v_tuple = (2, 7, 8)
         self.assertEqual(False, check_correct_arithmetic_formula(i_tuple=v_tuple))
+
+class Test_c_1_27(unittest.TestCase):
+
+    def test_factors_of_100(self):
+        v_test = [1,2,4,5,10,20,25,50,100]
+        self.assertEqual(v_test, [factor for factor in factors_increase_order(100)])
 
 if __name__ == '__main__':
     unittest.main()
