@@ -44,6 +44,9 @@ from ex_1.c_1_26 import check_correct_arithmetic_formula
 from ex_1.c_1_27 import factors_increase_order
 from ex_1.c_1_28 import norm 
 
+#Projects
+from ex_1.p_1_29 import get_all_possible_strings_using_character_once
+
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
 
@@ -439,6 +442,33 @@ class Test_c_1_28(unittest.TestCase):
     def test_triple_root_3_4_5(self):
         v_result = (3 * 3 * 3 + 4 * 4 * 4 + 5 * 5 * 5) ** (1/3)
         self.assertEqual(v_result, norm([3,4,5], 3))
+
+class Test_p_1_29(unittest.TestCase):
+
+    def test_empty_string(self):
+        i_str = ""
+        with self.assertRaises(ValueError):
+            v_result = get_all_possible_strings_using_character_once(i_str=i_str)
+
+    def test_nonunique_chars_in_string(self):
+        i_str = "alibaba"
+        with self.assertRaises(ValueError):
+            v_result = get_all_possible_strings_using_character_once(i_str=i_str)
+
+    def test_that_result_is_correct(self):
+        """
+            1. Length must be equal to len(i_str)! (factorial)
+            2. All strings must be unique
+        """
+        i_str = "catdog"
+        v_result = get_all_possible_strings_using_character_once(i_str=i_str)
+        v_total_combinations = 1
+
+        for i in range(len(i_str)):
+            v_total_combinations *= (i + 1)
+
+        self.assertEqual(v_total_combinations, len(v_result))
+        self.assertEqual(v_total_combinations, len(set(v_result)))
 
 if __name__ == '__main__':
     unittest.main()
