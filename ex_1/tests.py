@@ -46,6 +46,7 @@ from ex_1.c_1_28 import norm
 
 #Projects
 from ex_1.p_1_29 import get_all_possible_strings_using_character_once
+from ex_1.p_1_30 import get_log_of_base_2
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -469,6 +470,26 @@ class Test_p_1_29(unittest.TestCase):
 
         self.assertEqual(v_total_combinations, len(v_result))
         self.assertEqual(v_total_combinations, len(set(v_result)))
+
+class Test_p_1_30(unittest.TestCase):
+
+    def test_string_as_param(self):
+        with self.assertRaises(TypeError):
+            v_result = get_log_of_base_2(i_int="I have a dream...")
+
+    def test_input_is_one(self):
+        with self.assertRaises(ValueError):
+            v_result = get_log_of_base_2(i_int=1)
+
+    def test_input_128(self):
+        # 2 ** 7 = 128
+        v_result = 7
+        self.assertEqual(v_result, get_log_of_base_2(i_int=128))
+
+    def test_input_500(self):
+        # 500 250 125 62,5 31,25 15,625 ~7,8 3,9 1,95
+        v_result = 8
+        self.assertEqual(v_result, get_log_of_base_2(i_int=500))
 
 if __name__ == '__main__':
     unittest.main()
