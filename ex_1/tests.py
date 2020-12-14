@@ -47,6 +47,7 @@ from ex_1.c_1_28 import norm
 #Projects
 from ex_1.p_1_29 import get_all_possible_strings_using_character_once
 from ex_1.p_1_30 import get_log_of_base_2
+from ex_1.p_1_31 import get_change
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -490,6 +491,20 @@ class Test_p_1_30(unittest.TestCase):
         # 500 250 125 62,5 31,25 15,625 ~7,8 3,9 1,95
         v_result = 8
         self.assertEqual(v_result, get_log_of_base_2(i_int=500))
+
+class Test_p_1_31(unittest.TestCase):
+
+    def test_input_params_are_incorrect_money(self):
+        with self.assertRaises(ValueError):
+            get_change(i_money_charged=3.14159265, i_money_given=2.71828)
+
+    def test_i_cant_afford_it(self):
+        with self.assertRaises(ValueError):
+            get_change(i_money_charged=20, i_money_given=0)
+
+    def test_change(self):
+        self.assertEqual(dict(), get_change(i_money_charged=100, i_money_given=100))
+        self.assertEqual({"1000": 2, "100": 3, "10": 4, "5": 1, "0.5": 1, "0.1": 1, "0.05": 1, "0.01": 3}, get_change(i_money_charged=7654.32, i_money_given=10000))
 
 if __name__ == '__main__':
     unittest.main()
