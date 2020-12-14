@@ -450,12 +450,12 @@ class Test_p_1_29(unittest.TestCase):
     def test_empty_string(self):
         i_str = ""
         with self.assertRaises(ValueError):
-            v_result = get_all_possible_strings_using_character_once(i_str=i_str)
+            get_all_possible_strings_using_character_once(i_str=i_str)
 
     def test_nonunique_chars_in_string(self):
         i_str = "alibaba"
         with self.assertRaises(ValueError):
-            v_result = get_all_possible_strings_using_character_once(i_str=i_str)
+            get_all_possible_strings_using_character_once(i_str=i_str)
 
     def test_that_result_is_correct(self):
         """
@@ -476,11 +476,11 @@ class Test_p_1_30(unittest.TestCase):
 
     def test_string_as_param(self):
         with self.assertRaises(TypeError):
-            v_result = get_log_of_base_2(i_int="I have a dream...")
+            get_log_of_base_2(i_int="I have a dream...")
 
     def test_input_is_one(self):
         with self.assertRaises(ValueError):
-            v_result = get_log_of_base_2(i_int=1)
+            get_log_of_base_2(i_int=1)
 
     def test_input_128(self):
         # 2 ** 7 = 128
