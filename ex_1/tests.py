@@ -3,7 +3,7 @@ import io
 import sys
 from unittest.mock import patch
 from platform import system
-from random import randint
+from random import randint, choice 
 from statistics import mean
 from math import sqrt
 
@@ -48,6 +48,7 @@ from ex_1.c_1_28 import norm
 from ex_1.p_1_29 import get_all_possible_strings_using_character_once
 from ex_1.p_1_30 import get_log_of_base_2
 from ex_1.p_1_31 import get_change
+from ex_1.p_1_32 import process_input, calculate_expression, reset_input, clear_input
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -505,6 +506,70 @@ class Test_p_1_31(unittest.TestCase):
     def test_change(self):
         self.assertEqual(dict(), get_change(i_money_charged=100, i_money_given=100))
         self.assertEqual({"1000": 2, "100": 3, "10": 4, "5": 1, "0.5": 1, "0.1": 1, "0.05": 1, "0.01": 3}, get_change(i_money_charged=7654.32, i_money_given=10000))
+
+class Test_p_1_32(unittest.TestCase):
+
+    def test_reset_input(self):
+        v_input = [1,2,3,4]
+        reset_input(io_input=v_input)
+        self.assertEqual([1,2,3], v_input) 
+
+    def test_clear_input(self):
+        v_input = [1,2,3,4]
+        clear_input(io_input=v_input)
+        self.assertEqual([], v_input)  
+
+    def test_calculate_expression_random(self):
+        v_first_number = randint(-100, 100)
+        v_second_number = 0
+        while v_second_number == 0:
+            v_second_number = randint(-100, 100)
+        v_operator = choice("+-*/")
+
+        if v_operator == "+":
+            v_result = v_first_number + v_second_number 
+        elif v_operator == "-":
+            v_result = v_first_number - v_second_number 
+        elif v_operator == "*":
+            v_result = v_first_number * v_second_number 
+        elif v_operator == "/":
+            v_result = v_first_number / v_second_number 
+
+        self.assertEqual(v_result, calculate_expression(
+            i_first_number=v_first_number, 
+            i_second_number=v_second_number, 
+            i_operator=v_operator
+        ))
+
+    def test_process_input_first_element_is_word(self):
+        v_input = ["TESTINK"]
+        process_input(io_input=v_input)
+        self.assertEqual([], v_input)
+
+    def test_process_input_first_element_is_number(self):
+        v_input = ["123.456"]
+        process_input(io_input=v_input)
+        self.assertEqual(["123.456"], v_input)
+
+    def test_process_input_second_element_is_operator(self):
+        v_input = ["123,456", "*"]
+        process_input(io_input=v_input)
+        self.assertEqual(["123,456", "*"], v_input)
+
+    def test_process_input_second_element_is_word(self):
+        v_input = ["8.555", "Plus"]
+        process_input(io_input=v_input)
+        self.assertEqual(["8.555"], v_input)
+
+    def test_process_input_fourth_element_is_not_equation(self):
+        v_input = ["8.555", "+", "10.23", "*"]
+        process_input(io_input=v_input)
+        self.assertEqual(["8.555", "+", "10.23"], v_input)
+
+    def test_process_input_is_a_valid_arithmetical_expression(self):
+        v_input = ["30", "+", "20", "="]
+        process_input(io_input=v_input)
+        self.assertEqual([], v_input)
 
 if __name__ == '__main__':
     unittest.main()

@@ -96,4 +96,3 @@ def clear_input(io_input: list):
     """
     while len(io_input) > 0:
         del io_input[-1]
-
