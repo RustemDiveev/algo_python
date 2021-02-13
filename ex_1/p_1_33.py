@@ -45,6 +45,55 @@ MVP!!!!
 		2.5.2 Список с результатом промежуточных вычислений
 """
 
+"""Глобальные переменные"""
+
+g_dict_char_type = {
+    "NUMBER": 1,
+    "OPERATOR": 2,
+    "EQUATION": 3,
+    "OPENING_BRACKET": 4,
+    "CLOSING_BRACKET": 5,
+    "DOT": 6,
+    "UNKNOWN": 99
+}
+
+"""Хэлперы"""
+
+def get_type_value_by_key(v_str: str) -> int:
+    return g_dict_char_type[v_str]
+
+def get_char_type_id(v_str: str) -> int:
+    if is_char_number(v_str):
+        return get_type_value_by_key("NUMBER")
+    elif is_operator(v_str):
+        return get_type_value_by_key("OPERATOR")
+    elif is_operator(v_str):
+        return get_type_value_by_key("EQUATION")
+    elif is_opening_bracket(v_str):
+        return get_type_value_by_key("OPENING_BRACKET")
+    elif is_closing_bracket(v_str):
+        return get_type_value_by_key("CLOSING_BRACKET")
+    elif is_dot(v_str):
+        return get_type_value_by_key("DOT")
+    else: 
+        return get_type_value_by_key("UNKNOWN")
+
+"""Пользовательские структуры данных"""
+
+class Stack:
+
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        return self.items.pop()
+
+    def len(self):
+        return len(self.items)
+
 """Пользовательские исключения"""
 
 class Error(Exception):
@@ -82,6 +131,20 @@ class ArgsLengthParameterError(InputParameterError):
         return "Function: {0} -> Parameter: {1} -> Parameter must has a length of one.".format(
             function_name, parameter_name
         )
+
+class ListsHaveNonEqualLengthError(Error):
+    """
+        Исключение для ошибки несовпадения длин списков 
+        Для сравнения списков с символами (токенами) и типами символов (токенов)
+    """
+    def __init__(self, function_name: str, list_name_1: str, list_name_2: str, 
+        length_list_1: int, length_list_2: int, message: str):
+        super().__init__(message)
+        self.function_name = function_name
+        self.list_name_1 = list_name_1
+        self.list_name_2 = list_name_2
+        self.length_list_1 = length_list_1
+        self.length_list_2 = length_list_2
 
 
 """Проверки символов"""
@@ -153,10 +216,13 @@ def is_valid_char(v_str: str) -> bool:
 
 def is_number(v_str: str) -> bool:
     """
-        Является ли строка числом (больше 1 символа)
+        Является ли строка числом (разрешено больше 1 символа)
     """
-    pass 
-        
+    try:
+        float(v_str) 
+        return True
+    except ValueError:
+        return False
         
 """Парсинг и преобразование строки"""
 
@@ -164,25 +230,57 @@ def trim_whitespace(v_str: str) -> str:
     """
         Удалить пробелы из строки
     """
-    pass 
+    return v_str.replace(" ", "") 
 
 def is_valid_input(v_str: str) -> tuple:
     """
         Проверка всех символов на соответствие допустимым 
+        Возвращаемый кортеж имеет следующий вид: (bool, str)
+        bool - результат проверки, True - валидно
+        str - текст ошибки
     """
-    pass 
+    position_number = 0
+
+    for char in v_str:
+        position_number += 1
+        if not is_valid_char(v_str=char):
+            v_message = "Введенное выражение содержит недопустимый символ:\n" + \
+                "Выражение: " + v_str + "\n" + \
+                "Позиция: " + str(position_number) + "\n" + \
+                "Символ: " + char
+            return (False, v_message)
+    
+    return (True, "")
 
 def to_char_list(v_str: str) -> list:
     """
         Преобразование строки в список из символов
     """
-    pass 
+    v_list = []
+    for char in v_str:
+        v_list.append(char)
+
+    return v_list 
 
 def to_char_type_list(v_char_list: list) -> list:
     """
         Создание списка из типов символов на базе списка символов
     """
-    pass 
+    v_list = []
+    for char in v_char_list:
+        v_list.append(get_char_type_id(v_str=char))
+        
+    if len(v_char_list) != len(v_list):
+        raise ListsHaveNonEqualLengthError(
+            function_name="to_char_type_list",
+            list_name_1="v_char_list",
+            list_name_2="v_list",
+            length_list_1=len(v_char_list),
+            length_list_2=len(v_list),
+            message="Длина списков не совпадает!"
+        )
+
+    return v_list 
 
 def to_token_list(v_char_list: list, v_char_type_list: list) -> list:
     """
@@ -197,26 +295,71 @@ def to_token_type_list(v_list: list) -> list:
     pass 
 
 
-"""Проверка списка"""
+"""Проверка списка символов"""
 
-def check_char_list_brackets(v_char_type_list: list):
+def check_char_list_brackets(v_char_type_list: list) -> tuple:
     """
         Наконец-то это пригодилось :)
         Проверка скобочной последовательости
+        Выходной параметр (bool, str)
+        bool - результат проверки (True - проверка пройдена, False - проверка не пройдена)
+        str - сообщение об ошибке 
     """
-    pass
+    v_stack = Stack()
+    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
+    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
 
-def check_char_list_beginning(v_char_type_list: list):
+    for char in v_char_type_list:
+        if char == v_opening_bracket_id:
+            v_stack.push(char)
+        elif char == v_closing_bracket_id:
+            if len(v_stack) > 0:
+                v_stack.pop()
+            else:
+                return (False, "В выражении неправильно расставлены скобки. Преждевременно встретилась закрывающая скобка.")
+    
+    if len(v_stack) > 0:
+        return (False, "В выражении неправильно расставлены скобки. Отсутствует закрывающая скобка.")
+    else:
+        return (True, "")
+
+
+def check_char_list_beginning(v_char_type_list: list) -> tuple:
     """
         Выражение должно начинаться с открывающейся скобки или числа
     """
-    pass
+    v_number_id = get_type_value_by_key("NUMBER")
+    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
+
+    if v_char_type_list[0] in (v_number_id, v_opening_bracket_id):
+        return (True, "")
+    else: 
+        return (False, "Выражение должно начинаться с открывающейся скобки или числа")
 
 def check_char_list_ending(v_char_type_list: list):
     """
         Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства
     """
-    pass 
+    v_number_id = get_type_value_by_key("NUMBER") 
+    v_closing_bracket_id = get_type_value_by_key("CLOSNG_BRACKET")
+    v_equation_id = get_type_value_by_key("EQUATION")
+
+    if v_char_type_list[-1] in (v_number_id, v_closing_bracket_id, v_equation_id):
+        return (True, "")
+    else: 
+        return (False, "Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства")
+
+def check_pattern(v_char_type_list: list, first_key: str, second_key: str) -> bool:
+    first_id = get_type_value_by_key(first_key)
+    second_id = get_type_value_by_key(second_key)
+
+    for idx in len(v_char_type_list) - 2:
+        first_elem = v_char_type_list[idx]
+        second_elem = v_char_type_list[idx+1]
+        if (first_elem, second_elem) == (first_id, second_id):
+            return True 
+        else:
+            return False 
 
 def check_char_list_operator(v_char_type_list: list):
     """
@@ -229,23 +372,104 @@ def check_char_list_operator(v_char_type_list: list):
         ++
         Такие паттерны говорят о неправильном выражении
     """
-    pass 
+    if check_pattern(v_char_type_list, "OPERATOR", "CLOSING_BRACKET"):
+        return (False, "Неправильное выражение - за оператором следует закрывающая скобка")
+    elif check_pattern(v_char_type_list, "OPENING_BRACKET", "OPERATOR"):
+        return (False, "Неправильное выражение - оператор следует сразу после открывающей скобки")
+    elif check_pattern(v_char_type_list, "OPERATOR", "DOT"):
+        return (False, "Неправильное выражение - после оператора следует разделитель числа")
+    elif check_pattern(v_char_type_list, "DOT", "OPERATOR"):
+        return (False, "Неправильное выражение - разделитель числа следует перед оператором")
+    elif check_pattern(v_char_type_list, "EQUATION", "OPERATOR"):
+        return (False, "Неправильное выражение - знак равенства следует перед оператором")
+    elif check_pattern(v_char_type_list, "OPERATOR", "EQUATION"):
+        return (False, "Неправильное выражение - равенство следует после оператора")
+    elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR"):
+        return (False, "Неправильное выражение - два оператора следуют подряд")
 
 def check_char_list_equation(v_char_type_list: list):
     """
         Знак равенства должен находиться только в конце 
     """
-    pass 
+    equation_id = get_type_value_by_key("EQUATION")
+
+    for idx in len(v_char_type_list) - 1:
+        if v_char_type_list[idx] == equation_id and idx != len(v_char_type_list) - 1:
+            return (False, "Знак равенства может быть только один и должен находиться в конце выражения")
 
 def check_char_list_dot(v_char_type_list: list):
     """
         До точки и после точки должны быть цифры 
         пока не будет или скобки или оператора или края строки
     """
-    pass
 
-def check_char_list(v_char_type_list: list): 
+    v_dot_id = get_type_value_by_key("DOT")
+    v_number_id = get_type_value_by_key("NUMBER")
+    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
+    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
+    v_operator_id = get_type_value_by_key("OPERATOR")
+    v_equation_id = get_type_value_by_key("EQUATION_ID")
+
+    for idx in len(v_char_type_list) - 1: 
+        if v_char_type_list[idx] == v_dot_id:
+            if idx in (0, len(v_char_type_list)-1):
+                return (False, "Точка не должна быть в начале или в конце выражения")
+            else:
+                v_number_before_found = v_number_after_found = False
+                v_number_before_found = True if v_char_type_list[idx - 1] == v_number_id else False 
+                v_number_after_found = True if v_char_type_list[idx + 1] == v_number_id else False 
+
+                if v_number_before_found is False:
+                    return (False, "Перед разделителем числа не найдено цифры")
+
+                if v_number_after_found is False:
+                    return (False, "После разделителя числа не найдено цифры")
+
+                v_idx = idx - 1
+                while v_idx >= 0:
+                    if v_char_type_list[v_idx] == v_number_id:
+                        v_idx -= 1
+                    elif v_char_type_list[v_idx] in (v_operator_id, v_opening_bracket_id, v_closing_bracket_id):
+                        break
+                    else:
+                        return (False, "Перед разделителем числа в его начале обнаружен недопустимый символ")
+
+                v_idx = idx + 1 
+                while v_idx <= len(v_char_type_list) - 1:
+                    if v_char_type_list[v_idx] == v_number_id:
+                        v_idx += 1
+                    elif v_char_type_list[v_idx] in (v_operator_id, v_opening_bracket_id, v_closing_bracket_id, v_equation_id):
+                        break
+                    else:
+                        return (False, "После разделителя числа в его конце обнаружен недопустимый символ")
+
+def check_char_list(v_char_type_list: list) -> tuple: 
     """
         Проверка списка из символов
     """
-    pass 
+    v_result_tuple = check_char_list_brackets(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    v_result_tuple = check_char_list_beginning(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    v_result_tuple = check_char_list_ending(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    v_result_tuple = check_char_list_operator(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    v_result_tuple = check_char_list_equation(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    v_result_tuple = check_char_list_dot(v_char_type_list)
+    if not v_result_tuple[0]:
+        return v_result_tuple 
+
+    return (True, "")
+
