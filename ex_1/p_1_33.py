@@ -91,7 +91,7 @@ class Stack:
     def pop(self):
         return self.items.pop()
 
-    def len(self):
+    def __len__(self):
         return len(self.items)
 
 """Пользовательские исключения"""
@@ -284,9 +284,30 @@ def to_char_type_list(v_char_list: list) -> list:
 
 def to_token_list(v_char_list: list, v_char_type_list: list) -> list:
     """
-        Создание списка из токенов на базе списка символов и списка типов символов
+        Создание списка из токенов на базе списка символов и списка типов символов 
+        Как минимум, надо склеить цифры 
     """
-    pass 
+    v_token_list = []
+    v_number_id = get_type_value_by_key("NUMBER")
+    v_dot_id = get_type_value_by_key("DOT")
+
+    idx = 0
+    while idx <= len(v_char_type_list) - 1:
+        if v_char_type_list[idx] == v_number_id:
+            v_str_number_token = ""
+            while idx <= len(v_char_type_list) - 1:
+                if v_char_type_list[idx] in (v_number_id, v_dot_id):
+                    v_str_number_token += v_char_list[idx]
+                else:
+                    break
+                idx += 1
+            v_token_list.append(float(v_str_number_token))
+        else:
+            v_token_list.append(v_char_list[idx])
+            idx += 1
+
+    return v_token_list
+    
 
 def to_token_type_list(v_list: list) -> list:
     """
@@ -341,7 +362,7 @@ def check_char_list_ending(v_char_type_list: list):
         Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства
     """
     v_number_id = get_type_value_by_key("NUMBER") 
-    v_closing_bracket_id = get_type_value_by_key("CLOSNG_BRACKET")
+    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
     v_equation_id = get_type_value_by_key("EQUATION")
 
     if v_char_type_list[-1] in (v_number_id, v_closing_bracket_id, v_equation_id):
@@ -353,7 +374,7 @@ def check_pattern(v_char_type_list: list, first_key: str, second_key: str) -> bo
     first_id = get_type_value_by_key(first_key)
     second_id = get_type_value_by_key(second_key)
 
-    for idx in len(v_char_type_list) - 2:
+    for idx in range(len(v_char_type_list) - 2):
         first_elem = v_char_type_list[idx]
         second_elem = v_char_type_list[idx+1]
         if (first_elem, second_elem) == (first_id, second_id):
@@ -386,6 +407,8 @@ def check_char_list_operator(v_char_type_list: list):
         return (False, "Неправильное выражение - равенство следует после оператора")
     elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR"):
         return (False, "Неправильное выражение - два оператора следуют подряд")
+    else:
+        return (True, "")
 
 def check_char_list_equation(v_char_type_list: list):
     """
@@ -393,9 +416,11 @@ def check_char_list_equation(v_char_type_list: list):
     """
     equation_id = get_type_value_by_key("EQUATION")
 
-    for idx in len(v_char_type_list) - 1:
+    for idx in range(len(v_char_type_list) - 1):
         if v_char_type_list[idx] == equation_id and idx != len(v_char_type_list) - 1:
             return (False, "Знак равенства может быть только один и должен находиться в конце выражения")
+
+    return (True, "")
 
 def check_char_list_dot(v_char_type_list: list):
     """
@@ -408,9 +433,9 @@ def check_char_list_dot(v_char_type_list: list):
     v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
     v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
     v_operator_id = get_type_value_by_key("OPERATOR")
-    v_equation_id = get_type_value_by_key("EQUATION_ID")
+    v_equation_id = get_type_value_by_key("EQUATION")
 
-    for idx in len(v_char_type_list) - 1: 
+    for idx in range(len(v_char_type_list) - 1): 
         if v_char_type_list[idx] == v_dot_id:
             if idx in (0, len(v_char_type_list)-1):
                 return (False, "Точка не должна быть в начале или в конце выражения")
@@ -443,6 +468,8 @@ def check_char_list_dot(v_char_type_list: list):
                     else:
                         return (False, "После разделителя числа в его конце обнаружен недопустимый символ")
 
+    return ("True", "")
+
 def check_char_list(v_char_type_list: list) -> tuple: 
     """
         Проверка списка из символов
@@ -473,3 +500,23 @@ def check_char_list(v_char_type_list: list) -> tuple:
 
     return (True, "")
 
+
+"""Основные функции"""
+def main():
+    while True:
+        v_str = input()
+        v_str = trim_whitespace(v_str=v_str)
+        v_tuple = is_valid_input(v_str=v_str)
+        if not v_tuple[0]:
+            print(v_tuple[1])
+        else:
+            v_char_list = to_char_list(v_str=v_str)
+            v_char_type_list = to_char_type_list(v_char_list=v_char_list)
+            v_tuple = check_char_list(v_char_type_list=v_char_type_list)
+            if not v_tuple[0]:
+                print(v_tuple[1])
+            else:
+                v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
+                print(v_token_list)
+
+main()
