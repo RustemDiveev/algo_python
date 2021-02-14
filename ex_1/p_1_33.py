@@ -45,6 +45,8 @@ MVP!!!!
 		2.5.2 Список с результатом промежуточных вычислений
 """
 
+from copy import deepcopy
+
 """Глобальные переменные"""
 
 g_dict_char_type = {
@@ -145,6 +147,17 @@ class ListsHaveNonEqualLengthError(Error):
         self.list_name_2 = list_name_2
         self.length_list_1 = length_list_1
         self.length_list_2 = length_list_2
+
+class ClosingBracketNotFoundError(Error):
+    """
+        Исключение для ошибки не найденой закрывающей скобки, при наличии открывающей
+        По идее, никогда не воспроизведется при правильной проверке скобочной последовательности
+    """
+    def __init__(self, function_name: str, checked_list: list, opening_bracket_idx: int, message: str):
+        super().__init__(message)
+        self.function_name = function_name
+        self.checked_list = checked_list 
+        self.opening_bracket_idx = opening_bracket_idx
 
 
 """Проверки символов"""
@@ -309,12 +322,44 @@ def to_token_list(v_char_list: list, v_char_type_list: list) -> list:
     return v_token_list
     
 
-def to_token_type_list(v_list: list) -> list:
+def to_token_type_list(v_token_list: list) -> list:
     """
         Создание списка из типов токенов на базе списка из токенов
     """
-    pass 
+    v_number_id = get_type_value_by_key("NUMBER") 
+    v_operator_id = get_type_value_by_key("OPERATOR")
+    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
+    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
+    v_equation_id = get_type_value_by_key("EQUATION")
+    v_unknown_id = get_type_value_by_key("UNKNOWN")
 
+    v_token_type_list = []
+
+    for token in v_token_list:
+        v_str_token = str(token)
+        if is_number(v_str_token):
+            v_token_type_list.append(v_number_id)
+        elif is_operator(v_str_token):
+            v_token_type_list.append(v_operator_id)
+        elif is_opening_bracket(v_str_token):
+            v_token_type_list.append(v_opening_bracket_id)
+        elif is_closing_bracket(v_str_token):
+            v_token_type_list.append(v_closing_bracket_id)
+        elif is_equation(v_str_token):
+            v_token_type_list.append(v_equation_id)
+        else:
+            v_token_type_list.append(v_unknown_id)
+
+    if len(v_token_type_list) != len(v_token_list):
+        raise ListsHaveNonEqualLengthError(
+            function_name="to_token_type_list",
+            list_name_1="v_token_type_list",
+            list_name_2="v_token_list",
+            length_list_1=len(v_token_type_list),
+            length_list_2=len(v_token_list)
+        )
+
+    return v_token_type_list
 
 """Проверка списка символов"""
 
@@ -501,6 +546,86 @@ def check_char_list(v_char_type_list: list) -> tuple:
     return (True, "")
 
 
+"""Создание списка из выражений"""
+def get_expression_list(v_token_list: list) -> list:
+    v_expression_list = []
+    v_token_copy_list = v_token_list.copy()
+
+    ### На каждой итерации этого цикла - меняем содержимое списка, пока не останется скобок
+    while is_bracket_expression_exists(v_list=v_token_copy_list):
+        v_current_idx = 0
+
+        # На каждой итерации этого цикла для каждой найденной открытой скобки - ищем следующую закрытую и открытую скобки
+        while v_current_idx <= len(v_token_copy_list) - 1:
+            if is_opening_bracket(v_str=str(v_token_copy_list[v_current_idx])):
+                # Если найдена открытая скобка, то ищем следующие открытые и закрытые скобки
+                v_next_opening_bracket_idx = v_next_closing_bracket_idx = v_current_idx + 1
+                v_opening_bracket_found = v_closing_bracket_found = False
+
+                # Поиск следующей открытой скобки
+                while v_next_opening_bracket_idx <= len(v_token_copy_list) - 1:
+                    if is_opening_bracket(v_str=str(v_token_copy_list[v_next_opening_bracket_idx])):
+                        v_opening_bracket_found = True 
+                        break
+                    else:
+                        v_next_opening_bracket_idx += 1
+
+                # Поиск следующей закрытой скобки
+                while v_next_closing_bracket_idx <= len(v_token_copy_list) - 1:
+                    if is_closing_bracket(v_str=str(v_token_copy_list[v_next_closing_bracket_idx])):
+                        v_closing_bracket_found = True 
+                        break
+                    else:
+                        v_next_closing_bracket_idx += 1
+
+                # Если закрытая скобка не найдена - то нужно зарейзить исключение 
+                if not v_closing_bracket_found:
+                    raise ClosingBracketNotFoundError(
+                        function_name="get_expression_list",
+                        checked_list=v_token_copy_list,
+                        opening_bracket_idx=v_current_idx,
+                        message="Не найдена закрывающая скобка при наличии открывающей"
+                    )
+
+                # Если найдены закрытая и открытая скобка, то необходимо проверить, 
+                # что индекс открытой скобки не превышает индекс закрытой скобки
+                # Если так - то переходим к следующей итерации
+                if v_opening_bracket_found and (
+                    (v_closing_bracket_found and v_next_closing_bracket_idx < v_next_opening_bracket_idx)
+                    or (not v_closing_bracket_found)
+                ):
+                    v_found_expression = v_token_copy_list[v_current_idx+1:v_next_closing_bracket_idx]
+                    v_expression_list.append(v_found_expression)
+                    del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
+                    v_token_copy_list.insert(v_current_idx, "ref_" + str(len(v_expression_list) - 1))
+                    v_current_idx = 0
+                else:
+                    v_current_idx += 1
+            else:
+                v_current_idx += 1
+
+    v_expression_list.append(v_token_copy_list)
+    return v_expression_list
+
+def is_bracket_expression_exists(v_list: list) -> bool:
+    try:
+        v_opening_bracket_idx = v_list.index("(")
+    except ValueError:
+        v_opening_bracket_idx = -1
+
+    try:
+        v_closing_bracket_idx = v_list.index(")")
+    except ValueError:
+        v_closing_bracket_idx = -1
+
+    if v_opening_bracket_idx >= 0 \
+        and v_closing_bracket_idx >= 0 \
+        and v_opening_bracket_idx < v_closing_bracket_idx:
+        return True
+    else:
+        return False
+
+
 """Основные функции"""
 def main():
     while True:
@@ -517,7 +642,17 @@ def main():
                 print(v_tuple[1])
             else:
                 v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
+                ####
                 print(v_token_list)
+                ####
+                v_token_type_list = to_token_type_list(v_token_list=v_token_list)
+                ####
+                print(v_token_type_list)
+                ####
+                v_expression_list = get_expression_list(v_token_list=v_token_list)
+                ####
+                print(v_expression_list)
+                ####
 
 # Test new branch
 main()
