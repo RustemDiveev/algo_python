@@ -597,7 +597,7 @@ def get_expression_list(v_token_list: list) -> list:
                     v_found_expression = v_token_copy_list[v_current_idx+1:v_next_closing_bracket_idx]
                     v_expression_list.append(v_found_expression)
                     del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
-                    v_token_copy_list.insert(v_current_idx, "ref_" + str(len(v_expression_list) - 1))
+                    v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
                     v_current_idx = 0
                     break
                 else:
@@ -626,6 +626,56 @@ def is_bracket_expression_exists(v_list: list) -> bool:
     else:
         return False
 
+"""Определение порядка выражений"""
+def to_simple_expression_list(v_expression_list: list) -> list:
+    """
+        1. Для каждого списка в списке
+        1.1 Ищем оператор - умножения или деления 
+        1.2 Как только оператор найден - находим левый операнд и правый операнд - и заносим в новый список
+        1.3 Удаляем найденную часть списка 
+        1.4 Заменяем на ссылку 
+        1.5 Выполняем пункты 1.1 - 1.5 для операторов сложения и вычитания 
+    """
+    v_result_list = []
+
+    for elem in v_expression_list: 
+        v_list = elem.copy()
+        v_idx = 0 
+        v_ref_count = 0
+        v_simple_expression_list = []
+
+        while v_idx < len(v_list) - 1:
+            if is_char(v_list[v_idx], ("*")) or is_char(v_list[v_idx], ("/")):
+                v_left_operand = v_list[v_idx - 1]
+                v_operator = v_list[v_idx]
+                v_second_operand = v_list[v_idx + 1]
+                v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
+                del v_list[v_idx-1:v_idx+1]
+                v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
+                v_ref_count += 1
+                v_idx = 0
+            else:
+                v_idx += 1
+        
+        v_idx = 0
+
+        while v_idx < len(v_list) - 1:
+            if is_char(v_list[v_idx], ("+")) or is_char(v_list[v_idx], ("-")):
+                v_left_operand = v_list[v_idx - 1]
+                v_operator = v_list[v_idx]
+                v_second_operand = v_list[v_idx + 1]
+                v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
+                del v_list[v_idx-1:v_idx+1]
+                v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
+                v_ref_count += 1
+                v_idx = 0
+            else:
+                v_idx += 1
+
+        v_result_list.append(v_simple_expression_list.copy())
+
+    return v_result_list
+        
 
 """Основные функции"""
 def main():
@@ -654,6 +704,9 @@ def main():
                 ####
                 print(v_expression_list)
                 ####
+                v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
+                ####
+                print(v_simple_expression_list)
 
 # Test new branch
 main()
