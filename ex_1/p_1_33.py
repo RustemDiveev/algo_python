@@ -590,15 +590,16 @@ def get_expression_list(v_token_list: list) -> list:
                 # Если найдены закрытая и открытая скобка, то необходимо проверить, 
                 # что индекс открытой скобки не превышает индекс закрытой скобки
                 # Если так - то переходим к следующей итерации
-                if v_opening_bracket_found and (
-                    (v_closing_bracket_found and v_next_closing_bracket_idx < v_next_opening_bracket_idx)
-                    or (not v_closing_bracket_found)
+                if v_closing_bracket_found and (
+                    (v_opening_bracket_found and v_next_closing_bracket_idx < v_next_opening_bracket_idx)
+                    or (not v_opening_bracket_found)
                 ):
                     v_found_expression = v_token_copy_list[v_current_idx+1:v_next_closing_bracket_idx]
                     v_expression_list.append(v_found_expression)
                     del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
                     v_token_copy_list.insert(v_current_idx, "ref_" + str(len(v_expression_list) - 1))
                     v_current_idx = 0
+                    break
                 else:
                     v_current_idx += 1
             else:
