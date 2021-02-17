@@ -675,6 +675,70 @@ def to_simple_expression_list(v_expression_list: list) -> list:
         v_result_list.append(v_simple_expression_list.copy())
 
     return v_result_list
+
+def get_result(v_final_expression_list: list) -> float:
+    """
+    [
+        [
+            ["1", + "2"],
+            ["2", -, "ref_0"]
+        ],
+        [
+            ["expr_0", "-", 123]
+        ]
+    ]
+    """
+    v_input_list = v_final_expression_list.copy()
+    v_idx = 0
+    while v_idx < len(v_input_list):
+        v_current_expression = v_input_list[v_idx]
+        v_v_idx = 0 
+
+        while v_v_idx < len(v_current_expression):
+            v_current_simple_expression = v_current_expression[v_v_idx]
+            v_first_operand = v_current_simple_expression[0]
+            v_operator = v_current_simple_expression[1]
+            v_second_operand = v_current_simple_expression[2]
+
+            if isinstance(v_first_operand, str):
+                v_type, v_token_idx = v_first_operand.split("_")
+                if v_type == "expr":
+                    v_first_operand = v_input_list[v_token_idx]
+                elif v_type == "ref":
+                    v_first_operand = v_input_list[v_idx][v_token_idx]
+
+            if isinstance(v_first_operand, str):
+                v_type, v_token_idx = v_second_operand.split("_")
+                if v_type == "expr":
+                    v_second_operand = v_input_list[v_token_idx]
+                elif v_type == "ref":
+                    v_second_operand = v_input_list[v_idx][v_token_idx]
+
+            if v_operator == "+":
+                v_result = v_first_operand + v_second_operand 
+            elif v_operator == "-":
+                v_result = v_first_operand - v_second_operand 
+            elif v_operator == "*":
+                v_result = v_first_operand * v_second_operand
+            elif v_operator == "/":
+                v_result = v_first_operand / v_second_operand 
+
+            if v_v_idx == len(v_current_expression) - 1:
+                v_input_list[v_idx] = v_result
+            else:
+                v_input_list[v_idx][v_v_idx] = v_result 
+            
+            v_v_idx += 1
+
+        v_idx += 1
+
+    v_result = v_input_list[-1]
+    return v_result
+
+
+
+def process_input_and_get_result(v_str: str) -> str:
+    pass
         
 
 """Основные функции"""
@@ -707,6 +771,10 @@ def main():
                 v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
                 ####
                 print(v_simple_expression_list)
+                ####
+                v_result = get_result(v_final_expression_list=v_simple_expression_list)
+                ####
+                print(v_result)
 
 # Test new branch
 main()
