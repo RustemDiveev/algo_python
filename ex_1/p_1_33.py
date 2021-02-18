@@ -650,7 +650,7 @@ def to_simple_expression_list(v_expression_list: list) -> list:
                 v_operator = v_list[v_idx]
                 v_second_operand = v_list[v_idx + 1]
                 v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
-                del v_list[v_idx-1:v_idx+1]
+                del v_list[v_idx-1:v_idx+2]
                 v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
                 v_ref_count += 1
                 v_idx = 0
@@ -665,7 +665,7 @@ def to_simple_expression_list(v_expression_list: list) -> list:
                 v_operator = v_list[v_idx]
                 v_second_operand = v_list[v_idx + 1]
                 v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
-                del v_list[v_idx-1:v_idx+1]
+                del v_list[v_idx-1:v_idx+2]
                 v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
                 v_ref_count += 1
                 v_idx = 0
@@ -702,6 +702,7 @@ def get_result(v_final_expression_list: list) -> float:
 
             if isinstance(v_first_operand, str):
                 v_type, v_token_idx = v_first_operand.split("_")
+                v_token_idx = int(v_token_idx)
                 if v_type == "expr":
                     v_first_operand = v_input_list[v_token_idx]
                 elif v_type == "ref":
@@ -709,6 +710,7 @@ def get_result(v_final_expression_list: list) -> float:
 
             if isinstance(v_first_operand, str):
                 v_type, v_token_idx = v_second_operand.split("_")
+                v_token_idx = int(v_token_idx)
                 if v_type == "expr":
                     v_second_operand = v_input_list[v_token_idx]
                 elif v_type == "ref":
@@ -758,22 +760,27 @@ def main():
             else:
                 v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
                 ####
+                print("v_token_list")
                 print(v_token_list)
                 ####
                 v_token_type_list = to_token_type_list(v_token_list=v_token_list)
                 ####
+                print("v_token_type_list")
                 print(v_token_type_list)
                 ####
                 v_expression_list = get_expression_list(v_token_list=v_token_list)
                 ####
+                print("v_expression_list")
                 print(v_expression_list)
                 ####
                 v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
                 ####
+                print("v_simple_expression_list")
                 print(v_simple_expression_list)
                 ####
                 v_result = get_result(v_final_expression_list=v_simple_expression_list)
                 ####
+                print("v_result")
                 print(v_result)
 
 # Test new branch
