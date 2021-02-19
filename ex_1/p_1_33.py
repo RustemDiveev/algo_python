@@ -245,7 +245,7 @@ def trim_whitespace(v_str: str) -> str:
     """
     return v_str.replace(" ", "") 
 
-def is_valid_input(v_str: str) -> tuple:
+def is_valid_input(v_str: str) -> bool:
     """
         Проверка всех символов на соответствие допустимым 
         Возвращаемый кортеж имеет следующий вид: (bool, str)
@@ -261,9 +261,10 @@ def is_valid_input(v_str: str) -> tuple:
                 "Выражение: " + v_str + "\n" + \
                 "Позиция: " + str(position_number) + "\n" + \
                 "Символ: " + char
-            return (False, v_message)
+            print(v_message)
+            return False
     
-    return (True, "")
+    return True
 
 def to_char_list(v_str: str) -> list:
     """
@@ -320,46 +321,7 @@ def to_token_list(v_char_list: list, v_char_type_list: list) -> list:
             idx += 1
 
     return v_token_list
-    
 
-def to_token_type_list(v_token_list: list) -> list:
-    """
-        Создание списка из типов токенов на базе списка из токенов
-    """
-    v_number_id = get_type_value_by_key("NUMBER") 
-    v_operator_id = get_type_value_by_key("OPERATOR")
-    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
-    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
-    v_equation_id = get_type_value_by_key("EQUATION")
-    v_unknown_id = get_type_value_by_key("UNKNOWN")
-
-    v_token_type_list = []
-
-    for token in v_token_list:
-        v_str_token = str(token)
-        if is_number(v_str_token):
-            v_token_type_list.append(v_number_id)
-        elif is_operator(v_str_token):
-            v_token_type_list.append(v_operator_id)
-        elif is_opening_bracket(v_str_token):
-            v_token_type_list.append(v_opening_bracket_id)
-        elif is_closing_bracket(v_str_token):
-            v_token_type_list.append(v_closing_bracket_id)
-        elif is_equation(v_str_token):
-            v_token_type_list.append(v_equation_id)
-        else:
-            v_token_type_list.append(v_unknown_id)
-
-    if len(v_token_type_list) != len(v_token_list):
-        raise ListsHaveNonEqualLengthError(
-            function_name="to_token_type_list",
-            list_name_1="v_token_type_list",
-            list_name_2="v_token_list",
-            length_list_1=len(v_token_type_list),
-            length_list_2=len(v_token_list)
-        )
-
-    return v_token_type_list
 
 """Проверка списка символов"""
 
@@ -736,52 +698,43 @@ def get_result(v_final_expression_list: list) -> float:
 
     v_result = v_input_list[-1]
     return v_result
-
-
-
-def process_input_and_get_result(v_str: str) -> str:
-    pass
         
 
 """Основные функции"""
-def main():
-    while True:
-        v_str = input()
-        v_str = trim_whitespace(v_str=v_str)
-        v_tuple = is_valid_input(v_str=v_str)
-        if not v_tuple[0]:
-            print(v_tuple[1])
+def process_input(v_str: str, v_result_list: list) -> str:
+    v_str = trim_whitespace(v_str)
+    if is_operator(v_str[0]):
+        if len(v_result_list) == 1:
+            v_str = str(v_result_list[0]) + v_str 
         else:
+            print("Отсутствует результат предыдущего расчета для использовании в заданном выражении")
+        
+    return v_str
+
+def calculate(v_char_list: list, v_char_type_list: list) -> float:
+    v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
+    v_expression_list = get_expression_list(v_token_list=v_token_list)
+    v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
+    v_result = get_result(v_final_expression_list=v_simple_expression_list)
+    return v_result
+
+def main():
+    v_result_list = []
+    while True:
+        v_str = process_input(v_str=input(), v_result_list=v_result_list)
+
+        if is_valid_input(v_str=v_str):
             v_char_list = to_char_list(v_str=v_str)
             v_char_type_list = to_char_type_list(v_char_list=v_char_list)
             v_tuple = check_char_list(v_char_type_list=v_char_type_list)
             if not v_tuple[0]:
                 print(v_tuple[1])
             else:
-                v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
-                ####
-                print("v_token_list")
-                print(v_token_list)
-                ####
-                v_token_type_list = to_token_type_list(v_token_list=v_token_list)
-                ####
-                print("v_token_type_list")
-                print(v_token_type_list)
-                ####
-                v_expression_list = get_expression_list(v_token_list=v_token_list)
-                ####
-                print("v_expression_list")
-                print(v_expression_list)
-                ####
-                v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
-                ####
-                print("v_simple_expression_list")
-                print(v_simple_expression_list)
-                ####
-                v_result = get_result(v_final_expression_list=v_simple_expression_list)
-                ####
-                print("v_result")
+                v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
                 print(v_result)
+                if len(v_result_list) == 1:
+                    v_result_list[0] = v_result
+                else:
+                    v_result_list.append(v_result)
 
-# Test new branch
 main()
