@@ -704,8 +704,8 @@ def get_result(v_final_expression_list: list) -> float:
 def process_input(v_str: str, v_result_list: list) -> str:
     v_str = trim_whitespace(v_str)
     if is_operator(v_str[0]):
-        if len(v_result_list) == 1:
-            v_str = str(v_result_list[0]) + v_str 
+        if len(v_result_list) > 0:
+            v_str = str(v_result_list[-1]) + v_str 
         else:
             print("Отсутствует результат предыдущего расчета для использовании в заданном выражении")
         
@@ -732,9 +732,8 @@ def main():
             else:
                 v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
                 print(v_result)
-                if len(v_result_list) == 1:
-                    v_result_list[0] = v_result
-                else:
-                    v_result_list.append(v_result)
+                v_result_list.append(v_result)
+                print("v_result_list")
+                print(v_result_list)
 
 main()
