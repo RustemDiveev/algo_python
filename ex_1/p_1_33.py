@@ -708,7 +708,7 @@ def get_result(v_final_expression_list: list) -> float:
                 elif v_type == "ref":
                     v_first_operand = v_input_list[v_idx][v_token_idx]
 
-            if isinstance(v_first_operand, str):
+            if isinstance(v_second_operand, str):
                 v_type, v_token_idx = v_second_operand.split("_")
                 v_token_idx = int(v_token_idx)
                 if v_type == "expr":
