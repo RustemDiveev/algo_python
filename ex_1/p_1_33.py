@@ -234,7 +234,8 @@ def is_number(v_str: str) -> bool:
     try:
         float(v_str) 
         return True
-    except ValueError:
+    # ValueError, TypeError
+    except:
         return False
         
 """Парсинг и преобразование строки"""
@@ -600,6 +601,12 @@ def to_simple_expression_list(v_expression_list: list) -> list:
     """
     v_result_list = []
 
+    # Отдельная обработка случая, когда пользователь вбил просто число
+    if len(v_expression_list) == 1 and len(v_expression_list[0]) == 1 \
+        and is_number(v_expression_list[0][0]):
+        return v_expression_list
+
+
     for elem in v_expression_list: 
         v_list = elem.copy()
         v_idx = 0 
@@ -650,6 +657,11 @@ def get_result(v_final_expression_list: list) -> float:
         ]
     ]
     """
+    ### Обработка случая, когда пользователь вбил число 
+    if len(v_final_expression_list) == 1 and len(v_final_expression_list[0]) == 1 \
+        and is_number(v_final_expression_list[0][0]):
+        return v_final_expression_list[0][0]
+
     v_input_list = v_final_expression_list.copy()
     v_idx = 0
     while v_idx < len(v_input_list):
@@ -764,7 +776,5 @@ def main():
                     v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
                     print(v_result)
                     v_result_list.append(v_result)
-                    print("v_result_list")
-                    print(v_result_list)
 
 main()
