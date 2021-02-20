@@ -698,7 +698,31 @@ def get_result(v_final_expression_list: list) -> float:
 
     v_result = v_input_list[-1]
     return v_result
-        
+
+"""Поддержка clear и reset"""
+def clear(p_result_list: list):
+    if len(p_result_list) > 0:
+        while len(p_result_list) > 0:
+            del p_result_list[0]
+        print("Список результатов вычислений очищен. Введите арифметическое выражение для расчета.")
+    else:
+        print("Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета.")
+
+def reset(p_result_list: list):
+    if len(p_result_list) > 1:
+        del p_result_list[-1]
+        print("Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1]))
+    elif len(p_result_list) == 1:
+        del p_result_list[-1]
+        print("В истории вычислений было только одно значение. История пуста")
+    else:
+        print("Нечего очищать. История вычислений пуста.")
+
+def is_input_a_calculator_option(p_str: str) -> bool:
+    if len(p_str) == 1 and ((p_str == "c") or (p_str == "r")):
+        return True 
+    else:
+        return False 
 
 """Основные функции"""
 def process_input(v_str: str, v_result_list: list) -> str:
@@ -721,19 +745,26 @@ def calculate(v_char_list: list, v_char_type_list: list) -> float:
 def main():
     v_result_list = []
     while True:
-        v_str = process_input(v_str=input(), v_result_list=v_result_list)
+        v_str = input() 
+        if is_input_a_calculator_option(p_str=v_str):
+            if v_str == "c":
+                clear(p_result_list=v_result_list)
+            elif v_str == "r":
+                reset(p_result_list=v_result_list)
+        else:
+            v_str = process_input(v_str=v_str, v_result_list=v_result_list)
 
-        if is_valid_input(v_str=v_str):
-            v_char_list = to_char_list(v_str=v_str)
-            v_char_type_list = to_char_type_list(v_char_list=v_char_list)
-            v_tuple = check_char_list(v_char_type_list=v_char_type_list)
-            if not v_tuple[0]:
-                print(v_tuple[1])
-            else:
-                v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
-                print(v_result)
-                v_result_list.append(v_result)
-                print("v_result_list")
-                print(v_result_list)
+            if is_valid_input(v_str=v_str):
+                v_char_list = to_char_list(v_str=v_str)
+                v_char_type_list = to_char_type_list(v_char_list=v_char_list)
+                v_tuple = check_char_list(v_char_type_list=v_char_type_list)
+                if not v_tuple[0]:
+                    print(v_tuple[1])
+                else:
+                    v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
+                    print(v_result)
+                    v_result_list.append(v_result)
+                    print("v_result_list")
+                    print(v_result_list)
 
 main()
