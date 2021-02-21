@@ -56,6 +56,7 @@ g_dict_char_type = {
     "OPENING_BRACKET": 4,
     "CLOSING_BRACKET": 5,
     "DOT": 6,
+    "OPERATOR_MINUS": 7,
     "UNKNOWN": 99
 }
 
@@ -67,6 +68,8 @@ def get_type_value_by_key(v_str: str) -> int:
 def get_char_type_id(v_str: str) -> int:
     if is_char_number(v_str):
         return get_type_value_by_key("NUMBER")
+    elif is_char(v_str, ("-")):
+        return get_type_value_by_key("OPERATOR_MINUS")
     elif is_operator(v_str):
         return get_type_value_by_key("OPERATOR")
     elif is_operator(v_str):
@@ -97,7 +100,7 @@ class Stack:
         return len(self.items)
 
 """Пользовательские исключения"""
-
+()
 class Error(Exception):
     """
         Стандартный класс для создания пользовательских исключений
@@ -305,10 +308,27 @@ def to_token_list(v_char_list: list, v_char_type_list: list) -> list:
     v_token_list = []
     v_number_id = get_type_value_by_key("NUMBER")
     v_dot_id = get_type_value_by_key("DOT")
+    v_opening_bracket_id = get_type_value_by_key("OPENING_BRACKET")
+    v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
+    v_operator_minus_id = get_type_value_by_key("OPERATOR_MINUS")
 
     idx = 0
     while idx <= len(v_char_type_list) - 1:
-        if v_char_type_list[idx] == v_number_id:
+        if v_char_type_list[idx] == v_opening_bracket_id and \
+            v_char_type_list[idx+1] == v_operator_minus_id and \
+            v_char_type_list[idx+2] == v_number_id:
+            v_str_number_token = ""
+            idx += 1
+            while idx <= len(v_char_type_list) - 1 or v_char_type_list[idx] != v_closing_bracket_id:
+                if v_char_type_list[idx] in (v_number_id, v_dot_id, v_operator_minus_id):
+                    v_str_number_token += v_char_list[idx]
+                else:
+                    break
+                idx += 1
+            v_token_list.append(float(v_str_number_token))
+            # Для игнорирования закрывающей скобки
+            idx += 1
+        elif v_char_type_list[idx] == v_number_id:
             v_str_number_token = ""
             while idx <= len(v_char_type_list) - 1:
                 if v_char_type_list[idx] in (v_number_id, v_dot_id):
@@ -415,6 +435,23 @@ def check_char_list_operator(v_char_type_list: list):
         return (False, "Неправильное выражение - равенство следует после оператора")
     elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR"):
         return (False, "Неправильное выражение - два оператора следуют подряд")
+
+    elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "CLOSING_BRACKET"):
+        return (False, "Неправильное выражение - за оператором следует закрывающая скобка")
+    elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "DOT"):
+        return (False, "Неправильное выражение - после оператора следует разделитель числа")
+    elif check_pattern(v_char_type_list, "DOT", "OPERATOR_MINUS"):
+        return (False, "Неправильное выражение - разделитель числа следует перед оператором")
+    elif check_pattern(v_char_type_list, "EQUATION", "OPERATOR_MINUS"):
+        return (False, "Неправильное выражение - знак равенства следует перед оператором")
+    elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "EQUATION"):
+        return (False, "Неправильное выражение - равенство следует после оператора")
+    elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "OPERATOR_MINUS"):
+        return (False, "Неправильное выражение - два оператора следуют подряд")
+    elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "OPERATOR"):
+        return (False, "Неправильное выражение - два оператора следуют подряд")
+    elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR_MINUS"):
+        return (False, "Неправильное выражение - два оператора следуют подряд")
     else:
         return (True, "")
 
@@ -442,6 +479,7 @@ def check_char_list_dot(v_char_type_list: list):
     v_closing_bracket_id = get_type_value_by_key("CLOSING_BRACKET")
     v_operator_id = get_type_value_by_key("OPERATOR")
     v_equation_id = get_type_value_by_key("EQUATION")
+    v_operator_minus_id = get_type_value_by_key("OPERATOR_MINUS")
 
     for idx in range(len(v_char_type_list) - 1): 
         if v_char_type_list[idx] == v_dot_id:
@@ -462,7 +500,7 @@ def check_char_list_dot(v_char_type_list: list):
                 while v_idx >= 0:
                     if v_char_type_list[v_idx] == v_number_id:
                         v_idx -= 1
-                    elif v_char_type_list[v_idx] in (v_operator_id, v_opening_bracket_id, v_closing_bracket_id):
+                    elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id):
                         break
                     else:
                         return (False, "Перед разделителем числа в его начале обнаружен недопустимый символ")
@@ -741,7 +779,10 @@ def process_input(v_str: str, v_result_list: list) -> str:
     v_str = trim_whitespace(v_str)
     if is_operator(v_str[0]):
         if len(v_result_list) > 0:
-            v_str = str(v_result_list[-1]) + v_str 
+            if v_result_list[-1] >= 0:
+                v_str = str(v_result_list[-1]) + v_str 
+            else:
+                v_str = "(" + str(v_result_list[-1]) + ")" + v_str
         else:
             print("Отсутствует результат предыдущего расчета для использовании в заданном выражении")
         
@@ -749,8 +790,14 @@ def process_input(v_str: str, v_result_list: list) -> str:
 
 def calculate(v_char_list: list, v_char_type_list: list) -> float:
     v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
+    print("v_token_list")
+    print(v_token_list)
     v_expression_list = get_expression_list(v_token_list=v_token_list)
+    print("v_expression_list")
+    print(v_expression_list)
     v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
+    print("v_simple_expression_list")
+    print(v_simple_expression_list)
     v_result = get_result(v_final_expression_list=v_simple_expression_list)
     return v_result
 
@@ -768,7 +815,11 @@ def main():
 
             if is_valid_input(v_str=v_str):
                 v_char_list = to_char_list(v_str=v_str)
+                print("v_char_list")
+                print(v_char_list)
                 v_char_type_list = to_char_type_list(v_char_list=v_char_list)
+                print("v_char_type_list")
+                print(v_char_type_list)
                 v_tuple = check_char_list(v_char_type_list=v_char_type_list)
                 if not v_tuple[0]:
                     print(v_tuple[1])
