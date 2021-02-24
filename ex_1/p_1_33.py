@@ -1,52 +1,3 @@
-"""
-1. Можно писать в одну строку длинные выражения - попробовать учесть скобки и порядок выполнения арифметических операций
-2. Можно писать по числу или оператору - результат рассчитывется автоматически по enter 
-3. При помощи кнопки "с" (clear) - ресетим в ноль 
-4. При помощи кнопки "r" (reset) - откатываем последнее вычисление
-"""
-
-"""
-План решения задачи:
-
-Пока рассмотрим случай, когда выражение вводится пачкой и ожидается получение результата этого выражения.
-Пока рассмотрим случай, где не требуется наличие отрицательных чисел.
-
-MVP!!!!
-1. Мы должны проверить то, что ввели, на предмет того, можно ли с этим работать.
-	1.1 Необходимо убрать пробелы 
-	1.2 Необходимо проверить, является ли каждый символ - цифрой или оператором - также допустимы дробные числа. В питоне разделитель - точка.
-		1.2.1 Добавить проверку на точку 
-	1.3 Необходимо проверить, есть ли неадекватно введенные значения
-		1.3.1 Два оператора подряд 
-		1.3.2 Несоответствие скобочной последовательности (здесь сойдет самостоятельная реализация стека)
-		1.3.3 Две точки подряд
-		1.3.4 Точка без числа 
-		1.3.5 Возможно есть что-то еще...
-	1.4 Должно быть адекватное сообщение об ошибке, из которого понятно, что именно не так 
-	
-2. Мы должны распарсить введенное на токены и подготовиться к вычислению
-	2.1 Сцепить числа - разбить строку на список - где каждый элемент - это значение 
-																				или оператор 
-																				или скобка 
-	2.2 Разбить на выражения - проверить валидно ли отдельное выражение
-		2.2.1 Необходимо задать порядок выполнения выражений - признак выражения - оператор
-	2.3 Определить порядок выполнения (скобки + операторы)
-	2.4 Можно попробовать список, по которому потребуется идти последовательно
-	2.5 Планируется иметь два списка:
-		2.5.1 Список со словарями - где есть выражение.
-		Примерная структура словаря:
-		{
-			"is_pointer_1": True | False, 
-			"value_1": float 
-			"is_pointer_2": True | False 
-			"value_2": float 
-			"operator": +-*/
-		}
-		2.5.2 Список с результатом промежуточных вычислений
-"""
-
-from copy import deepcopy
-
 """Глобальные переменные"""
 
 g_dict_char_type = {
@@ -100,7 +51,6 @@ class Stack:
         return len(self.items)
 
 """Пользовательские исключения"""
-()
 class Error(Exception):
     """
         Стандартный класс для создания пользовательских исключений
@@ -261,7 +211,7 @@ def is_valid_input(v_str: str) -> bool:
     for char in v_str:
         position_number += 1
         if not is_valid_char(v_str=char):
-            v_message = "Введенное выражение содержит недопустимый символ:\n" + \
+            v_message = "ERROR: Введенное выражение содержит недопустимый символ:\n" + \
                 "Выражение: " + v_str + "\n" + \
                 "Позиция: " + str(position_number) + "\n" + \
                 "Символ: " + char
@@ -365,10 +315,10 @@ def check_char_list_brackets(v_char_type_list: list) -> tuple:
             if len(v_stack) > 0:
                 v_stack.pop()
             else:
-                return (False, "В выражении неправильно расставлены скобки. Преждевременно встретилась закрывающая скобка.")
+                return (False, "ERROR: В выражении неправильно расставлены скобки. Преждевременно встретилась закрывающая скобка.")
     
     if len(v_stack) > 0:
-        return (False, "В выражении неправильно расставлены скобки. Отсутствует закрывающая скобка.")
+        return (False, "ERROR: В выражении неправильно расставлены скобки. Отсутствует закрывающая скобка.")
     else:
         return (True, "")
 
@@ -383,7 +333,7 @@ def check_char_list_beginning(v_char_type_list: list) -> tuple:
     if v_char_type_list[0] in (v_number_id, v_opening_bracket_id):
         return (True, "")
     else: 
-        return (False, "Выражение должно начинаться с открывающейся скобки или числа")
+        return (False, "ERROR: Выражение должно начинаться с открывающейся скобки или числа")
 
 def check_char_list_ending(v_char_type_list: list):
     """
@@ -396,7 +346,7 @@ def check_char_list_ending(v_char_type_list: list):
     if v_char_type_list[-1] in (v_number_id, v_closing_bracket_id, v_equation_id):
         return (True, "")
     else: 
-        return (False, "Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства")
+        return (False, "ERROR: Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства")
 
 def check_pattern(v_char_type_list: list, first_key: str, second_key: str) -> bool:
     first_id = get_type_value_by_key(first_key)
@@ -422,36 +372,36 @@ def check_char_list_operator(v_char_type_list: list):
         Такие паттерны говорят о неправильном выражении
     """
     if check_pattern(v_char_type_list, "OPERATOR", "CLOSING_BRACKET"):
-        return (False, "Неправильное выражение - за оператором следует закрывающая скобка")
+        return (False, "ERROR: Неправильное выражение - за оператором следует закрывающая скобка")
     elif check_pattern(v_char_type_list, "OPENING_BRACKET", "OPERATOR"):
-        return (False, "Неправильное выражение - оператор следует сразу после открывающей скобки")
+        return (False, "ERROR: Неправильное выражение - оператор следует сразу после открывающей скобки")
     elif check_pattern(v_char_type_list, "OPERATOR", "DOT"):
-        return (False, "Неправильное выражение - после оператора следует разделитель числа")
+        return (False, "ERROR: Неправильное выражение - после оператора следует разделитель числа")
     elif check_pattern(v_char_type_list, "DOT", "OPERATOR"):
-        return (False, "Неправильное выражение - разделитель числа следует перед оператором")
+        return (False, "ERROR: Неправильное выражение - разделитель числа следует перед оператором")
     elif check_pattern(v_char_type_list, "EQUATION", "OPERATOR"):
-        return (False, "Неправильное выражение - знак равенства следует перед оператором")
+        return (False, "ERROR: Неправильное выражение - знак равенства следует перед оператором")
     elif check_pattern(v_char_type_list, "OPERATOR", "EQUATION"):
-        return (False, "Неправильное выражение - равенство следует после оператора")
+        return (False, "ERROR: Неправильное выражение - равенство следует после оператора")
     elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR"):
-        return (False, "Неправильное выражение - два оператора следуют подряд")
+        return (False, "ERROR: Неправильное выражение - два оператора следуют подряд")
 
     elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "CLOSING_BRACKET"):
-        return (False, "Неправильное выражение - за оператором следует закрывающая скобка")
+        return (False, "ERROR: Неправильное выражение - за оператором следует закрывающая скобка")
     elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "DOT"):
-        return (False, "Неправильное выражение - после оператора следует разделитель числа")
+        return (False, "ERROR: Неправильное выражение - после оператора следует разделитель числа")
     elif check_pattern(v_char_type_list, "DOT", "OPERATOR_MINUS"):
-        return (False, "Неправильное выражение - разделитель числа следует перед оператором")
+        return (False, "ERROR: Неправильное выражение - разделитель числа следует перед оператором")
     elif check_pattern(v_char_type_list, "EQUATION", "OPERATOR_MINUS"):
-        return (False, "Неправильное выражение - знак равенства следует перед оператором")
+        return (False, "ERROR: Неправильное выражение - знак равенства следует перед оператором")
     elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "EQUATION"):
-        return (False, "Неправильное выражение - равенство следует после оператора")
+        return (False, "ERROR: Неправильное выражение - равенство следует после оператора")
     elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "OPERATOR_MINUS"):
-        return (False, "Неправильное выражение - два оператора следуют подряд")
+        return (False, "ERROR: Неправильное выражение - два оператора следуют подряд")
     elif check_pattern(v_char_type_list, "OPERATOR_MINUS", "OPERATOR"):
-        return (False, "Неправильное выражение - два оператора следуют подряд")
+        return (False, "ERROR: Неправильное выражение - два оператора следуют подряд")
     elif check_pattern(v_char_type_list, "OPERATOR", "OPERATOR_MINUS"):
-        return (False, "Неправильное выражение - два оператора следуют подряд")
+        return (False, "ERROR: Неправильное выражение - два оператора следуют подряд")
     else:
         return (True, "")
 
@@ -463,7 +413,7 @@ def check_char_list_equation(v_char_type_list: list):
 
     for idx in range(len(v_char_type_list) - 1):
         if v_char_type_list[idx] == equation_id and idx != len(v_char_type_list) - 1:
-            return (False, "Знак равенства может быть только один и должен находиться в конце выражения")
+            return (False, "ERROR: Знак равенства может быть только один и должен находиться в конце выражения")
 
     return (True, "")
 
@@ -484,17 +434,17 @@ def check_char_list_dot(v_char_type_list: list):
     for idx in range(len(v_char_type_list) - 1): 
         if v_char_type_list[idx] == v_dot_id:
             if idx in (0, len(v_char_type_list)-1):
-                return (False, "Точка не должна быть в начале или в конце выражения")
+                return (False, "ERROR: Точка не должна быть в начале или в конце выражения")
             else:
                 v_number_before_found = v_number_after_found = False
                 v_number_before_found = True if v_char_type_list[idx - 1] == v_number_id else False 
                 v_number_after_found = True if v_char_type_list[idx + 1] == v_number_id else False 
 
                 if v_number_before_found is False:
-                    return (False, "Перед разделителем числа не найдено цифры")
+                    return (False, "ERROR: Перед разделителем числа не найдено цифры")
 
                 if v_number_after_found is False:
-                    return (False, "После разделителя числа не найдено цифры")
+                    return (False, "ERROR: После разделителя числа не найдено цифры")
 
                 v_idx = idx - 1
                 while v_idx >= 0:
@@ -503,16 +453,16 @@ def check_char_list_dot(v_char_type_list: list):
                     elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id):
                         break
                     else:
-                        return (False, "Перед разделителем числа в его начале обнаружен недопустимый символ")
+                        return (False, "ERROR: Перед разделителем числа в его начале обнаружен недопустимый символ")
 
                 v_idx = idx + 1 
                 while v_idx <= len(v_char_type_list) - 1:
                     if v_char_type_list[v_idx] == v_number_id:
                         v_idx += 1
-                    elif v_char_type_list[v_idx] in (v_operator_id, v_opening_bracket_id, v_closing_bracket_id, v_equation_id):
+                    elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id, v_equation_id):
                         break
                     else:
-                        return (False, "После разделителя числа в его конце обнаружен недопустимый символ")
+                        return (False, "ERROR: После разделителя числа в его конце обнаружен недопустимый символ")
 
     return ("True", "")
 
@@ -754,19 +704,19 @@ def clear(p_result_list: list):
     if len(p_result_list) > 0:
         while len(p_result_list) > 0:
             del p_result_list[0]
-        print("Список результатов вычислений очищен. Введите арифметическое выражение для расчета.")
+        print("INFO: Список результатов вычислений очищен. Введите арифметическое выражение для расчета.")
     else:
-        print("Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета.")
+        print("INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета.")
 
 def reset(p_result_list: list):
     if len(p_result_list) > 1:
         del p_result_list[-1]
-        print("Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1]))
+        print("INFO: Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1]))
     elif len(p_result_list) == 1:
         del p_result_list[-1]
-        print("В истории вычислений было только одно значение. История пуста")
+        print("INFO: В истории вычислений было только одно значение. История пуста")
     else:
-        print("Нечего очищать. История вычислений пуста.")
+        print("INFO: Нечего очищать. История вычислений пуста.")
 
 def is_input_a_calculator_option(p_str: str) -> bool:
     if len(p_str) == 1 and ((p_str == "c") or (p_str == "r")):
@@ -784,7 +734,7 @@ def process_input(v_str: str, v_result_list: list) -> str:
             else:
                 v_str = "(" + str(v_result_list[-1]) + ")" + v_str
         else:
-            print("Отсутствует результат предыдущего расчета для использовании в заданном выражении")
+            print("ERROR: Отсутствует результат предыдущего расчета для использовании в заданном выражении")
         
     return v_str
 
@@ -815,11 +765,7 @@ def main():
 
             if is_valid_input(v_str=v_str):
                 v_char_list = to_char_list(v_str=v_str)
-                print("v_char_list")
-                print(v_char_list)
                 v_char_type_list = to_char_type_list(v_char_list=v_char_list)
-                print("v_char_type_list")
-                print(v_char_type_list)
                 v_tuple = check_char_list(v_char_type_list=v_char_type_list)
                 if not v_tuple[0]:
                     print(v_tuple[1])
