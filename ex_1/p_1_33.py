@@ -546,9 +546,15 @@ def get_expression_list(v_token_list: list) -> list:
                     or (not v_opening_bracket_found)
                 ):
                     v_found_expression = v_token_copy_list[v_current_idx+1:v_next_closing_bracket_idx]
-                    v_expression_list.append(v_found_expression)
-                    del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
-                    v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
+
+                    # Специальный случай для повторяющихся скобок в выражении
+                    if len(v_found_expression) >= 3:
+                        v_expression_list.append(v_found_expression)
+                        del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
+                        v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
+                    else:
+                        del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
+
                     v_current_idx = 0
                     break
                 else:
@@ -556,7 +562,9 @@ def get_expression_list(v_token_list: list) -> list:
             else:
                 v_current_idx += 1
 
-    v_expression_list.append(v_token_copy_list)
+    if len(v_token_copy_list) > 0:
+        v_expression_list.append(v_token_copy_list)
+        
     return v_expression_list
 
 def is_bracket_expression_exists(v_list: list) -> bool:
