@@ -205,8 +205,14 @@ def is_valid_input(v_str: str) -> bool:
         Возвращаемый кортеж имеет следующий вид: (bool, str)
         bool - результат проверки, True - валидно
         str - текст ошибки
+
+        Проверка на непустую строку
     """
     position_number = 0
+
+    if len(v_str) == 0:
+        print("INFO: Ничего не введено. Введите выражение для расчета.")
+        return False
 
     for char in v_str:
         position_number += 1
@@ -552,7 +558,7 @@ def get_expression_list(v_token_list: list) -> list:
                         v_expression_list.append(v_found_expression)
                         del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
                         v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
-                    elif len(v_found_expression) == 1 and v_found_expression[0].startswith("expr"):
+                    elif len(v_found_expression) == 1 and str(v_found_expression[0]).startswith("expr"):
                         del v_token_copy_list[v_current_idx]
                         del v_token_copy_list[v_next_closing_bracket_idx-1]
                     else:
@@ -567,7 +573,7 @@ def get_expression_list(v_token_list: list) -> list:
 
     if len(v_token_copy_list) > 0:
 
-        if len(v_token_copy_list) == 1 and v_token_copy_list[0].startswith("expr"):
+        if len(v_token_copy_list) == 1 and str(v_token_copy_list[0]).startswith("expr"):
             pass
         else:
             v_expression_list.append(v_token_copy_list)
@@ -742,7 +748,7 @@ def is_input_a_calculator_option(p_str: str) -> bool:
 """Основные функции"""
 def process_input(v_str: str, v_result_list: list) -> str:
     v_str = trim_whitespace(v_str)
-    if is_operator(v_str[0]):
+    if len(v_str) > 0 and is_operator(v_str[0]):
         if len(v_result_list) > 0:
             if v_result_list[-1] >= 0:
                 v_str = str(v_result_list[-1]) + v_str 
