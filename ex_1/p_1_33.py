@@ -552,6 +552,9 @@ def get_expression_list(v_token_list: list) -> list:
                         v_expression_list.append(v_found_expression)
                         del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
                         v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
+                    elif len(v_found_expression) == 1 and v_found_expression[0].startswith("expr"):
+                        del v_token_copy_list[v_current_idx]
+                        del v_token_copy_list[v_next_closing_bracket_idx-1]
                     else:
                         del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
 
@@ -563,7 +566,11 @@ def get_expression_list(v_token_list: list) -> list:
                 v_current_idx += 1
 
     if len(v_token_copy_list) > 0:
-        v_expression_list.append(v_token_copy_list)
+
+        if len(v_token_copy_list) == 1 and v_token_copy_list[0].startswith("expr"):
+            pass
+        else:
+            v_expression_list.append(v_token_copy_list)
         
     return v_expression_list
 
