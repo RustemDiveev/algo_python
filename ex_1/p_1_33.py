@@ -358,13 +358,13 @@ def check_pattern(v_char_type_list: list, first_key: str, second_key: str) -> bo
     first_id = get_type_value_by_key(first_key)
     second_id = get_type_value_by_key(second_key)
 
-    for idx in range(len(v_char_type_list) - 2):
+    for idx in range(len(v_char_type_list) - 1):
         first_elem = v_char_type_list[idx]
         second_elem = v_char_type_list[idx+1]
         if (first_elem, second_elem) == (first_id, second_id):
             return True 
-        else:
-            return False 
+
+    return False
 
 def check_char_list_operator(v_char_type_list: list):
     """
