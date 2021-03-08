@@ -681,156 +681,189 @@ def check_char_list_equation(p_char_type_list: list) -> tuple:
 
 def check_char_list_dot(p_char_type_list: list) -> tuple:
     """
-        До точки и после точки должны быть цифры 
-        пока не будет или скобки или оператора или края строки
+        До точки и после точки должны быть цифра
+        input:
+            p_char_type_list - список из типов идентификаторов символов
+        output:
+            tuple
+            [0] - (bool) результат проверки: True - пройдена, False - не пройдена
+            [1] - (str) сообшение об ошибке
     """
-
-    v_dot_id = C_TYPE_ID_DOT
-    v_number_id = C_TYPE_ID_NUMBER
-
     for idx in range(len(p_char_type_list) - 1): 
-        if p_char_type_list[idx] == v_dot_id:
-            v_number_before_found = v_number_after_found = False
-            v_number_before_found = True if p_char_type_list[idx - 1] == v_number_id else False 
-            v_number_after_found = True if p_char_type_list[idx + 1] == v_number_id else False 
+        if p_char_type_list[idx] == C_TYPE_ID_DOT:
+            l_number_before_found = l_number_after_found = False
+            l_number_before_found = True if p_char_type_list[idx - 1] == C_TYPE_ID_NUMBER else False 
+            l_number_after_found = True if p_char_type_list[idx + 1] == C_TYPE_ID_NUMBER else False 
 
-            if v_number_before_found is False:
+            if l_number_before_found is False:
                 return (False, "ERROR: Перед разделителем числа не найдено цифры")
 
-            if v_number_after_found is False:
+            if l_number_after_found is False:
                 return (False, "ERROR: После разделителя числа не найдено цифры")
 
     return (True, "")
 
-def check_char_list(v_char_type_list: list) -> tuple: 
+def check_char_list(p_char_type_list: list) -> tuple: 
     """
-        Проверка списка из символов
+        Множественные проверки списка из идентификаторов типов символов
+        input:
+            p_char_type_list - список из типов идентификаторов символов
+        output:
+            tuple
+            [0] - (bool) результат проверки: True - пройдена, False - не пройдена
+            [1] - (str) сообшение об ошибке
     """
-    v_result_tuple = check_char_list_brackets(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_brackets(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
-    v_result_tuple = check_char_list_beginning(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_beginning(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
-    v_result_tuple = check_char_list_ending(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_ending(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
-    v_result_tuple = check_char_list_operator(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_operator(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
-    v_result_tuple = check_char_list_equation(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_equation(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
-    v_result_tuple = check_char_list_dot(v_char_type_list)
-    if not v_result_tuple[0]:
-        return v_result_tuple 
+    l_result_tuple = check_char_list_dot(p_char_type_list)
+    if not l_result_tuple[0]:
+        return l_result_tuple 
 
     return (True, "")
 
 
 """Создание списка из выражений"""
-def get_expression_list(v_token_list: list) -> list:
-    v_expression_list = []
-    v_token_copy_list = v_token_list.copy()
 
-    ### На каждой итерации этого цикла - меняем содержимое списка, пока не останется скобок
-    while is_bracket_expression_exists(v_list=v_token_copy_list):
-        v_current_idx = 0
+def get_expression_list(p_token_list: list) -> list:
+    """
+        Возвращает список выражений из списка токенов 
+        input:
+            p_token_list    - список из токенов
+        output:
+            list            - список из выражений (с ссылками на другие выражения внутри этого списка)
+    """
+    l_expression_list = []
+    l_token_copy_list = p_token_list.copy()
+
+    # На каждой итерации этого цикла - меняем содержимое списка, пока не останется скобок
+    while is_bracket_expression_exists(l_token_copy_list):
+        l_current_idx = 0
 
         # На каждой итерации этого цикла для каждой найденной открытой скобки - ищем следующую закрытую и открытую скобки
-        while v_current_idx <= len(v_token_copy_list) - 1:
-            if is_opening_bracket(v_str=str(v_token_copy_list[v_current_idx])):
+        while l_current_idx <= len(l_token_copy_list) - 1:
+            if is_opening_bracket(p_char=str(l_token_copy_list[l_current_idx])):
                 # Если найдена открытая скобка, то ищем следующие открытые и закрытые скобки
-                v_next_opening_bracket_idx = v_next_closing_bracket_idx = v_current_idx + 1
-                v_opening_bracket_found = v_closing_bracket_found = False
+                l_next_opening_bracket_idx = l_next_closing_bracket_idx = l_current_idx + 1
+                l_opening_bracket_found = l_closing_bracket_found = False
 
                 # Поиск следующей открытой скобки
-                while v_next_opening_bracket_idx <= len(v_token_copy_list) - 1:
-                    if is_opening_bracket(v_str=str(v_token_copy_list[v_next_opening_bracket_idx])):
-                        v_opening_bracket_found = True 
+                while l_next_opening_bracket_idx <= len(l_token_copy_list) - 1:
+                    if is_opening_bracket(p_char=str(l_token_copy_list[l_next_opening_bracket_idx])):
+                        l_opening_bracket_found = True 
                         break
                     else:
-                        v_next_opening_bracket_idx += 1
+                        l_next_opening_bracket_idx += 1
 
                 # Поиск следующей закрытой скобки
-                while v_next_closing_bracket_idx <= len(v_token_copy_list) - 1:
-                    if is_closing_bracket(v_str=str(v_token_copy_list[v_next_closing_bracket_idx])):
-                        v_closing_bracket_found = True 
+                while l_next_closing_bracket_idx <= len(l_token_copy_list) - 1:
+                    if is_closing_bracket(p_char=str(l_token_copy_list[l_next_closing_bracket_idx])):
+                        l_closing_bracket_found = True 
                         break
                     else:
-                        v_next_closing_bracket_idx += 1
+                        l_next_closing_bracket_idx += 1
 
                 # Если закрытая скобка не найдена - то нужно зарейзить исключение 
-                if not v_closing_bracket_found:
+                if not l_closing_bracket_found:
                     raise ClosingBracketNotFoundError(
                         function_name="get_expression_list",
-                        checked_list=v_token_copy_list,
-                        opening_bracket_idx=v_current_idx,
+                        checked_list=l_token_copy_list,
+                        opening_bracket_idx=l_current_idx,
                         message="Не найдена закрывающая скобка при наличии открывающей"
                     )
 
                 # Если найдены закрытая и открытая скобка, то необходимо проверить, 
                 # что индекс открытой скобки не превышает индекс закрытой скобки
                 # Если так - то переходим к следующей итерации
-                if v_closing_bracket_found and (
-                    (v_opening_bracket_found and v_next_closing_bracket_idx < v_next_opening_bracket_idx)
-                    or (not v_opening_bracket_found)
+                if l_closing_bracket_found and (
+                    (l_opening_bracket_found and l_next_closing_bracket_idx < l_next_opening_bracket_idx)
+                    or (not l_opening_bracket_found)
                 ):
-                    v_found_expression = v_token_copy_list[v_current_idx+1:v_next_closing_bracket_idx]
+                    l_found_expression = l_token_copy_list[l_current_idx+1:l_next_closing_bracket_idx]
 
                     # Специальный случай для повторяющихся скобок в выражении
-                    if len(v_found_expression) >= 3:
-                        v_expression_list.append(v_found_expression)
-                        del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
-                        v_token_copy_list.insert(v_current_idx, "expr_" + str(len(v_expression_list) - 1))
-                    elif len(v_found_expression) == 1 and str(v_found_expression[0]).startswith("expr"):
-                        del v_token_copy_list[v_current_idx]
-                        del v_token_copy_list[v_next_closing_bracket_idx-1]
+                    if len(l_found_expression) >= 3:
+                        l_expression_list.append(l_found_expression)
+                        del l_token_copy_list[l_current_idx:l_next_closing_bracket_idx+1]
+                        l_token_copy_list.insert(l_current_idx, "expr_" + str(len(l_token_copy_list) - 1))
+                    elif len(l_found_expression) == 1 and str(l_found_expression[0]).startswith("expr"):
+                        del l_token_copy_list[l_current_idx]
+                        del l_token_copy_list[l_next_closing_bracket_idx-1]
                     else:
-                        del v_token_copy_list[v_current_idx:v_next_closing_bracket_idx+1]
+                        del l_token_copy_list[l_current_idx:l_next_closing_bracket_idx+1]
 
-                    v_current_idx = 0
+                    l_current_idx = 0
                     break
                 else:
-                    v_current_idx += 1
+                    l_current_idx += 1
             else:
-                v_current_idx += 1
+                l_current_idx += 1
 
-    if len(v_token_copy_list) > 0:
+    if len(l_token_copy_list) > 0:
 
-        if len(v_token_copy_list) == 1 and str(v_token_copy_list[0]).startswith("expr"):
+        if len(l_token_copy_list) == 1 and str(l_token_copy_list[0]).startswith("expr"):
             pass
         else:
-            v_expression_list.append(v_token_copy_list)
+            l_expression_list.append(l_token_copy_list)
         
-    return v_expression_list
+    return l_expression_list
 
-def is_bracket_expression_exists(v_list: list) -> bool:
+def is_bracket_expression_exists(p_list: list) -> bool:
+    """
+        Проверка существования скобочного выражения 
+        input:
+            p_list - список из токенов 
+        output:
+            bool - True: выражение существует, False: выражения не существует
+    """
     try:
-        v_opening_bracket_idx = v_list.index("(")
+        l_opening_bracket_idx = p_list.index("(")
     except ValueError:
-        v_opening_bracket_idx = -1
+        l_opening_bracket_idx = -1
 
     try:
-        v_closing_bracket_idx = v_list.index(")")
+        l_closing_bracket_idx = p_list.index(")")
     except ValueError:
-        v_closing_bracket_idx = -1
+        l_closing_bracket_idx = -1
 
-    if v_opening_bracket_idx >= 0 \
-        and v_closing_bracket_idx >= 0 \
-        and v_opening_bracket_idx < v_closing_bracket_idx:
+    if l_opening_bracket_idx >= 0 \
+        and l_closing_bracket_idx >= 0 \
+        and l_opening_bracket_idx < l_closing_bracket_idx:
         return True
     else:
         return False
 
+
 """Определение порядка выражений"""
-def to_simple_expression_list(v_expression_list: list) -> list:
+
+def to_simple_expression_list(p_expression_list: list) -> list:
     """
+        Функция разбивает список выражений на список из простых выражений 
+        (определяет последовательность выполнения операторов в пределах выражения)
+        input:
+            p_expression_list   - список из выражений
+        output:
+            list                - список из простых выражений
+    """
+    """
+        Алгоритм
         1. Для каждого списка в списке
         1.1 Ищем оператор - умножения или деления 
         1.2 Как только оператор найден - находим левый операнд и правый операнд - и заносим в новый список
@@ -838,120 +871,138 @@ def to_simple_expression_list(v_expression_list: list) -> list:
         1.4 Заменяем на ссылку 
         1.5 Выполняем пункты 1.1 - 1.5 для операторов сложения и вычитания 
     """
-    v_result_list = []
+    l_result_list = []
 
     # Отдельная обработка случая, когда пользователь вбил просто число
-    if len(v_expression_list) == 1 and len(v_expression_list[0]) == 1 \
-        and is_number(v_expression_list[0][0]):
-        return v_expression_list
+    if len(p_expression_list) == 1 and len(p_expression_list[0]) == 1 \
+        and is_number(p_expression_list[0][0]):
+        return p_expression_list
 
+    for i_elem in p_expression_list: 
+        l_list = i_elem.copy()
+        l_idx = 0 
+        l_ref_count = 0
+        l_simple_expression_list = []
 
-    for elem in v_expression_list: 
-        v_list = elem.copy()
-        v_idx = 0 
-        v_ref_count = 0
-        v_simple_expression_list = []
-
-        while v_idx < len(v_list) - 1:
-            if is_char(v_list[v_idx], "*") or is_char(v_list[v_idx], "/"):
-                v_left_operand = v_list[v_idx - 1]
-                v_operator = v_list[v_idx]
-                v_second_operand = v_list[v_idx + 1]
-                v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
-                del v_list[v_idx-1:v_idx+2]
-                v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
-                v_ref_count += 1
-                v_idx = 0
+        # Вначале в выражении первыми идут умножение и деление в порядке написания
+        while l_idx < len(l_list) - 1:
+            if is_char(l_list[l_idx], "*") or is_char(l_list[l_idx], "/"):
+                l_left_operand = l_list[l_idx - 1]
+                l_operator = l_list[l_idx]
+                l_second_operand = l_list[l_idx + 1]
+                l_simple_expression_list.append([l_left_operand, l_operator, l_second_operand])
+                del l_list[l_idx-1:l_idx+2]
+                l_list.insert(l_idx-1, "ref_" + str(l_ref_count))
+                l_ref_count += 1
+                l_idx = 0
             else:
-                v_idx += 1
+                l_idx += 1
         
-        v_idx = 0
+        l_idx = 0
 
-        while v_idx < len(v_list) - 1:
-            if is_char(v_list[v_idx], "+") or is_char(v_list[v_idx], "-"):
-                v_left_operand = v_list[v_idx - 1]
-                v_operator = v_list[v_idx]
-                v_second_operand = v_list[v_idx + 1]
-                v_simple_expression_list.append([v_left_operand, v_operator, v_second_operand])
-                del v_list[v_idx-1:v_idx+2]
-                v_list.insert(v_idx-1, "ref_" + str(v_ref_count))
-                v_ref_count += 1
-                v_idx = 0
+        # Далее в выражении идут сложение и вычитание в порядке написания
+        while l_idx < len(l_list) - 1:
+            if is_char(l_list[l_idx], "+") or is_char(l_list[l_idx], "-"):
+                l_left_operand = l_list[l_idx - 1]
+                l_operator = l_list[l_idx]
+                l_second_operand = l_list[l_idx + 1]
+                l_simple_expression_list.append([l_left_operand, l_operator, l_second_operand])
+                del l_list[l_idx-1:l_idx+2]
+                l_list.insert(l_idx-1, "ref_" + str(l_ref_count))
+                l_ref_count += 1
+                l_idx = 0
             else:
-                v_idx += 1
+                l_idx += 1
 
-        v_result_list.append(v_simple_expression_list.copy())
+        l_result_list.append(l_simple_expression_list.copy())
 
-    return v_result_list
+    return l_result_list
 
-def get_result(v_final_expression_list: list) -> float:
+def get_result(p_final_expression_list: list) -> float:
     """
-    [
+        Возвращает результат из списка простых выражений
+        input:
+            p_final_expression_list - список простых выражений
+        output:
+            float - выходной результат
+    """
+    """
+        Пример итогового списка
         [
-            ["1", + "2"],
-            ["2", -, "ref_0"]
-        ],
-        [
-            ["expr_0", "-", 123]
+            [
+                ["1", + "2"],
+                ["2", -, "ref_0"]
+            ],
+            [
+                ["expr_0", "-", 123]
+            ]
         ]
-    ]
     """
     ### Обработка случая, когда пользователь вбил число 
-    if len(v_final_expression_list) == 1 and len(v_final_expression_list[0]) == 1 \
-        and is_number(v_final_expression_list[0][0]):
-        return v_final_expression_list[0][0]
+    if len(p_final_expression_list) == 1 and len(p_final_expression_list[0]) == 1 \
+        and is_number(p_final_expression_list[0][0]):
+        return p_final_expression_list[0][0]
 
-    v_input_list = v_final_expression_list.copy()
-    v_idx = 0
-    while v_idx < len(v_input_list):
-        v_current_expression = v_input_list[v_idx]
-        v_v_idx = 0 
+    l_input_list = p_final_expression_list.copy()
+    l_idx = 0
+    while l_idx < len(l_input_list):
+        v_current_expression = l_input_list[l_idx]
+        l_l_idx = 0 
 
-        while v_v_idx < len(v_current_expression):
-            v_current_simple_expression = v_current_expression[v_v_idx]
-            v_first_operand = v_current_simple_expression[0]
-            v_operator = v_current_simple_expression[1]
-            v_second_operand = v_current_simple_expression[2]
+        while l_l_idx < len(v_current_expression):
+            l_current_simple_expression = v_current_expression[l_l_idx]
+            l_first_operand = l_current_simple_expression[0]
+            l_operator = l_current_simple_expression[1]
+            l_second_operand = l_current_simple_expression[2]
 
-            if isinstance(v_first_operand, str):
-                v_type, v_token_idx = v_first_operand.split("_")
-                v_token_idx = int(v_token_idx)
-                if v_type == "expr":
-                    v_first_operand = v_input_list[v_token_idx]
-                elif v_type == "ref":
-                    v_first_operand = v_input_list[v_idx][v_token_idx]
+            if isinstance(l_first_operand, str):
+                l_type, l_token_idx = l_first_operand.split("_")
+                l_token_idx = int(l_token_idx)
+                if l_type == "expr":
+                    l_first_operand = l_input_list[l_token_idx]
+                elif l_type == "ref":
+                    l_first_operand = l_input_list[l_idx][l_token_idx]
 
-            if isinstance(v_second_operand, str):
-                v_type, v_token_idx = v_second_operand.split("_")
-                v_token_idx = int(v_token_idx)
-                if v_type == "expr":
-                    v_second_operand = v_input_list[v_token_idx]
-                elif v_type == "ref":
-                    v_second_operand = v_input_list[v_idx][v_token_idx]
+            if isinstance(l_second_operand, str):
+                l_type, l_token_idx = l_second_operand.split("_")
+                l_token_idx = int(l_token_idx)
+                if l_type == "expr":
+                    l_second_operand = l_input_list[l_token_idx]
+                elif l_type == "ref":
+                    l_second_operand = l_input_list[l_idx][l_token_idx]
 
-            if v_operator == "+":
-                v_result = v_first_operand + v_second_operand 
-            elif v_operator == "-":
-                v_result = v_first_operand - v_second_operand 
-            elif v_operator == "*":
-                v_result = v_first_operand * v_second_operand
-            elif v_operator == "/":
-                v_result = v_first_operand / v_second_operand 
+            if l_operator == "+":
+                l_result = l_first_operand + l_second_operand 
+            elif l_operator == "-":
+                l_result = l_first_operand - l_second_operand 
+            elif l_operator == "*":
+                l_result = l_first_operand * l_second_operand
+            elif l_operator == "/":
+                l_result = l_first_operand / l_second_operand 
 
-            if v_v_idx == len(v_current_expression) - 1:
-                v_input_list[v_idx] = v_result
+            if l_l_idx == len(v_current_expression) - 1:
+                l_input_list[l_idx] = l_result
             else:
-                v_input_list[v_idx][v_v_idx] = v_result 
+                l_input_list[l_idx][l_l_idx] = l_result 
             
-            v_v_idx += 1
+            l_l_idx += 1
 
-        v_idx += 1
+        l_idx += 1
 
-    v_result = v_input_list[-1]
-    return v_result
+    l_result = l_input_list[-1]
+    return l_result
+
 
 """Поддержка clear и reset"""
+
 def clear(p_result_list: list) -> str:
+    """
+        Полная очистка результатов вычислений
+        input:
+            p_result_list - список промежуточных вычислений
+        output:
+            str - строка с информацией для вывода на экран
+    """
     if len(p_result_list) > 0:
         while len(p_result_list) > 0:
             del p_result_list[0]
@@ -960,6 +1011,13 @@ def clear(p_result_list: list) -> str:
         return "INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета."
 
 def reset(p_result_list: list) -> str:
+    """
+        Откат к предыдущему результату вычисления
+        input:
+            p_result_list - список промежуточных вычислений
+        output:
+            str - строка с информацией для вывода на экран        
+    """
     if len(p_result_list) > 1:
         del p_result_list[-1]
         return "INFO: Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1])
@@ -970,55 +1028,83 @@ def reset(p_result_list: list) -> str:
         return "INFO: Нечего очищать. История вычислений пуста."
 
 def is_input_a_calculator_option(p_str: str) -> bool:
+    """
+        Проверка того, что введенное пользователем - опция калькулятора (Clear, Reset)
+        input:
+            p_str - входная строка
+        output:
+            bool - True: Введеное пользователем - опция калькулятора, False: введенное пользователем - не опция калькулятора
+    """
     if len(p_str) == 1 and ((p_str == "c") or (p_str == "r")):
         return True 
     else:
         return False 
 
+
 """Основные функции"""
-def process_input(v_str: str, v_result_list: list) -> str:
-    v_str = trim_whitespace(v_str)
-    if len(v_str) > 0 and is_operator(v_str[0]):
-        if len(v_result_list) > 0:
-            if v_result_list[-1] >= 0:
-                v_str = str(v_result_list[-1]) + v_str 
+
+def process_input(p_str: str, p_result_list: list) -> str:
+    """
+        Функция обрабатывает введенный пользователем input 
+        input:  
+            p_str           - строка, введенная пользоватем
+            p_result_list   - список с результатами вычислений
+        output:
+            str             - обработанное выражение для вычисления
+    """
+    l_str = trim_whitespace(p_str)
+    if len(l_str) > 0 and is_operator(l_str[0]):
+        if len(p_result_list) > 0:
+            if p_result_list[-1] >= 0:
+                l_str = str(p_result_list[-1]) + l_str 
             else:
-                v_str = "(" + str(v_result_list[-1]) + ")" + v_str
+                l_str = "(" + str(p_result_list[-1]) + ")" + l_str
         else:
             print("ERROR: Отсутствует результат предыдущего расчета для использовании в заданном выражении")
         
-    return v_str
+    return l_str
 
-def calculate(v_char_list: list, v_char_type_list: list) -> float:
-    v_token_list = to_token_list(p_char_list=v_char_list, p_char_type_list=v_char_type_list)
-    v_expression_list = get_expression_list(v_token_list=v_token_list)
-    v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
-    v_result = get_result(v_final_expression_list=v_simple_expression_list)
-    return v_result
+def calculate(p_char_list: list, p_char_type_list: list) -> float:
+    """
+        Вычисление результата по списку символов и списку типов символов
+        input:
+            p_char_list         - список символов
+            p_char_type_list    - список типов символов
+        output:
+            float               - результат
+    """
+    l_token_list = to_token_list(p_char_list=p_char_list, p_char_type_list=p_char_type_list)
+    l_expression_list = get_expression_list(p_token_list=l_token_list)
+    l_simple_expression_list = to_simple_expression_list(p_expression_list=l_expression_list)
+    l_result = get_result(p_final_expression_list=l_simple_expression_list)
+    return l_result
 
 def main():
-    v_result_list = []
+    """
+        Инициализация калькулятора и считывание пользовательского ввода
+    """
+    l_result_list = []
     while True:
-        v_str = input() 
-        if is_input_a_calculator_option(p_str=v_str):
-            if v_str == "c":
-                print(clear(p_result_list=v_result_list))
-            elif v_str == "r":
-                print(reset(p_result_list=v_result_list))
+        l_str = input() 
+        if is_input_a_calculator_option(p_str=l_str):
+            if l_str == "c":
+                print(clear(p_result_list=l_result_list))
+            elif l_str == "r":
+                print(reset(p_result_list=l_result_list))
         else:
-            v_str = process_input(v_str=v_str, v_result_list=v_result_list)
+            l_str = process_input(p_str=l_str, p_result_list=l_result_list)
             
-            l_valid_input_tuple = is_valid_input(p_str=v_str)
+            l_valid_input_tuple = is_valid_input(p_str=l_str)
             if l_valid_input_tuple[0]:
-                v_char_list = to_char_list(p_str=v_str)
-                v_char_type_list = to_char_type_list(p_char_list=v_char_list)
-                v_tuple = check_char_list(v_char_type_list=v_char_type_list)
-                if not v_tuple[0]:
-                    print(v_tuple[1])
+                l_char_list = to_char_list(p_str=l_str)
+                l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+                l_tuple = check_char_list(p_char_type_list=l_char_type_list)
+                if not l_tuple[0]:
+                    print(l_tuple[1])
                 else:
-                    v_result = calculate(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
-                    print(v_result)
-                    v_result_list.append(v_result)
+                    l_result = calculate(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+                    print(l_result)
+                    l_result_list.append(l_result)
             else:
                 print(l_valid_input_tuple[1])
 
