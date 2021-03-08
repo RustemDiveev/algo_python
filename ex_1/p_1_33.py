@@ -1,3 +1,94 @@
+"""
+Воспроизведение пользовательских ошибок
+1. ERROR: Есть недопустимый символ в выражении.
+Воспроизведение:
+1. blablabla
+
+2. ERROR: В выражении неправильно расставлены скобки. Преждевременно встретилась закрывающая скобка.
+Воспроизведение:
+1. )
+
+3. ERROR: В выражении неправильно расставлены скобки. Отсутствует закрывающая скобка.
+Воспроизведение:
+1. (
+
+4. ERROR: Выражение должно начинаться с открывающейся скобки или числа.
+Воспроизведение:
+1. -32
+
+5. ERROR: Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства.
+Воспроизведение:
+1. 3-
+
+6. ERROR: Неправильное выражение - за оператором следует закрывающая скобка.
+Воспроизведение:
+1. 20 + (3-3*)
+
+7. ERROR: Неправильное выражение - оператор следует сразу после открывающей скобки.
+Воспроизведение:
+1. 20 + (+3-2)
+
+8. ERROR: Неправильное выражение - после оператора следует разделитель числа.
+Воспроизведение: 
+1. 8+.4
+
+9. ERROR: Неправильное выражение - разделитель числа следует перед оператором.
+Воспроизведение:
+1. 30.+23
+
+10. ERROR: Неправильное выражение - знак равенства следует перед оператором.
+Воспроизведение:
+1. 1+1=-4
+
+11. ERROR: Неправильное выражение - равенство следует после оператора.
+Воспроизведение:
+1. 5-=3
+
+12. ERROR: Неправильное выражение - два оператора следуют подряд
+Воспроизведение:
+1. 8++3
+
+13. ERROR: Знак равенства может быть только один и должен находиться в конце выражения
+Воспроизведение
+1. 8 = 3
+
+14. ERROR: Перед разделителем числа не найдено цифры
+Воспроизведение:
+1. (.3+123)
+
+15. ERROR: После разделителя числа не найдено цифры
+Воспроизведение:
+1. (3+13.)
+
+16. INFO: Список результатов вычислений очищен. Введите арифметическое выражение для расчета.
+Воспроизведение:
+1. 2 + 3
+2. c
+
+17. INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета.
+Воспроизведение:
+1. c
+
+18. INFO: Выполнен переход к предыдущему результату вычислений - 
+Воспроизведение:
+1. 80 + 20
+2. -30
+3. r
+
+19. INFO: В истории вычислений было только одно значение. История пуста
+Воспроизведение:
+1. 20 + 30
+2. r
+
+20. INFO: Нечего очищать. История вычислений пуста.
+Воспроизведение:
+1. r
+
+21. ERROR: Отсутствует результат предыдущего расчета для использовании в заданном выражении
+Воспроизведение:
+1. +23
+"""
+
 """Глобальные переменные"""
 
 g_dict_char_type = {
@@ -23,7 +114,7 @@ def get_char_type_id(v_str: str) -> int:
         return get_type_value_by_key("OPERATOR_MINUS")
     elif is_operator(v_str):
         return get_type_value_by_key("OPERATOR")
-    elif is_operator(v_str):
+    elif is_equation(v_str):
         return get_type_value_by_key("EQUATION")
     elif is_opening_bracket(v_str):
         return get_type_value_by_key("OPENING_BRACKET")
@@ -439,36 +530,36 @@ def check_char_list_dot(v_char_type_list: list):
 
     for idx in range(len(v_char_type_list) - 1): 
         if v_char_type_list[idx] == v_dot_id:
-            if idx in (0, len(v_char_type_list)-1):
-                return (False, "ERROR: Точка не должна быть в начале или в конце выражения")
-            else:
-                v_number_before_found = v_number_after_found = False
-                v_number_before_found = True if v_char_type_list[idx - 1] == v_number_id else False 
-                v_number_after_found = True if v_char_type_list[idx + 1] == v_number_id else False 
+            v_number_before_found = v_number_after_found = False
+            v_number_before_found = True if v_char_type_list[idx - 1] == v_number_id else False 
+            v_number_after_found = True if v_char_type_list[idx + 1] == v_number_id else False 
 
-                if v_number_before_found is False:
-                    return (False, "ERROR: Перед разделителем числа не найдено цифры")
+            if v_number_before_found is False:
+                return (False, "ERROR: Перед разделителем числа не найдено цифры")
 
-                if v_number_after_found is False:
-                    return (False, "ERROR: После разделителя числа не найдено цифры")
+            if v_number_after_found is False:
+                return (False, "ERROR: После разделителя числа не найдено цифры")
 
-                v_idx = idx - 1
-                while v_idx >= 0:
-                    if v_char_type_list[v_idx] == v_number_id:
-                        v_idx -= 1
-                    elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id):
-                        break
-                    else:
-                        return (False, "ERROR: Перед разделителем числа в его начале обнаружен недопустимый символ")
+            # Подозреваю, что эти проверки не нужны, так как воспроизвести их не удалось
+            """
+            v_idx = idx - 1
+            while v_idx >= 0:
+                if v_char_type_list[v_idx] == v_number_id:
+                    v_idx -= 1
+                elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id):
+                    break
+                else:
+                    return (False, "ERROR: Перед разделителем числа в его начале обнаружен недопустимый символ")
 
-                v_idx = idx + 1 
-                while v_idx <= len(v_char_type_list) - 1:
-                    if v_char_type_list[v_idx] == v_number_id:
-                        v_idx += 1
-                    elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id, v_equation_id):
-                        break
-                    else:
-                        return (False, "ERROR: После разделителя числа в его конце обнаружен недопустимый символ")
+            v_idx = idx + 1 
+            while v_idx <= len(v_char_type_list) - 1:
+                if v_char_type_list[v_idx] == v_number_id:
+                    v_idx += 1
+                elif v_char_type_list[v_idx] in (v_operator_id, v_operator_minus_id, v_opening_bracket_id, v_closing_bracket_id, v_equation_id):
+                    break
+                else:
+                    return (False, "ERROR: После разделителя числа в его конце обнаружен недопустимый символ")
+            """
 
     return ("True", "")
 
@@ -721,23 +812,23 @@ def get_result(v_final_expression_list: list) -> float:
     return v_result
 
 """Поддержка clear и reset"""
-def clear(p_result_list: list):
+def clear(p_result_list: list) -> str:
     if len(p_result_list) > 0:
         while len(p_result_list) > 0:
             del p_result_list[0]
-        print("INFO: Список результатов вычислений очищен. Введите арифметическое выражение для расчета.")
+        return "INFO: Список результатов вычислений очищен. Введите арифметическое выражение для расчета."
     else:
-        print("INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета.")
+        return "INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета."
 
-def reset(p_result_list: list):
+def reset(p_result_list: list) -> str:
     if len(p_result_list) > 1:
         del p_result_list[-1]
-        print("INFO: Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1]))
+        return "INFO: Выполнен переход к предыдущему результату вычислений - " + str(p_result_list[-1])
     elif len(p_result_list) == 1:
         del p_result_list[-1]
-        print("INFO: В истории вычислений было только одно значение. История пуста")
+        return "INFO: В истории вычислений было только одно значение. История пуста"
     else:
-        print("INFO: Нечего очищать. История вычислений пуста.")
+        return "INFO: Нечего очищать. История вычислений пуста."
 
 def is_input_a_calculator_option(p_str: str) -> bool:
     if len(p_str) == 1 and ((p_str == "c") or (p_str == "r")):
@@ -761,14 +852,8 @@ def process_input(v_str: str, v_result_list: list) -> str:
 
 def calculate(v_char_list: list, v_char_type_list: list) -> float:
     v_token_list = to_token_list(v_char_list=v_char_list, v_char_type_list=v_char_type_list)
-    print("v_token_list")
-    print(v_token_list)
     v_expression_list = get_expression_list(v_token_list=v_token_list)
-    print("v_expression_list")
-    print(v_expression_list)
     v_simple_expression_list = to_simple_expression_list(v_expression_list=v_expression_list)
-    print("v_simple_expression_list")
-    print(v_simple_expression_list)
     v_result = get_result(v_final_expression_list=v_simple_expression_list)
     return v_result
 
@@ -778,9 +863,9 @@ def main():
         v_str = input() 
         if is_input_a_calculator_option(p_str=v_str):
             if v_str == "c":
-                clear(p_result_list=v_result_list)
+                print(clear(p_result_list=v_result_list))
             elif v_str == "r":
-                reset(p_result_list=v_result_list)
+                print(reset(p_result_list=v_result_list))
         else:
             v_str = process_input(v_str=v_str, v_result_list=v_result_list)
 
