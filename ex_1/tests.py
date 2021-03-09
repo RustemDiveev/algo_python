@@ -49,6 +49,9 @@ from ex_1.p_1_29 import get_all_possible_strings_using_character_once
 from ex_1.p_1_30 import get_log_of_base_2
 from ex_1.p_1_31 import get_change
 from ex_1.p_1_32 import process_input, calculate_expression, reset_input, clear_input
+from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
+    is_char_number, is_operator, is_equation, is_opening_bracket, is_closing_bracket, \
+    is_dot, is_valid_char, is_number
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -570,6 +573,93 @@ class Test_p_1_32(unittest.TestCase):
         v_input = ["30", "+", "20", "="]
         process_input(io_input=v_input)
         self.assertEqual([], v_input)
+
+class Test_p_1_33(unittest.TestCase):
+
+    def test_get_type_value_by_key_known(self):
+        # ID of NUMBER
+        l_result = 1
+        self.assertEqual(l_result, get_type_value_by_key(p_str="NUMBER"))
+
+    def test_get_type_value_by_key_unknown(self):
+        # ID of UNKNOWN
+        l_result = 99
+        self.assertEqual(l_result, get_type_value_by_key(p_str="BLABLABLA"))
+    
+    def test_get_char_type_id_all_known(self):
+        l_input_list = ["1", "-", "+", "=", "(", ")", ".", "$"]
+        l_result_list = [1, 7, 2, 3, 4, 5, 6, 99]
+        for idx in range(len(l_input_list) - 1):
+            self.assertEqual(l_result_list[idx], get_char_type_id(p_char=l_input_list[idx]))
+
+    def test_get_char_type_id_unknown(self):
+        l_input_str = "l"
+        l_result = 99
+        self.assertEqual(l_result, get_char_type_id(p_char=l_input_str))
+
+    def test_is_char_input_is_symbol(self):
+        self.assertTrue(is_char(p_str="a"))
+
+    def test_is_char_input_str_is_greater_than_1(self):
+        self.assertFalse(is_char(p_str="abc"))
+
+    def test_is_char_input_is_symbol_and_check_symbol_valid(self):
+        self.assertTrue(is_char(p_str="a", p_check_symbol="a")) 
+
+    def test_is_char_input_is_symbol_and_check_symbol_invalid(self):
+        self.assertFalse(is_char(p_str="a", p_check_symbol="b"))  
+
+    def test_is_char_input_str_is_greater_than_1_and_check_symbol_valid(self):
+        with self.assertRaises(ValueError):
+            is_char(p_str="abc", p_check_symbol="abc")
+
+    def test_is_char_number_valid(self):
+        self.assertTrue(is_char_number(p_char="1")) 
+
+    def test_is_char_number_invalid(self):
+        self.assertFalse(is_char_number(p_char="a"))  
+
+    def test_is_operator_valid(self):
+        self.assertTrue(is_operator(p_char="+"))
+
+    def test_is_operator_invalid(self):
+        self.assertFalse(is_operator(p_char="1"))
+
+    def test_is_equation_valid(self):
+        self.assertTrue(is_equation(p_char="=")) 
+
+    def test_is_equation_invalid(self):
+        self.assertFalse(is_equation(p_char="+")) 
+
+    def test_is_opening_bracket_valid(self):
+        self.assertTrue(is_opening_bracket(p_char="(")) 
+
+    def test_is_opening_bracket_invalid(self):
+        self.assertFalse(is_opening_bracket(p_char="=")) 
+
+    def test_is_closing_bracket_valid(self):
+        self.assertTrue(is_closing_bracket(p_char=")")) 
+
+    def test_is_closing_bracket_invalid(self):
+        self.assertFalse(is_closing_bracket(p_char="("))  
+
+    def test_is_dot_valid(self):
+        self.assertTrue(is_dot(p_char=".")) 
+
+    def test_is_dot_invalid(self):
+        self.assertFalse(is_dot(p_char=")")) 
+
+    def test_is_valid_char_valid(self):
+        self.assertTrue(is_valid_char(p_char="9")) 
+
+    def test_is_valid_char_invalid(self):
+        self.assertFalse(is_valid_char(p_char="["))  
+
+    def test_is_number_valid(self):
+        self.assertTrue(is_number(p_str="23.23")) 
+
+    def test_is_number_invalid(self):
+        self.assertFalse(is_number(p_str="azaz.asd")) 
 
 if __name__ == '__main__':
     unittest.main()

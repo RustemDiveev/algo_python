@@ -1107,5 +1107,3 @@ def main():
                     l_result_list.append(l_result)
             else:
                 print(l_valid_input_tuple[1])
-
-main()
