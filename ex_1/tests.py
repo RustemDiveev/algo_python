@@ -35,7 +35,7 @@ from ex_1.c_1_17 import scale_incorrect, scale_correct
 from ex_1.c_1_18 import produce_list
 from ex_1.c_1_19 import produce_list_of_alphabet
 from ex_1.c_1_20 import randint_version_of_shuffle, get_randint_probability, get_shuffle_probability 
-from ex_1.c_1_21 import get_input, reverse_str, reverse_output
+from ex_1.c_1_21 import reverse_output
 from ex_1.c_1_22 import dot_product_of_lists
 from ex_1.c_1_23 import list_index_out_of_bounds
 from ex_1.c_1_24 import count_vowels_in_str
@@ -51,7 +51,7 @@ from ex_1.p_1_31 import get_change
 from ex_1.p_1_32 import process_input, calculate_expression, reset_input, clear_input
 from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
     is_char_number, is_operator, is_equation, is_opening_bracket, is_closing_bracket, \
-    is_dot, is_valid_char, is_number
+    is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -660,6 +660,21 @@ class Test_p_1_33(unittest.TestCase):
 
     def test_is_number_invalid(self):
         self.assertFalse(is_number(p_str="azaz.asd")) 
+
+    def test_trim_whitespace(self):
+        l_str = "       OH!!!       MYYYY!!!      "
+        l_result = "OH!!!MYYYY!!!"
+        self.assertEqual(l_result, trim_whitespace(p_str=l_str))
+
+    def test_is_valid_input_empty(self):
+        l_result = (False, "INFO: Ничего не введено. Введите выражение для расчета.")
+        self.assertEqual(l_result, is_valid_input(p_str="")) 
+
+    def test_is_valid_input_valid(self):
+        self.assertTrue(is_valid_input(p_str="20+20-20*(3+7)")[0]) 
+
+    def test_is_valid_input_invalid(self):
+        self.assertFalse(is_valid_input(p_str="abc30*(20-10)+")[0]) 
 
 if __name__ == '__main__':
     unittest.main()
