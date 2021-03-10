@@ -51,7 +51,9 @@ from ex_1.p_1_31 import get_change
 from ex_1.p_1_32 import process_input, calculate_expression, reset_input, clear_input
 from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
     is_char_number, is_operator, is_equation, is_opening_bracket, is_closing_bracket, \
-    is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input
+    is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input, \
+    to_char_list, to_char_type_list, С_DICT_CHAR_TYPE, to_token_list, \
+    check_char_list_brackets, check_char_list_beginning
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -675,6 +677,75 @@ class Test_p_1_33(unittest.TestCase):
 
     def test_is_valid_input_invalid(self):
         self.assertFalse(is_valid_input(p_str="abc30*(20-10)+")[0]) 
+
+    def test_to_char_list_valid(self):
+        l_input_str = "8+3-4"
+        l_result = ["8", "+", "3", "-", "4"]
+        self.assertEqual(l_result, to_char_list(p_str=l_input_str))
+
+    def test_to_char_type_list_valid(self):
+        l_input_list = ["8", "+", "3", "-", "(", "2", ".", "1", "/", "4", ")", "="]
+        d = С_DICT_CHAR_TYPE
+        l_result = to_char_type_list(p_char_list=l_input_list) 
+        l_expected_result = [d["NUMBER"], d["OPERATOR"], d["NUMBER"], d["OPERATOR_MINUS"], d["OPENING_BRACKET"], 
+            d["NUMBER"], d["DOT"], d["NUMBER"], d["OPERATOR"], d["NUMBER"], d["CLOSING_BRACKET"], d["EQUATION"]]
+        self.assertEqual(l_expected_result, l_result)
+
+    # Для оставшихся тестов исходим из утверждения, что to_char_list, to_char_type_list - корректны 
+    # На будущее - верно ли так поступать, или надо всегда тестировать модульно, и писать ручками нужные данные?
+    def test_to_token_list_1(self):
+        l_str = "234.3213+1322134.3213"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_expected_result = [234.3213, "+", 1322134.3213]
+        self.assertEqual(l_expected_result, to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list))
+
+    def test_to_token_list_2(self):
+        l_str = "(-123.123)+(-4213.123)"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_expected_result = [-123.123, "+", -4213.123]
+        self.assertEqual(l_expected_result, to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list))
+
+    def test_to_token_list_3(self):
+        l_str = "((200.2342-(-3213.3214)))"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_expected_result = ["(", "(", 200.2342, "-", -3213.3214, ")", ")"]
+        self.assertEqual(l_expected_result, to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list))
+
+    def test_check_char_list_brackets_valid(self):
+        l_str = "(((())))()()(())(()())"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual((True, ""), check_char_list_brackets(p_char_type_list=l_char_type_list))
+
+    def test_check_char_list_brackets_invalid(self):
+        l_str = "(((())))()()(())(()()"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: В выражении неправильно расставлены скобки. Отсутствует закрывающая скобка."), 
+            check_char_list_brackets(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_beginning_valid(self):
+        l_str = "50123+12313"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (True, ""),
+            check_char_list_beginning(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_beginning_invalid(self):
+        l_str = "+123.32+321-123/321"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Выражение должно начинаться с открывающейся скобки или числа"),
+            check_char_list_beginning(p_char_type_list=l_char_type_list)
+        )
 
 if __name__ == '__main__':
     unittest.main()
