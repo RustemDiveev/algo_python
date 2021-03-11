@@ -53,7 +53,8 @@ from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
     is_char_number, is_operator, is_equation, is_opening_bracket, is_closing_bracket, \
     is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input, \
     to_char_list, to_char_type_list, С_DICT_CHAR_TYPE, to_token_list, \
-    check_char_list_brackets, check_char_list_beginning
+    check_char_list_brackets, check_char_list_beginning, check_char_list_ending, \
+    check_pattern, check_char_list_operator, check_char_list_equation, check_char_list_dot
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -746,6 +747,224 @@ class Test_p_1_33(unittest.TestCase):
             (False, "ERROR: Выражение должно начинаться с открывающейся скобки или числа"),
             check_char_list_beginning(p_char_type_list=l_char_type_list)
         )
+
+    def test_check_char_list_ending_valid(self):
+        l_str = "50123+12313"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (True, ""),
+            check_char_list_ending(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_ending_invalid(self):
+        l_str = "123.32+321-123/321+"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Выражение должно заканчиваться на закрывающуюся скобку, число или знак равенства"),
+            check_char_list_ending(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_pattern_valid(self):
+        l_str = "1+"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertTrue(check_pattern(p_char_type_list=l_char_type_list, p_first_key="NUMBER", p_second_key="OPERATOR"))
+
+    def test_check_pattern_invalid(self):
+        l_str = "+1"
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(check_pattern(p_char_type_list=l_char_type_list, p_first_key="NUMBER", p_second_key="OPERATOR"))
+
+    def test_check_char_list_operator_valid(self):
+        l_str = "1+2-(3/2)="
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (True, ""),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_operator_x_closing_bracket(self):
+        l_str = "+)" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - за оператором следует закрывающая скобка"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_opening_bracket_x_operator(self):
+        l_str = "(+" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - оператор следует сразу после открывающей скобки"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_operator_x_dot(self):
+        l_str = "+." 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - после оператора следует разделитель числа"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_dot_x_operator(self):
+        l_str = ".+" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - разделитель числа следует перед оператором"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_equation_x_operator(self):
+        l_str = "=+" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - знак равенства следует перед оператором"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_operator_x_equation(self):
+        l_str = "+=" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - равенство следует после оператора"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_operator_x_operator(self):
+        l_str = "++" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - два оператора следуют подряд"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )
+
+    def test_check_char_list_operator_invalid_operator_minus_x_closing_bracket(self):
+        l_str = "-)" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - за оператором следует закрывающая скобка"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )       
+
+    def test_check_char_list_operator_invalid_operator_minus_x_dot(self):
+        l_str = "-." 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - после оператора следует разделитель числа"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )      
+
+    def test_check_char_list_operator_invalid_dot_x_operator_minus(self):
+        l_str = ".-" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - разделитель числа следует перед оператором"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )      
+
+    def test_check_char_list_operator_invalid_equation_x_operator_minus(self):
+        l_str = "=-" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - знак равенства следует перед оператором"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )      
+
+    def test_check_char_list_operator_invalid_operator_minus_x_equation(self):
+        l_str = "-=" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - равенство следует после оператора"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )      
+
+    def test_check_char_list_operator_invalid_minus_x_minus(self):
+        l_str = "--" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - два оператора следуют подряд"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )      
+
+    def test_check_char_list_operator_invalid_minus_x_operator(self):
+        l_str = "-+" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - два оператора следуют подряд"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )     
+
+    def test_check_char_list_operator_invalid_operator_x_minus(self):
+        l_str = "+-" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Неправильное выражение - два оператора следуют подряд"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )     
+
+    def check_char_list_equation_valid(self):
+        l_str = "1+2=" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (True, ""),
+            check_char_list_equation(p_char_type_list=l_char_type_list)
+        )     
+
+    def check_char_list_equation_invalid(self):
+        l_str = "=11+22" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Знак равенства может быть только один и должен находиться в конце выражения"),
+            check_char_list_equation(p_char_type_list=l_char_type_list)
+        )     
+
+    def check_char_list_dot_valid(self):
+        l_str = "1.123+123.321" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (True, ""),
+            check_char_list_dot(p_char_type_list=l_char_type_list)
+        )     
+    def check_char_list_dot_invalid_no_number_before(self):
+        l_str = ".321-23" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: Перед разделителем числа не найдено цифры"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )     
+
+    def check_char_list_dot_invalid_no_number_after(self):
+        l_str = "23-3." 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertEqual(
+            (False, "ERROR: После разделителя числа не найдено цифры"),
+            check_char_list_operator(p_char_type_list=l_char_type_list)
+        )     
 
 if __name__ == '__main__':
     unittest.main()
