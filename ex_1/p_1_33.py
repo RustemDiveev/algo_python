@@ -802,7 +802,7 @@ def get_expression_list(p_token_list: list) -> list:
                     if len(l_found_expression) >= 3:
                         l_expression_list.append(l_found_expression)
                         del l_token_copy_list[l_current_idx:l_next_closing_bracket_idx+1]
-                        l_token_copy_list.insert(l_current_idx, "expr_" + str(len(l_token_copy_list) - 1))
+                        l_token_copy_list.insert(l_current_idx, "expr_" + str(len(l_expression_list) - 1))
                     elif len(l_found_expression) == 1 and str(l_found_expression[0]).startswith("expr"):
                         del l_token_copy_list[l_current_idx]
                         del l_token_copy_list[l_next_closing_bracket_idx-1]

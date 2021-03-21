@@ -54,7 +54,8 @@ from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
     is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input, \
     to_char_list, to_char_type_list, С_DICT_CHAR_TYPE, to_token_list, \
     check_char_list_brackets, check_char_list_beginning, check_char_list_ending, \
-    check_pattern, check_char_list_operator, check_char_list_equation, check_char_list_dot
+    check_pattern, check_char_list_operator, check_char_list_equation, check_char_list_dot, \
+    check_char_list, get_expression_list 
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -922,7 +923,7 @@ class Test_p_1_33(unittest.TestCase):
             check_char_list_operator(p_char_type_list=l_char_type_list)
         )     
 
-    def check_char_list_equation_valid(self):
+    def test_check_char_list_equation_valid(self):
         l_str = "1+2=" 
         l_char_list = to_char_list(p_str=l_str)
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
@@ -931,7 +932,7 @@ class Test_p_1_33(unittest.TestCase):
             check_char_list_equation(p_char_type_list=l_char_type_list)
         )     
 
-    def check_char_list_equation_invalid(self):
+    def test_check_char_list_equation_invalid(self):
         l_str = "=11+22" 
         l_char_list = to_char_list(p_str=l_str)
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
@@ -940,31 +941,114 @@ class Test_p_1_33(unittest.TestCase):
             check_char_list_equation(p_char_type_list=l_char_type_list)
         )     
 
-    def check_char_list_dot_valid(self):
+    def test_check_char_list_dot_valid(self):
         l_str = "1.123+123.321" 
         l_char_list = to_char_list(p_str=l_str)
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
         self.assertEqual(
             (True, ""),
             check_char_list_dot(p_char_type_list=l_char_type_list)
-        )     
-    def check_char_list_dot_invalid_no_number_before(self):
-        l_str = ".321-23" 
+        )    
+
+    def test_check_char_list_dot_invalid_no_number_before(self):
+        l_str = "321-.23" 
         l_char_list = to_char_list(p_str=l_str)
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
         self.assertEqual(
             (False, "ERROR: Перед разделителем числа не найдено цифры"),
-            check_char_list_operator(p_char_type_list=l_char_type_list)
+            check_char_list_dot(p_char_type_list=l_char_type_list)
         )     
 
-    def check_char_list_dot_invalid_no_number_after(self):
-        l_str = "23-3." 
+    def test_check_char_list_dot_invalid_no_number_after(self):
+        l_str = "23.-3" 
         l_char_list = to_char_list(p_str=l_str)
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
         self.assertEqual(
             (False, "ERROR: После разделителя числа не найдено цифры"),
-            check_char_list_operator(p_char_type_list=l_char_type_list)
+            check_char_list_dot(p_char_type_list=l_char_type_list)
         )     
+
+    def test_check_char_list_valid(self):
+        l_str = "(1+3)-2" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertTrue(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_brackets(self):
+        l_str = "(1+3)-2)" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_beginning(self):
+        l_str = "+(1+3)-2" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_ending(self):
+        l_str = "(1+3)-2-" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_operator(self):
+        l_str = "(1+3)-+2" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_equation(self):
+        l_str = "(=1+3)+2" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_check_char_list_invalid_dot(self):
+        l_str = "(.1+3)+2" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        self.assertFalse(
+            check_char_list(p_char_type_list=l_char_type_list)[0]
+        )
+
+    def test_get_expression_list_simple(self):
+        l_str = "80/8+30-20*4/3" 
+        l_expected_result_expression = [80, "/", 8, "+", 30, "-", 20, "*", 4, "/", 3]
+        l_expected_result = []
+        l_expected_result.append(l_expected_result_expression)
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_result = get_expression_list(p_token_list=l_token_list)
+        self.assertEqual(l_expected_result, l_result)
+
+    def test_get_expression_list_complex(self):
+        l_str = "((80/8)+30)-(20*4/3)"  
+        l_expected_result = [
+            [80, "/", 8],
+            ["expr_0", "+", 30],
+            [20, "*", 4, "/", 3],
+            ["expr_1", "-", "expr_2"]
+        ]
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_result = get_expression_list(p_token_list=l_token_list)
+        print(l_result)
+        self.assertEqual(l_expected_result, l_result)
 
 if __name__ == '__main__':
     unittest.main()
