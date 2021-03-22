@@ -49,13 +49,15 @@ from ex_1.p_1_29 import get_all_possible_strings_using_character_once
 from ex_1.p_1_30 import get_log_of_base_2
 from ex_1.p_1_31 import get_change
 from ex_1.p_1_32 import process_input, calculate_expression, reset_input, clear_input
-from ex_1.p_1_33 import get_type_value_by_key, get_char_type_id, is_char, \
+from ex_1.p_1_33 import C_TYPE_ID_CLOSING_BRACKET, C_TYPE_ID_MINUS, C_TYPE_ID_NUMBER, C_TYPE_ID_OPENING_BRACKET, C_TYPE_ID_OPERATOR, get_type_value_by_key, get_char_type_id, is_char, \
     is_char_number, is_operator, is_equation, is_opening_bracket, is_closing_bracket, \
     is_dot, is_valid_char, is_number, trim_whitespace, is_valid_input, \
     to_char_list, to_char_type_list, С_DICT_CHAR_TYPE, to_token_list, \
     check_char_list_brackets, check_char_list_beginning, check_char_list_ending, \
     check_pattern, check_char_list_operator, check_char_list_equation, check_char_list_dot, \
-    check_char_list, get_expression_list 
+    check_char_list, get_expression_list, is_bracket_expression_exists, \
+    to_simple_expression_list, get_result, clear, reset, is_input_a_calculator_option, \
+    process_input as p_1_33_process_input, calculate
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -1047,8 +1049,166 @@ class Test_p_1_33(unittest.TestCase):
         l_char_type_list = to_char_type_list(p_char_list=l_char_list)
         l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
         l_result = get_expression_list(p_token_list=l_token_list)
-        print(l_result)
         self.assertEqual(l_expected_result, l_result)
+
+    def test_is_bracket_expression_exists_true(self):
+        l_list = ["(", 45, "-", 30, ")"]
+        self.assertTrue(is_bracket_expression_exists(p_list=l_list))
+
+    def test_is_bracket_expression_exists_false(self):
+        l_list = [45, "+", 30, "-", 20]
+        self.assertFalse(is_bracket_expression_exists(p_list=l_list))
+
+    def test_to_simple_expression_list_simple(self):
+        l_str = "80/8+30-20*4/3" 
+        l_expected_result = [
+            [
+                [80, "/", 8],
+                [20, "*", 4],
+                ["ref_1", "/", 3],
+                ["ref_0", "+", 30],
+                ["ref_3", "-", "ref_2"]
+            ]
+        ] 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_expression_list = get_expression_list(p_token_list=l_token_list)
+        l_result = to_simple_expression_list(p_expression_list=l_expression_list)
+        self.assertEqual(l_expected_result, l_result)
+
+    def test_to_simple_expression_list_complex(self):
+        l_str = "((80/8)+30)-(20*4/3)"  
+        l_expected_result = [
+            [
+                [80, "/", 8]
+            ],
+            [
+                ["expr_0", "+", 30]
+            ],
+            [
+                [20, "*", 4],
+                ["ref_0", "/", 3]
+            ],
+            [
+                ["expr_1", "-", "expr_2"]
+            ]
+        ]
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_expression_list = get_expression_list(p_token_list=l_token_list)
+        l_result = to_simple_expression_list(p_expression_list=l_expression_list)
+        self.assertEqual(l_expected_result, l_result)
+
+    def test_get_result_simple(self):
+        l_str = "80/8+30-20*4/3" 
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_expression_list = get_expression_list(p_token_list=l_token_list)
+        l_simple_expression_list = to_simple_expression_list(p_expression_list=l_expression_list)
+        l_result = get_result(p_final_expression_list=l_simple_expression_list)
+        self.assertEqual(eval(l_str), l_result)
+
+    def test_get_result_complex(self):
+        l_str = "((80/8)+30)-(20*4/3)"  
+        l_char_list = to_char_list(p_str=l_str)
+        l_char_type_list = to_char_type_list(p_char_list=l_char_list)
+        l_token_list = to_token_list(p_char_list=l_char_list, p_char_type_list=l_char_type_list)
+        l_expression_list = get_expression_list(p_token_list=l_token_list)
+        l_simple_expression_list = to_simple_expression_list(p_expression_list=l_expression_list)
+        l_result = get_result(p_final_expression_list=l_simple_expression_list)
+        self.assertEqual(eval(l_str), l_result)
+
+    def test_clear_result_list_is_not_empty(self):
+        l_result_list = [1, 2, 3] 
+        l_result = "INFO: Список результатов вычислений очищен. Введите арифметическое выражение для расчета."
+        self.assertEqual(l_result, clear(p_result_list=l_result_list))
+
+    def test_clear_result_list_is_empty(self):
+        l_result_list = [] 
+        l_result = "INFO: Список результатов вычислений уже пуст. Введите арифметическое выражение для расчета."
+        self.assertEqual(l_result, clear(p_result_list=l_result_list))
+
+    def test_reset_result_list_has_more_than_one_element(self):
+        l_result_list = [1, 2] 
+        l_result = "INFO: Выполнен переход к предыдущему результату вычислений - 1"
+        self.assertEqual(l_result, reset(p_result_list=l_result_list))
+
+    def test_reset_result_list_has_one_element(self):
+        l_result_list = [1] 
+        l_result = "INFO: В истории вычислений было только одно значение. История пуста"
+        self.assertEqual(l_result, reset(p_result_list=l_result_list))
+
+    def test_reset_result_list_has_no_elements(self):
+        l_result_list = []
+        l_result = "INFO: Нечего очищать. История вычислений пуста."
+        self.assertEqual(l_result, reset(p_result_list=l_result_list)) 
+
+    def test_is_input_a_calculator_option_clear_reset(self):
+        self.assertEqual(True, is_input_a_calculator_option(p_str="c"), is_input_a_calculator_option(p_str="r"))
+
+    def test_is_input_a_calculator_option_invalid(self):
+        self.assertEqual(False, is_input_a_calculator_option(p_str="crrc"), is_input_a_calculator_option(p_str="b")) 
+
+    def test_process_input_result_list_empty_and_operator_not_first(self):
+        l_str = " 20  +  23" 
+        l_result_list = []
+        l_result = "20+23"
+        self.assertEqual(l_result, p_1_33_process_input(p_str=l_str, p_result_list=l_result_list))
+
+    def test_process_input_result_list_not_empty_and_operator_not_first(self):
+        l_str = " 20  +  23" 
+        l_result_list = [21]
+        l_result = "20+23"
+        self.assertEqual(l_result, p_1_33_process_input(p_str=l_str, p_result_list=l_result_list)) 
+
+    def test_process_input_result_list_empty_and_operator_first(self):
+        l_str = " +  23  " 
+        l_result_list = []
+        l_result = "+23"
+        self.assertEqual(l_result, p_1_33_process_input(p_str=l_str, p_result_list=l_result_list))
+
+    def test_process_input_result_list_not_empty_and_operator_first(self):
+        l_str = " +  23  " 
+        l_result_list = [17]
+        l_result = "17+23"
+        self.assertEqual(l_result, p_1_33_process_input(p_str=l_str, p_result_list=l_result_list)) 
+
+    def test_calculate_simple(self):
+        l_str = "80/8+30-20*4/3"
+        l_char_list = [
+            "8", "0", "/", "8", \
+            "+", "3", "0", "-", \
+            "2", "0", "*", "4", \
+            "/", "3"
+        ]
+        l_char_type_list = [
+            C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER, C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, \
+            C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER, C_TYPE_ID_MINUS, \
+            C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER, C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, \
+            C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER
+        ]
+        self.assertEqual(eval(l_str), calculate(p_char_list=l_char_list, p_char_type_list=l_char_type_list)) 
+
+    def test_calculate_complex(self):
+        l_str = "((80/8)+30)-(20*4/3)" 
+        l_char_list = [
+            "(", "(", "8", "0",
+            "/", "8", ")", "+",
+            "3", "0", ")", "-",
+            "(", "2", "0", "*",
+            "4", "/", "3", ")"
+        ]
+        l_char_type_list = [
+            C_TYPE_ID_OPENING_BRACKET, C_TYPE_ID_OPENING_BRACKET, C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER,
+            C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, C_TYPE_ID_CLOSING_BRACKET, C_TYPE_ID_OPERATOR,
+            C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER, C_TYPE_ID_CLOSING_BRACKET, C_TYPE_ID_MINUS,
+            C_TYPE_ID_OPENING_BRACKET, C_TYPE_ID_NUMBER, C_TYPE_ID_NUMBER, C_TYPE_ID_OPERATOR,
+            C_TYPE_ID_NUMBER, C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, C_TYPE_ID_CLOSING_BRACKET
+        ]
+        self.assertEqual(eval(l_str), calculate(p_char_list=l_char_list, p_char_type_list=l_char_type_list)) 
 
 if __name__ == '__main__':
     unittest.main()
