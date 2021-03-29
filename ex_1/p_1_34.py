@@ -57,7 +57,7 @@ def error_generator_change_random_symbol_register(p_str: str) -> str:
         return p_str
 
     l_char_idx_list = []
-    for i in range(0, len(p_str) - 1):
+    for i in range(len(p_str)):
         if p_str[i].isalpha():
             l_char_idx_list.append(i)
 
@@ -97,7 +97,7 @@ def error_generator_replace_random_vowel(p_str: str) -> str:
     l_vowels_str_lower = "aeiouy"
     l_vowels_str_upper = "AEIOUY"
     l_vowels_idx_list = []
-    for i in range(0, len(p_str) - 1):
+    for i in range(len(p_str)):
         if p_str[i] in l_vowels_str:
             l_vowels_idx_list.append(i)
     
@@ -112,3 +112,33 @@ def error_generator_replace_random_vowel(p_str: str) -> str:
             l_random_vowel = choice(l_vowels_str_lower.replace(l_random_vowel, ""))
 
     return p_str[:l_random_vowel_idx] + l_random_vowel + p_str[l_random_vowel_idx + 1:]
+
+def error_generator_replace_random_consonant(p_str: str) -> str:
+    """
+        Replaces random consonant with another random consonant in a string and returns new string
+        input:
+            p_str - input string 
+        output:
+            new string
+    """
+    if len(p_str) == 0:
+        return p_str
+
+    l_consonant_str = "bcdfghjklmnpqrstvwxz"
+    l_consonant_idx_list = []
+    for i in range(len(p_str)):
+        if p_str[i] in l_consonant_str or p_str[i] in l_consonant_str.upper():
+            l_consonant_idx_list.append(i)
+
+    if len(l_consonant_idx_list) == 0:
+        return p_str 
+    else:
+        l_random_consonant_idx = choice(l_consonant_idx_list)
+        l_random_consonant = p_str[l_random_consonant_idx]
+        if l_random_consonant.is_upper():
+            l_random_consonant = choice(l_consonant_str.upper().replace(l_random_consonant, ""))
+        else:
+            l_random_consonant = choice(l_consonant_str.replace(l_random_consonant, ""))
+
+    return p_str[:l_random_consonant_idx] + l_random_consonant + p_str[l_random_consonant_idx+1:]
+    
