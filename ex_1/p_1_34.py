@@ -67,3 +67,17 @@ def error_generator_change_random_symbol_register(p_str: str) -> str:
         l_random_idx = choice(l_char_idx_list)
         l_converted_char = p_str[l_random_idx].swapcase()
         return p_str[:l_random_idx] + l_converted_char + p_str[l_random_idx+1:]
+
+def error_generator_copy_random_symbol(p_str: str) -> str:
+    """
+        Chooses random symbol from string and adds it next to the chosen symbol and returns new string 
+        input:
+            p_str - input string 
+        output:
+            new string
+    """
+    if len(p_str) == 0:
+        return p_str 
+
+    l_random_idx = randint(0, len(p_str) - 1)
+    return p_str[:l_random_idx] + p_str[l_random_idx] + p_str[l_random_idx:]
