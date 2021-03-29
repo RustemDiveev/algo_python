@@ -81,3 +81,34 @@ def error_generator_copy_random_symbol(p_str: str) -> str:
 
     l_random_idx = randint(0, len(p_str) - 1)
     return p_str[:l_random_idx] + p_str[l_random_idx] + p_str[l_random_idx:]
+
+def error_generator_replace_random_vowel(p_str: str) -> str:
+    """
+        Replaces random vowel with another random vowel in a string and returns new string
+        input:
+            p_str - input string 
+        output:
+            new string
+    """
+    if len(p_str) == 0:
+        return p_str 
+
+    l_vowels_str = "aeiouyAEIOUY"
+    l_vowels_str_lower = "aeiouy"
+    l_vowels_str_upper = "AEIOUY"
+    l_vowels_idx_list = []
+    for i in range(0, len(p_str) - 1):
+        if p_str[i] in l_vowels_str:
+            l_vowels_idx_list.append(i)
+    
+    if len(l_vowels_idx_list) == 0:
+        return p_str 
+    else:
+        l_random_vowel_idx = choice(l_vowels_idx_list)
+        l_random_vowel = p_str[l_random_vowel_idx]
+        if l_random_vowel.isupper():
+            l_random_vowel = choice(l_vowels_str_upper.replace(l_random_vowel, ""))
+        else:
+            l_random_vowel = choice(l_vowels_str_lower.replace(l_random_vowel, ""))
+
+    return p_str[:l_random_vowel_idx] + l_random_vowel + p_str[l_random_vowel_idx + 1:]
