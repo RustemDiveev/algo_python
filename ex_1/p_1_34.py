@@ -178,3 +178,23 @@ def error_generator_remove_random_space(p_str: str) -> str:
 
     l_random_space_idx = choice(l_space_idx_list)
     return p_str[:l_random_space_idx] + p_str[l_random_space_idx+1:]
+
+def generate_error_type_set(p_sentence_count: int) -> list:
+    """
+        Generates a list with 8 sorted random numbers which doesn't exceed sentence count and retuns it 
+        input:
+            p_sentence_count - amount of sentences, should be greater or equal to 8
+        output:
+            list with 8 random ascending sorted numbers
+    """
+
+    if p_sentence_count < 8:
+        raise ValueError("generate_error_type_set - p_sentence_count must be greater or equal than 8!")
+
+    l_set = set()
+    while len(l_set) < 8:
+        l_set.add(randint(0, p_sentence_count - 1))
+
+    l_sorted_list = list(l_set).sort()
+    return l_sorted_list
+ 
