@@ -156,3 +156,25 @@ def error_generator_remove_dot_from_end(p_str: str) -> str:
         if p_str[-1] == ".":
             del p_str[-1]
         return p_str
+
+def error_generator_remove_random_space(p_str: str) -> str:
+    """
+        Removes random space from the string and returns new string 
+        input: 
+            p_str - input string 
+        output:
+            new string 
+    """
+    if len(p_str) == 0:
+        return p_str 
+
+    l_space_idx_list = []
+    for i in range(len(p_str)):
+        if p_str[i] == " ":
+            l_space_idx_list.append(i)
+
+    if len(l_space_idx_list) == 0:
+        return p_str
+
+    l_random_space_idx = choice(l_space_idx_list)
+    return p_str[:l_random_space_idx] + p_str[l_random_space_idx+1:]
