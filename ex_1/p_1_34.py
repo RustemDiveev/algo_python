@@ -142,3 +142,17 @@ def error_generator_replace_random_consonant(p_str: str) -> str:
 
     return p_str[:l_random_consonant_idx] + l_random_consonant + p_str[l_random_consonant_idx+1:]
     
+def error_generator_remove_dot_from_end(p_str: str) -> str:
+    """
+        Removes dot from the end of string and returns new string 
+        input:
+            p_str - input string 
+        output:
+            new string 
+    """
+    if len(p_str) == 0:
+        return p_str
+    else:
+        if p_str[-1] == ".":
+            del p_str[-1]
+        return p_str
