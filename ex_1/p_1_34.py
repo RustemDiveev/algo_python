@@ -1,4 +1,4 @@
-from random import randint, choice, shuffle
+from random import randint, choice, sample
 
 def error_generator_remove_one_random_symbol(p_str: str) -> str:
     """
@@ -135,7 +135,7 @@ def error_generator_replace_random_consonant(p_str: str) -> str:
     else:
         l_random_consonant_idx = choice(l_consonant_idx_list)
         l_random_consonant = p_str[l_random_consonant_idx]
-        if l_random_consonant.is_upper():
+        if l_random_consonant.isupper():
             l_random_consonant = choice(l_consonant_str.upper().replace(l_random_consonant, ""))
         else:
             l_random_consonant = choice(l_consonant_str.replace(l_random_consonant, ""))
@@ -154,7 +154,7 @@ def error_generator_remove_dot_from_end(p_str: str) -> str:
         return p_str
     else:
         if p_str[-1] == ".":
-            del p_str[-1]
+            p_str = p_str[:len(p_str) - 1]
         return p_str
 
 def error_generator_remove_random_space(p_str: str) -> str:
@@ -208,7 +208,11 @@ def get_list_of_error_sentences(p_str: str, p_sentence_count: int) -> list:
     while len(l_output_list) < p_sentence_count:
         l_output_list.append(p_str)
 
-    return shuffle(l_output_list)
+    # Shuffle returns None, used sample instead 
+    # https://stackoverflow.com/questions/17649875/why-does-random-shuffle-return-none
+    l_shuffled_list = sample(l_output_list, len(l_output_list))
+
+    return l_shuffled_list
 
 def print_sentences(p_sentence_list: list):
     """
@@ -217,7 +221,7 @@ def print_sentences(p_sentence_list: list):
             p_sentence_list - input sentence list
     """
     for i in range(len(p_sentence_list)):
-        print(str(i+1) + ":" + p_sentence_list[i])
+        print(str(i+1) + ": " + p_sentence_list[i])
 
 def main(p_str: str, p_sentence_count: int):
     """
@@ -228,4 +232,6 @@ def main(p_str: str, p_sentence_count: int):
     """
     l_sentence_list = get_list_of_error_sentences(p_str=p_str, p_sentence_count=p_sentence_count)
     print_sentences(p_sentence_list=l_sentence_list)
-    
+
+# Debug
+# main(p_str="I will never spam my friends again.", p_sentence_count=100)
