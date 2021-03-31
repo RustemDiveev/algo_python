@@ -227,3 +227,5 @@ def main(p_str: str, p_sentence_count: int):
             p_sentence_count - count of sentences
     """
     l_sentence_list = get_list_of_error_sentences(p_str=p_str, p_sentence_count=p_sentence_count)
+    print_sentences(p_sentence_list=l_sentence_list)
+    
