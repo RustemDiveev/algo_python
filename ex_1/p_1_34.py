@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import randint, choice, shuffle
 
 def error_generator_remove_one_random_symbol(p_str: str) -> str:
     """
@@ -179,22 +179,51 @@ def error_generator_remove_random_space(p_str: str) -> str:
     l_random_space_idx = choice(l_space_idx_list)
     return p_str[:l_random_space_idx] + p_str[l_random_space_idx+1:]
 
-def generate_error_type_set(p_sentence_count: int) -> list:
+def get_list_of_error_sentences(p_str: str, p_sentence_count: int) -> list:
     """
-        Generates a list with 8 sorted random numbers which doesn't exceed sentence count and retuns it 
+        Returns list of sentences with applied errors 
         input:
+            p_str - input sentence
             p_sentence_count - amount of sentences, should be greater or equal to 8
         output:
-            list with 8 random ascending sorted numbers
+            list of sentences
     """
+
+    if len(p_str) == 0:
+        raise ValueError("get_list_of_error_sentences - p_str must not be an empty string!")
 
     if p_sentence_count < 8:
         raise ValueError("generate_error_type_set - p_sentence_count must be greater or equal than 8!")
 
-    l_set = set()
-    while len(l_set) < 8:
-        l_set.add(randint(0, p_sentence_count - 1))
+    l_output_list = []
+    l_output_list.append(error_generator_remove_one_random_symbol(p_str=p_str))
+    l_output_list.append(error_generator_add_one_random_symbol_to_random_place(p_str=p_str))
+    l_output_list.append(error_generator_change_random_symbol_register(p_str=p_str))
+    l_output_list.append(error_generator_copy_random_symbol(p_str=p_str))
+    l_output_list.append(error_generator_replace_random_vowel(p_str=p_str))
+    l_output_list.append(error_generator_replace_random_consonant(p_str=p_str))
+    l_output_list.append(error_generator_remove_dot_from_end(p_str=p_str))
+    l_output_list.append(error_generator_remove_random_space(p_str=p_str))
 
-    l_sorted_list = list(l_set).sort()
-    return l_sorted_list
- 
+    while len(l_output_list) < p_sentence_count:
+        l_output_list.append(p_str)
+
+    return shuffle(l_output_list)
+
+def print_sentences(p_sentence_list: list):
+    """
+        Prints sentences from sentence list and labels each with order number
+        input: 
+            p_sentence_list - input sentence list
+    """
+    for i in range(len(p_sentence_list)):
+        print(str(i+1) + ":" + p_sentence_list[i])
+
+def main(p_str: str, p_sentence_count: int):
+    """
+        Main block of program - prints sentences with random error
+        input:
+            p_str - input sentence 
+            p_sentence_count - count of sentences
+    """
+    l_sentence_list = get_list_of_error_sentences(p_str=p_str, p_sentence_count=p_sentence_count)
