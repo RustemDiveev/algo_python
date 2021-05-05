@@ -58,6 +58,9 @@ from ex_1.p_1_33 import C_TYPE_ID_CLOSING_BRACKET, C_TYPE_ID_MINUS, C_TYPE_ID_NU
     check_char_list, get_expression_list, is_bracket_expression_exists, \
     to_simple_expression_list, get_result, clear, reset, is_input_a_calculator_option, \
     process_input as p_1_33_process_input, calculate
+from ex_1.p_1_34 import error_generator_add_one_random_symbol_to_random_place, error_generator_change_random_symbol_register, error_generator_copy_random_symbol, \
+    error_generator_remove_one_random_symbol, error_generator_replace_random_vowel, error_generator_replace_random_consonant, \
+    error_generator_remove_dot_from_end, error_generator_remove_random_space, get_list_of_error_sentences
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -1209,6 +1212,93 @@ class Test_p_1_33(unittest.TestCase):
             C_TYPE_ID_NUMBER, C_TYPE_ID_OPERATOR, C_TYPE_ID_NUMBER, C_TYPE_ID_CLOSING_BRACKET
         ]
         self.assertEqual(eval(l_str), calculate(p_char_list=l_char_list, p_char_type_list=l_char_type_list)) 
+
+class Test_p_1_34(unittest.TestCase):
+
+    def test_eg_remove_one_random_symbol(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_remove_one_random_symbol(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertNotEqual(len(l_str), len(l_result))
+
+    def test_eg_add_one_random_symbol_to_random_place(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_add_one_random_symbol_to_random_place(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertNotEqual(len(l_str), len(l_result))
+
+    def test_eg_change_random_symbol_register(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_change_random_symbol_register(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_copy_random_symbol(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_copy_random_symbol(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertNotEqual(len(l_str), len(l_result))
+
+    def test_eg_replace_random_vowel(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_replace_random_vowel(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_replace_random_vowel_only_consonants(self):
+        l_str = "Ll dgs g t hvn."
+        l_result = error_generator_replace_random_vowel(p_str=l_str)
+        self.assertEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_replace_random_consonant(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_replace_random_consonant(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_replace_random_consonant_only_vowels(self):
+        l_str = "A o o o eae."
+        l_result = error_generator_replace_random_consonant(p_str=l_str)
+        self.assertEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_remove_dot_from_end(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_remove_dot_from_end(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertNotEqual(len(l_str), len(l_result)) 
+
+    def test_eg_remove_dot_from_end_no_dot_at_the_end(self):
+        l_str = "All dogs go to heaven"
+        l_result = error_generator_remove_dot_from_end(p_str=l_str)
+        self.assertEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_eg_remove_random_space(self):
+        l_str = "All dogs go to heaven."
+        l_result = error_generator_remove_random_space(p_str=l_str)
+        self.assertNotEqual(l_str, l_result)
+        self.assertNotEqual(len(l_str), len(l_result))
+
+    def test_eg_remove_random_space_no_space(self):
+        l_str = "Alldogsgotoheaven."
+        l_result = error_generator_remove_random_space(p_str=l_str)
+        self.assertEqual(l_str, l_result)
+        self.assertEqual(len(l_str), len(l_result))
+
+    def test_get_list_of_error_sentences(self):
+        l_str = "I will never spam my friends again."
+        l_result = get_list_of_error_sentences(
+            p_str=l_str,
+            p_sentence_count=100
+        )
+        l_counter = 0
+        for i in l_result:
+            if i != l_str:
+                l_counter += 1
+        self.assertEqual(l_counter, 8)
+        
 
 if __name__ == '__main__':
     unittest.main()
