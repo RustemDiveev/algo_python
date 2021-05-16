@@ -88,5 +88,3 @@ def text_file_solution():
         f.write(str(i_dict["amount_of_people"]) + "       ")
         f.write(str(i_dict["amount_of_cases"]) + "     ")
         f.write(str(i_dict["amount_of_successful_cases"]) + "\n")
-
-text_file_solution()
