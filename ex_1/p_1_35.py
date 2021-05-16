@@ -74,3 +74,19 @@ def test_paradox_complex() -> list:
     for i in range(5, 101, 5):
         l_result.append(test_paradox(p_cases_amt=100, p_people_amt=i))
     return l_result
+
+def text_file_solution():
+    """
+        Neat printing to text file
+    """
+    f = open("ex_1/p_1_35_result.txt","w+")
+    f.write("P1_35 - Birthday paradox solution\n")
+    f.write("\n")
+    f.write("People\t" + "Total\t" + "Successful\n")
+    l_result = test_paradox_complex()
+    for i_dict in l_result:
+        f.write(str(i_dict["amount_of_people"]) + "       ")
+        f.write(str(i_dict["amount_of_cases"]) + "     ")
+        f.write(str(i_dict["amount_of_successful_cases"]) + "\n")
+
+text_file_solution()
