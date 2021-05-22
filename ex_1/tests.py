@@ -6,6 +6,7 @@ from platform import system
 from random import randint, choice 
 from statistics import mean
 from math import sqrt
+from datetime import date 
 
 # WTF
 # To run this file use: 
@@ -61,6 +62,7 @@ from ex_1.p_1_33 import C_TYPE_ID_CLOSING_BRACKET, C_TYPE_ID_MINUS, C_TYPE_ID_NU
 from ex_1.p_1_34 import error_generator_add_one_random_symbol_to_random_place, error_generator_change_random_symbol_register, error_generator_copy_random_symbol, \
     error_generator_remove_one_random_symbol, error_generator_replace_random_vowel, error_generator_replace_random_consonant, \
     error_generator_remove_dot_from_end, error_generator_remove_random_space, get_list_of_error_sentences
+from ex_1.p_1_35 import generate_birthday, generate_birthdays, count_birthdays, are_same_birthdays_in_list
 
 #Reinforcement
 class Test_r_1_1(unittest.TestCase):
@@ -1299,6 +1301,36 @@ class Test_p_1_34(unittest.TestCase):
                 l_counter += 1
         self.assertEqual(l_counter, 8)
         
+class Test_p_1_35(unittest.TestCase):
+
+    def test_generate_birthday(self):
+        l_start_date = date(2020, 1, 1)
+        l_end_date = date(2020, 12, 31)
+        l_result_date = generate_birthday()
+        self.assertGreaterEqual(l_result_date, l_start_date)
+        self.assertLessEqual(l_result_date, l_end_date)
+
+    def test_generate_birthdays(self):
+        l_amount = 100
+        l_result = generate_birthdays(p_amount=l_amount)
+        self.assertEqual(l_amount, len(l_result)) 
+        for i in l_result:
+            self.assertEqual(i.year, 2020)
+
+    def test_count_birthdays(self):
+        l_d1 = date(2021, 1, 1)
+        l_d2 = date(2021, 1, 2)
+        l_d3 = date(2021, 1, 3)
+        l_list = [l_d1, l_d1, l_d1, l_d2, l_d2, l_d3]
+        l_result = count_birthdays(p_list=l_list)
+        self.assertEqual(l_result[l_d1], 3)
+        self.assertEqual(l_result[l_d2], 2)
+        self.assertEqual(l_result[l_d3], 1)
+        self.assertEqual(l_result[generate_birthday()], 0)
+
+    def test_are_same_birthdays_in_list(self):
+        self.assertFalse(are_same_birthdays_in_list(p_amount=1)) 
+        self.assertTrue(are_same_birthdays_in_list(p_amount=366)) 
 
 if __name__ == '__main__':
     unittest.main()
