@@ -1,6 +1,6 @@
 from collections import Counter
 
-C_IGNORE_TOKENS_SET = {"-"}
+C_IGNORE_TOKENS_SET = {"-", "–"}
 
 def print_counter(p_counter: Counter):
     """
@@ -15,18 +15,16 @@ def print_counter(p_counter: Counter):
 
 def format_line(p_str: str) -> str:
     """
-        Removes punctuation from a string
+        Removes punctuation and other useless symbols from a string
         input:
             p_str - input string 
         output:
             str
     """
-    l_str = p_str.replace(".", "")
-    l_str = l_str.replace(",", "")
-    l_str = l_str.replace(";", "")
-    l_str = l_str.replace("?", "")
-    l_str = l_str.replace("!", "")
-    l_str = l_str.replace("\"", "")
+    l_restricted_token_str = ".,;?!\"[]()0123456789"
+    l_str = p_str
+    for token in l_restricted_token_str:
+        l_str = l_str.replace(token, "")
     l_str = l_str.lower()
     return l_str
 
@@ -62,4 +60,5 @@ def count_words_in_file(p_file_path: str) -> Counter:
         print("Файл по пути " + p_file_path + " не обнаружен.")
 
 #print_counter(p_counter=read_simple_file()) 
-print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/_kryzhovnik.txt"))
+#print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/_kryzhovnik.txt"))
+print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/_voyna_i_mir.txt"))
