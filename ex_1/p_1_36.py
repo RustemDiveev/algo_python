@@ -13,15 +13,16 @@ C_IGNORE_TOKENS_SET = {"-", "–", "—", "и", "в", "не", "на", "он", "c
     "сразу", "тебе", "всем", "ней", "которого", "моей", "нам", "всю", "нее", "м", "именно", "этой", "об", "г", \
     "своих", "им", "т", "те", "ко"}
 
-def print_counter(p_counter: Counter):
+def print_counter(p_counter: Counter, p_words_cnt: int=None):
     """
         Helper for debugging 
         Prints counter to text file 
         input:
             p_counter - counter to print
+            p_words_cnt - amount of top words to print, if not specified - prints all words
     """
     l_file = open("ex_1/p_1_36_result.txt", "w+", encoding="utf8")
-    for i in p_counter.most_common():
+    for i in p_counter.most_common(p_words_cnt):
         l_file.write(i[0] + ": " + str(i[1]) + "\n")
 
 def format_line(p_str: str) -> str:
@@ -77,4 +78,4 @@ def count_words_in_file(p_file_path: str) -> Counter:
 #print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/anti_zeland.txt"))
 #print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/avtobiograficheskaja_proza.txt"))
 #print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/kak_delajut_antisemitom.txt"))
-#print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/zapiski_yunogo_vracha.txt"))
+#print_counter(p_counter=count_words_in_file(p_file_path="ex_1/p_1_36/zapiski_yunogo_vracha.txt"), p_words_cnt=20)
