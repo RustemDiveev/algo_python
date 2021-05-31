@@ -5,7 +5,7 @@ def is_multiple(p_n: int, p_m: int) -> bool:
          p_n - int - first number
          p_m - int - second number 
       output:
-         bool - 
+         bool 
    """
    return p_n % p_m == 0
     
