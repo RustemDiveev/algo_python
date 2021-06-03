@@ -1,0 +1,13 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>60</x><y>20</y><w>240</w><h>190</h></coordinates><panel_attributes>Flower
+--
+name: str
+petals_cnt: int
+price: float
+--
+get_name()
+get_petals_cnt()
+get_price()
+set_name()
+set_petals_cnt()
+set_price()
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
