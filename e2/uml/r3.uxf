@@ -1,0 +1,27 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>54</x><y>110</y><w>640</w><h>370</h></coordinates><panel_attributes>AdobeAcrobatReaderNavigationMenuFileEntry
+--
+instance members:
+_current_file_name: str
+_current_session_files: list[str]
+_previous_session_files: list[str]
+--
+methods:
+open()
+open_from_previous_session()
+save()
+save_as()
+transform()
+save_as_text()
+compress()
+protect_with_password()
+grant_access()
+close()
+get_properties()
+print()
+get_session_files()
+exit()
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>54</x><y>30</y><w>490</w><h>60</h></coordinates><panel_attributes>Describe a component from a text-editor GUI and the methods that it encapsulates.
+
+Я описываю то, что умеет пункт меню "Файл" в программе Adobe Acrobat Reader
+bg=blue</panel_attributes><additional_attributes></additional_attributes></element></diagram>
