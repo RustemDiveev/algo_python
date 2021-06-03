@@ -19,9 +19,22 @@ class Flower:
             petals_cnt - int - amount of petals 
             price - float - price of flower
         """
-        self._name = name
-        self._petals_cnt = petals_cnt 
-        self._price = price 
+        if isinstance(name, str):
+            self._name = name
+        else: 
+            raise TypeError("Name of flower must be string - argument has type " + type(name))
+
+        if isinstance(petals_cnt, int):
+            self._petals_cnt = petals_cnt 
+        else:
+            raise TypeError("Petals count of flower must be int - argument has type " + type(petals_cnt))
+
+        if isinstance(price, float):
+            self._price = price 
+        elif isinstance(price, int):
+            self._price = float(price)
+        else:
+            raise TypeError("Price of flower must be int or float - argument has type" + type(price))
 
     # Getters for instance members 
     def get_name(self) -> str:
