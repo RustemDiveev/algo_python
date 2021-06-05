@@ -12,46 +12,48 @@
 
 class Flower:
 
-    def __init__(self, name: str, petals_cnt: int, price: float=0):
+    def __init__(self, name: str, petals_cnt: int, price: float = 0):
         """
             Constructor
             name - str - name of flower 
             petals_cnt - int - amount of petals 
             price - float - price of flower
         """
-        if isinstance(name, str):
-            self._name = name
-        else: 
-            raise TypeError("Name of flower must be string - argument has type " + type(name))
+        self.name = name 
+        self.petals_cnt = petals_cnt 
+        self.price = price 
 
-        if isinstance(petals_cnt, int):
-            self._petals_cnt = petals_cnt 
-        else:
-            raise TypeError("Petals count of flower must be int - argument has type " + type(petals_cnt))
-
-        if isinstance(price, float):
-            self._price = price 
-        elif isinstance(price, int):
-            self._price = float(price)
-        else:
-            raise TypeError("Price of flower must be int or float - argument has type" + type(price))
-
-    # Getters for instance members 
-    def get_name(self) -> str:
+    # Getters
+    @property
+    def name(self):
         return self._name 
 
-    def get_petals_cnt(self) -> int:
-        return self._petals_cnt
+    @property
+    def petals_cnt(self):
+        return self._petals_cnt 
 
-    def get_price(self) -> float:
-        return self._price 
+    @property 
+    def price(self):
+        return self._price
 
-    # Setters for instance members
-    def set_name(self, name: str):
-        self._name = name 
+    # Setters - perfect type checking
+    @name.setter 
+    def name(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError("Name of flower must be string - argument has type " + str(type(value)))
+        else:
+            self._name = value
 
-    def set_petals_cnt(self, petals_cnt: int):
-        self._petals_cnt = petals_cnt 
+    @petals_cnt.setter
+    def petals_cnt(self, value: int):
+        if not isinstance(value, int):
+            raise TypeError("Petals count of flower must be int - argument has type " + str(type(value)))
+        else:
+            self._petals_cnt = value
 
-    def set_price(self, price: float):
-        self._price = price
+    @price.setter 
+    def price(self, value: float):
+        if not isinstance(value, (int, float)):
+            raise TypeError("Price of flower must be int or float - argument has type" + str(type(value)))
+        else:
+            self._price = float(value)
