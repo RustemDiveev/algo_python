@@ -5,6 +5,7 @@ import unittest
 # Ran 0 tests
 # But that worked 
 from e1.tests import *
+from e2.tests import *
 
 # To run and enjoy
 # py -m unittest tests.py
