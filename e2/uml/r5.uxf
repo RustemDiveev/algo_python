@@ -1,0 +1,15 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>80</x><y>40</y><w>320</w><h>230</h></coordinates><panel_attributes>CreditCard
+--
+customer 
+bank
+account
+limit
+balance
+--
+get_customer()
+get_bank()
+get_account()
+get_limit()
+get_balance()
+charge()
+make_payment()</panel_attributes><additional_attributes></additional_attributes></element></diagram>
