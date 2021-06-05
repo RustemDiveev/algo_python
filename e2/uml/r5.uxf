@@ -12,4 +12,11 @@ get_account()
 get_limit()
 get_balance()
 charge()
-make_payment()</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+make_payment()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>350</y><w>330</w><h>250</h></coordinates><panel_attributes>CreditCard_r5
+--
+same instance members 
+--
+same methods
+charge() - with type checking
+make_payment() - with type checking
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>260</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element></diagram>
