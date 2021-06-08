@@ -2,6 +2,7 @@ import unittest
 
 #Reinforcement 
 from e2.r4 import Flower 
+from e2.r5 import CreditCard_r5
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -73,6 +74,28 @@ class Test_r4(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             l_flower.price = "Very expensive"
+
+class Test_r5(unittest.TestCase):
+
+    def test_credit_card_type_checking(self):
+        l_credit_card = CreditCard_r5(
+            customer="Johny Silverhand",
+            bank="Arasaki Corp",
+            acnt="1234 5678 1234 5678",
+            limit=8192
+        )
+        
+        with self.assertRaises(TypeError):
+            l_credit_card.charge(price="Many")
+
+        with self.assertRaises(TypeError):
+            l_credit_card.make_payment(amount="A few coins")
+
+        self.assertTrue(l_credit_card.charge(price=8000))
+        self.assertFalse(l_credit_card.charge(price=10000))
+
+        l_credit_card.make_payment(amount=2000)
+        self.assertEqual(6000, l_credit_card._balance)
 
 if __name__ == '__main__':
     unittest.main()
