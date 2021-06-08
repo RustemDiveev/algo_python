@@ -52,3 +52,18 @@ class CreditCard:
     def make_payment(self, amount):
         """Process customer payment that reduces balance."""
         self._balance -= amount
+
+class CreditCard_r5(CreditCard):
+    """Credit card with param check in charge and make_payment"""
+
+    def charge(self, price: float):
+        if not isinstance(price, (float, int)):
+            raise TypeError("Price during charge should be number")
+        else:
+            return super().charge(price) 
+
+    def make_payment(self, amount: float):
+        if not isinstance(amount, (float, int)):
+            raise TypeError("Amount during making payment should be number")
+        else:
+            super().make_payment(amount=amount)
