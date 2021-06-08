@@ -1,0 +1,60 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;70&lt;/x&gt;&lt;y&gt;20&lt;/y&gt;&lt;w&gt;320&lt;/w&gt;&lt;h&gt;230&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;CreditCard
+--
+customer 
+bank
+account
+limit
+balance
+--
+get_customer()
+get_bank()
+get_account()
+get_limit()
+get_balance()
+charge()
+make_payment()&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;220&lt;/x&gt;&lt;y&gt;240&lt;/y&gt;&lt;w&gt;30&lt;/w&gt;&lt;h&gt;80&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;&amp;lt;-&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;60;10;10&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;70&lt;/x&gt;&lt;y&gt;300&lt;/y&gt;&lt;w&gt;330&lt;/w&gt;&lt;h&gt;250&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;CreditCard_r5
+--
+same instance members 
+--
+same methods
+charge() - with type checking
+make_payment() - with type checking
+&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;390&lt;/x&gt;&lt;y&gt;410&lt;/y&gt;&lt;w&gt;100&lt;/w&gt;&lt;h&gt;30&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;&amp;lt;-&lt;/panel_attributes&gt;&lt;additional_attributes&gt;80;10;10;10&lt;/additional_attributes&gt;&lt;/element&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;470&lt;/x&gt;&lt;y&gt;300&lt;/y&gt;&lt;w&gt;330&lt;/w&gt;&lt;h&gt;250&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;CreditCard_r6
+--
+same instance members 
+--
+same methods
+make_payment() - with negative number check
+&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>40</x><y>30</y><w>330</w><h>210</h></coordinates><panel_attributes>CreditCard
+--
+customer 
+bank
+account
+limit
+balance
+--
+get_customer()
+get_bank()
+get_account()
+get_limit()
+get_balance()
+charge()
+make_payment()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>230</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>280</y><w>330</w><h>90</h></coordinates><panel_attributes>CreditCard_r5
+--
+same instance members 
+--
+same methods
+charge() - with type checking
+make_payment() - with type checking
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>360</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>420</y><w>330</w><h>80</h></coordinates><panel_attributes>CreditCard_r6
+--
+same instance members 
+--
+same methods
+make_payment() - with negative number check
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>550</y><w>330</w><h>80</h></coordinates><panel_attributes>CreditCard_r7
+--
+same instance members 
+--
+add balance to Constructor 
+with type check and positive number check</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>490</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element></diagram>
