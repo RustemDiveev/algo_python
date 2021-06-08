@@ -1,0 +1,28 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>40</x><y>20</y><w>320</w><h>230</h></coordinates><panel_attributes>CreditCard
+--
+customer 
+bank
+account
+limit
+balance
+--
+get_customer()
+get_bank()
+get_account()
+get_limit()
+get_balance()
+charge()
+make_payment()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>300</y><w>330</w><h>250</h></coordinates><panel_attributes>CreditCard_r5
+--
+same instance members 
+--
+same methods
+charge() - with type checking
+make_payment() - with type checking
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>300</y><w>330</w><h>250</h></coordinates><panel_attributes>CreditCard_r6
+--
+same instance members 
+--
+same methods
+make_payment() - with negative number check
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>240</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>410</y><w>100</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element></diagram>
