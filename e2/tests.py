@@ -3,6 +3,7 @@ import unittest
 #Reinforcement 
 from e2.r4 import Flower 
 from e2.r5 import CreditCard_r5
+from e2.r6 import CreditCard_r6
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -96,6 +97,19 @@ class Test_r5(unittest.TestCase):
 
         l_credit_card.make_payment(amount=2000)
         self.assertEqual(6000, l_credit_card._balance)
+
+class Test_r6(unittest.TestCase):
+    
+    def test_credit_card_make_payment_amount_is_negative(self):
+        l_credit_card = CreditCard_r6(
+            customer="Ravshan Lenkoransky",
+            bank="AzerBank",
+            acnt="1234 2311 3214 3214",
+            limit=500
+        )
+
+        with self.assertRaises(ValueError):
+            l_credit_card.make_payment(amount=-2000)
 
 if __name__ == '__main__':
     unittest.main()
