@@ -4,6 +4,7 @@ import unittest
 from e2.r4 import Flower 
 from e2.r5 import CreditCard_r5
 from e2.r6 import CreditCard_r6
+from e2.r7 import CreditCard_r7
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -110,6 +111,51 @@ class Test_r6(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             l_credit_card.make_payment(amount=-2000)
+
+class Test_r7(unittest.TestCase):
+
+    def test_credit_card_with_balance_added_in_init(self):
+        # Check that if no balance specified it will be zero 
+        l_credit_card = CreditCard_r7(
+            customer="Alexandr from Macedonia",
+            bank="AfinaCorp",
+            acnt="123142 domini",
+            limit=1000000
+        )
+        self.assertEqual(l_credit_card._balance, 0)
+
+        # Check that if balance specified, it will be instantiated 
+        l_balance = 1234.567
+        l_credit_card = CreditCard_r7(
+            customer="Andrew Bolkonsky",
+            bank="SchererFinanceGroup",
+            acnt="500 700 14",
+            limit=2000000,
+            balance=l_balance
+        )
+        self.assertEqual(l_credit_card._balance, l_balance)
+
+        # Check that TypeError will be raised, if you specify balance as string 
+        with self.assertRaises(TypeError):
+            l_balance = "Very poor guy!"
+            l_credit_card = CreditCard_r7(
+                customer="Andrew Bolkonsky",
+                bank="SchererFinanceGroup",
+                acnt="500 700 14",
+                limit=2000000,
+                balance=l_balance
+            )
+
+        # Check that ValueError will be raised, if you specify negative balance
+        with self.assertRaises(ValueError):
+            l_balance = -1234.567
+            l_credit_card = CreditCard_r7(
+                customer="Andrew Bolkonsky",
+                bank="SchererFinanceGroup",
+                acnt="500 700 14",
+                limit=2000000,
+                balance=l_balance
+            )
 
 if __name__ == '__main__':
     unittest.main()

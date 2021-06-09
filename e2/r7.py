@@ -4,7 +4,7 @@ class CreditCard_r7(CreditCard_r6):
 
     def __init__(self, customer, bank, acnt, limit, balance=0):
         super().__init__(customer, bank, acnt, limit)
-        if isinstance(balance, (int, float)):
+        if not isinstance(balance, (int, float)):
             raise TypeError("Balance of credit card must be a number.")
         if balance < 0:
             raise ValueError("Balance mustn't be a negative number.")
