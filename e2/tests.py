@@ -170,28 +170,77 @@ class Test_r8(unittest.TestCase):
 class Test_r9(unittest.TestCase):
 
     def check_vector(self):
-        pass
         # Check len
+        l_vector = Vector_r9(4)
+        self.assertEqual(len(l_vector), 4)
 
         # Check getitem 
-
         # Check setitem 
+        l_vector[0] = 0
+        l_vector[1] = 1
+        l_vector[2] = 2 
+        self.assertEqual(l_vector[0], 0)
+        self.assertEqual(l_vector[1], 1)
+        self.assertEqual(l_vector[2], 2)
+        self.assertEqual(l_vector[3], 0)
 
         # Check add 
+        l_vector2 = Vector_r9(4)
+        l_vector2[0] = 10
+        l_vector2[1] = 11
+        l_vector2[2] = 12
+        l_vector2[3] = 13
         # With same length 
+        l_result = l_vector + l_vector2 
+        self.assertEqual(l_result[0], 10)
+        self.assertEqual(l_result[1], 12)
+        self.assertEqual(l_result[2], 14)
+        self.assertEqual(l_result[3], 13)
         # Without same length
+        l_vector3 = Vector_r9(10)
+        with self.assertRaises(ValueError):
+            l_result = l_vector + l_vector3 
 
         # Check eq 
+        l_vector4 = Vector_r9(4)
+        l_vector4[0] = 0
+        l_vector4[1] = 1
+        l_vector4[2] = 2
+        self.assertEqual(l_vector, l_vector4)
+        self.assertTrue(l_vector == l_vector4)
+
+        l_vector5 = Vector_r9(4)
+        l_vector5[0] = 2
+        l_vector5[1] = 1
+        l_vector5[2] = 0
+        self.assertNotEquals(l_vector, l_vector5)
+        self.assertFalse(l_vector == l_vector5)
 
         # Check ne 
+        self.assertTrue(l_vector != l_vector5)
+        self.assertFalse(l_vector != l_vector4)
 
         # Check str 
+        l_str = "<0, 1, 2, 0>"
+        self.assertEqual(l_str, str(l_vector))
 
     def check_vector_sub(self):
-        pass
         # Check with same length 
-
+        l_vector = Vector_r9(2)
+        l_vector[0] = 900
+        l_vector[1] = 100
+        l_vector2 = Vector_r9(2)
+        l_vector2[0] = 300
+        l_vector2[1] = 50 
+        l_result = l_vector - l_vector2 
+        self.assertEqual(l_result[0], 600)
+        self.assertEqual(l_result[1], 50)
+        
         # Check without same length 
+        l_vector3 = Vector_r9(1)
+        l_vector3[0] = 777
+        with self.assertRaises(ValueError):
+            l_result = l_vector - l_vector3 
 
 if __name__ == '__main__':
     unittest.main()
