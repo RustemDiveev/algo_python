@@ -5,6 +5,7 @@ from e2.r4 import Flower
 from e2.r5 import CreditCard_r5
 from e2.r6 import CreditCard_r6
 from e2.r7 import CreditCard_r7
+from e2.r8 import test_credit_card
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -156,6 +157,14 @@ class Test_r7(unittest.TestCase):
                 limit=2000000,
                 balance=l_balance
             )
+
+class Test_r8(unittest.TestCase):
+
+    def test_credit_card(self):
+        l_result = test_credit_card(p_int=59)
+        self.assertTrue(l_result[0])
+        self.assertTrue(l_result[1])
+        self.assertFalse(l_result[2])
 
 if __name__ == '__main__':
     unittest.main()
