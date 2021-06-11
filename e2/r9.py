@@ -37,3 +37,14 @@ class Vector:
     def __str__(self):
         """Produce string representation of vector."""
         return '<' + str(self._coords)[1:-1] + '>'  # adapt list representation
+
+class Vector_r9(Vector):
+
+    def __sub__(self, other):
+        """Return subtraction of two vectors."""
+        if len(self) != len(other):
+            raise ValueError('dimensions must agree')
+        result = Vector(len(self))
+        for j in range(len(self)):
+            result[j] = self[j] - other[j]
+        return result 
