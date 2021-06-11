@@ -6,6 +6,7 @@ from e2.r5 import CreditCard_r5
 from e2.r6 import CreditCard_r6
 from e2.r7 import CreditCard_r7
 from e2.r8 import test_credit_card
+from e2.r9 import Vector_r9
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -165,6 +166,32 @@ class Test_r8(unittest.TestCase):
         self.assertTrue(l_result[0])
         self.assertTrue(l_result[1])
         self.assertFalse(l_result[2])
+
+class Test_r9(unittest.TestCase):
+
+    def check_vector(self):
+        pass
+        # Check len
+
+        # Check getitem 
+
+        # Check setitem 
+
+        # Check add 
+        # With same length 
+        # Without same length
+
+        # Check eq 
+
+        # Check ne 
+
+        # Check str 
+
+    def check_vector_sub(self):
+        pass
+        # Check with same length 
+
+        # Check without same length 
 
 if __name__ == '__main__':
     unittest.main()
