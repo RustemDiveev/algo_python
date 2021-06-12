@@ -9,6 +9,7 @@ from e2.r8 import test_credit_card
 from e2.r9 import Vector_r9
 from e2.r10 import Vector_r10
 from e2.r11 import Vector_r11
+from e2.r12 import Vector_r12 
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -270,6 +271,21 @@ class Test_r11(unittest.TestCase):
         self.assertEqual(l_result[2], 12)
         self.assertEqual(l_result[3], 1)
         self.assertEqual(l_result[4], 5)
+
+class Test_r12(unittest.TestCase):
+
+    def test_check_mul(self):
+        l_vector = Vector_r12(3)
+        l_vector[0] = 1
+        l_vector[1] = 2
+        l_vector[2] = 3
+        l_result = l_vector * 3 
+        self.assertEqual(l_result[0], 3)
+        self.assertEqual(l_result[1], 6)
+        self.assertEqual(l_result[2], 9)
+
+        with self.assertRaises(TypeError):
+            l_result = l_vector * "too many!"
 
 if __name__ == '__main__':
     unittest.main()
