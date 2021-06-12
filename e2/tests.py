@@ -11,6 +11,7 @@ from e2.r10 import Vector_r10
 from e2.r11 import Vector_r11
 from e2.r12 import Vector_r12 
 from e2.r13 import Vector_r13
+from e2.r14 import Vector_r14
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -299,6 +300,25 @@ class Test_r13(unittest.TestCase):
         self.assertEqual(l_result[0], 3)
         self.assertEqual(l_result[1], 6)
         self.assertEqual(l_result[2], 9)
+
+class Test_r14(unittest.TestCase):
+    
+    def test_check_mul_vector_by_vector(self):
+        l_vector1 = Vector_r14(2)
+        l_vector2 = Vector_r14(2)
+        l_vector3 = Vector_r14(1)
+        
+        l_vector1[0] = 2
+        l_vector1[1] = 3
+        l_vector2[0] = 4 
+        l_vector2[1] = 5 
+        l_vector3[0] = 6 
+
+        l_result = l_vector1 * l_vector2
+        self.assertEqual(l_result, 23)
+
+        with self.assertRaises(ValueError):
+            l_result = l_vector1 * l_vector3
 
 if __name__ == '__main__':
     unittest.main()
