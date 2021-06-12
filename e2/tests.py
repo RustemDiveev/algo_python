@@ -8,6 +8,7 @@ from e2.r7 import CreditCard_r7
 from e2.r8 import test_credit_card
 from e2.r9 import Vector_r9
 from e2.r10 import Vector_r10
+from e2.r11 import Vector_r11
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -252,6 +253,23 @@ class Test_r10(unittest.TestCase):
         l_result = -l_vector 
         self.assertEqual(l_result[0], -222)
         self.assertEqual(l_result[1], 222)
+
+class Test_r11(unittest.TestCase):
+
+    def test_check_radd(self):
+        l_vector = Vector_r11(5)
+        l_vector[0] = 0
+        l_vector[1] = 1
+        l_vector[2] = 2
+        l_vector[3] = 3 
+        l_vector[4] = 4
+
+        l_result = [5, 3, 10, -2, 1] + l_vector 
+        self.assertEqual(l_result[0], 5)
+        self.assertEqual(l_result[1], 4)
+        self.assertEqual(l_result[2], 12)
+        self.assertEqual(l_result[3], 1)
+        self.assertEqual(l_result[4], 5)
 
 if __name__ == '__main__':
     unittest.main()
