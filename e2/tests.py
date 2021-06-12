@@ -7,6 +7,7 @@ from e2.r6 import CreditCard_r6
 from e2.r7 import CreditCard_r7
 from e2.r8 import test_credit_card
 from e2.r9 import Vector_r9
+from e2.r10 import Vector_r10
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -241,6 +242,16 @@ class Test_r9(unittest.TestCase):
         l_vector3[0] = 777
         with self.assertRaises(ValueError):
             l_result = l_vector - l_vector3 
+
+class Test_r10(unittest.TestCase):
+
+    def test_check_neg(self):
+        l_vector = Vector_r10(2)
+        l_vector[0] = 222
+        l_vector[1] = -222
+        l_result = -l_vector 
+        self.assertEqual(l_result[0], -222)
+        self.assertEqual(l_result[1], 222)
 
 if __name__ == '__main__':
     unittest.main()
