@@ -8,9 +8,9 @@ class Vector_r15(Vector_r14):
     """
     def __init__(self, d):
         if isinstance(d, int):
-            super().__init__(self, d)
-        elif isinstance(d, Sequence):
-            super().__init__(self, len(d))
+            super().__init__(d)
+        elif isinstance(d, (tuple, list)):
+            super().__init__(len(d))
             for i in range(len(d)):
                 self[i] = d[i]
         else:

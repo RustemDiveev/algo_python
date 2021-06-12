@@ -12,6 +12,7 @@ from e2.r11 import Vector_r11
 from e2.r12 import Vector_r12 
 from e2.r13 import Vector_r13
 from e2.r14 import Vector_r14
+from e2.r15 import Vector_r15
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -319,6 +320,29 @@ class Test_r14(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             l_result = l_vector1 * l_vector3
+
+class Test_r15(unittest.TestCase):
+
+    def test_init(self):
+        l_vector = Vector_r15(d=10)
+        self.assertEqual(len(l_vector), 10)
+        for i in range(len(l_vector)):
+            self.assertEqual(l_vector[i], 0)
+
+        l_vector = Vector_r15(d=(1,2,3))
+        self.assertEqual(len(l_vector), 3)
+        self.assertEqual(l_vector[0], 1)
+        self.assertEqual(l_vector[1], 2)
+        self.assertEqual(l_vector[2], 3)
+
+        l_vector = Vector_r15(d=[1,2,3])
+        self.assertEqual(len(l_vector), 3)
+        self.assertEqual(l_vector[0], 1)
+        self.assertEqual(l_vector[1], 2)
+        self.assertEqual(l_vector[2], 3)
+
+        with self.assertRaises(TypeError):
+            l_vector = Vector_r15(d="abcd")
 
 if __name__ == '__main__':
     unittest.main()
