@@ -1,0 +1,25 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>220</x><y>40</y><w>70</w><h>30</h></coordinates><panel_attributes>object</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>110</y><w>100</w><h>100</h></coordinates><panel_attributes>Goat
+--
+_tail
+--
+milk()
+jump()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>190</x><y>110</y><w>140</w><h>100</h></coordinates><panel_attributes>Pig
+--
+_nose
+--
+eat(food)
+wallow()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>60</y><w>180</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;50;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>60</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>110</y><w>140</w><h>100</h></coordinates><panel_attributes>Horse
+--
+_height
+_color
+--
+run()
+jump()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>60</y><w>190</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>170;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>260</y><w>80</w><h>60</h></coordinates><panel_attributes>Racer
+--
+race()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>260</y><w>130</w><h>90</h></coordinates><panel_attributes>Equestrian
+--
+_weight
+--
+trot()
+is_trained()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>370</x><y>200</y><w>90</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;60;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>430</x><y>200</y><w>120</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>100;60;10;10</additional_attributes></element></diagram>
