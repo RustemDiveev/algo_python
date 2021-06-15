@@ -1,4 +1,5 @@
 import unittest
+from random import randint
 
 #Reinforcement 
 from e2.r4 import Flower 
@@ -13,6 +14,7 @@ from e2.r12 import Vector_r12
 from e2.r13 import Vector_r13
 from e2.r14 import Vector_r14
 from e2.r15 import Vector_r15
+from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formula
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -343,6 +345,20 @@ class Test_r15(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             l_vector = Vector_r15(d="abcd")
+
+class Test_r16(unittest.TestCase):
+    
+    def test_elements_in_range_randomly(self):
+        for i in range(100):
+            l_step = 0 
+            while l_step == 0:
+                l_step = randint(1, 100)
+            l_start = randint(-10000, 10000)
+            l_stop = l_start + randint(1, 1000000)
+            self.assertEqual(
+                get_element_cnt_in_range_loop(p_start=l_start, p_stop=l_stop, p_step=l_step),
+                get_element_cnt_in_range_formula(p_start=l_start, p_stop=l_stop, p_step=l_step)
+            )        
 
 if __name__ == '__main__':
     unittest.main()
