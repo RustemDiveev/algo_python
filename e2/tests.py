@@ -16,6 +16,7 @@ from e2.r14 import Vector_r14
 from e2.r15 import Vector_r15
 from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formula
 from e2.r18 import FibonacciProgression
+from e2.r19 import ArithmeticProgression
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -370,6 +371,15 @@ class Test_r18(unittest.TestCase):
         for i in range(8-1):
             l_fp._advance()
         self.assertEqual(l_fp._current, 42)
+
+class Test_r19(unittest.TestCase):
+
+    def test_2_in_63_reach_arithmetic_progression(self):
+        # 2**63 = 128 (2**7) * 2**56
+        l_result = 2 ** 56
+        # Previous range formula for amount of elements 
+        l_expected_result = (2 ** 63 - 0 + 128 - 1) // 128
+        self.assertEqual(l_result, l_expected_result)
 
 if __name__ == '__main__':
     unittest.main()

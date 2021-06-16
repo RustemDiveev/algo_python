@@ -61,9 +61,3 @@ class FibonacciProgression(Progression):
             Update current value by taking sum of previous two
         """
         self._prev, self._current = self._current, self._prev + self._current 
-
-l_fp = FibonacciProgression(first=2, second=2)
-for i in range(8):
-    l_fp._advance()
-
-print(l_fp._current)
