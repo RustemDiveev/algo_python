@@ -15,6 +15,7 @@ from e2.r13 import Vector_r13
 from e2.r14 import Vector_r14
 from e2.r15 import Vector_r15
 from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formula
+from e2.r18 import FibonacciProgression
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -359,6 +360,16 @@ class Test_r16(unittest.TestCase):
                 get_element_cnt_in_range_loop(p_start=l_start, p_stop=l_stop, p_step=l_step),
                 get_element_cnt_in_range_formula(p_start=l_start, p_stop=l_stop, p_step=l_step)
             )        
+
+class Test_r18(unittest.TestCase):
+
+    def test_8th_member(self):
+        # 8th member is 
+        # 2 2 4 6 10 16 26 42 
+        l_fp = FibonacciProgression(first=2, second=2)
+        for i in range(8-1):
+            l_fp._advance()
+        self.assertEqual(l_fp._current, 42)
 
 if __name__ == '__main__':
     unittest.main()
