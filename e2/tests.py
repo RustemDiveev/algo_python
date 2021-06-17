@@ -17,6 +17,7 @@ from e2.r15 import Vector_r15
 from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formula
 from e2.r18 import FibonacciProgression
 from e2.r22 import ExampleList
+from e2.r23 import ExampleList_r23
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -392,6 +393,22 @@ class Test_r22(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             l_el_4 = ExampleList("a sequence but not a list")
+
+class Test_r23(unittest.TestCase):
+
+    def test_lt_examplelist(self):
+        l_el_1 = ExampleList_r23([])
+        l_el_2 = ExampleList_r23([1,2,3,4,5])
+        l_el_3 = ExampleList_r23([1,2,3,4,5])
+        l_el_4 = ExampleList_r23([1,2,3,4,6])
+        l_el_5 = ExampleList_r23([1,2,3,4,4])
+        l_el_6 = ExampleList_r23([1,2,3,4])
+
+        self.assertFalse(l_el_1 < l_el_1)
+        self.assertFalse(l_el_2 < l_el_3)
+        self.assertTrue(l_el_2 < l_el_4)
+        self.assertFalse(l_el_2 < l_el_5)
+        self.assertFalse(l_el_2 < l_el_6)
 
 if __name__ == '__main__':
     unittest.main()
