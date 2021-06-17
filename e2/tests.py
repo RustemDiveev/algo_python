@@ -16,7 +16,7 @@ from e2.r14 import Vector_r14
 from e2.r15 import Vector_r15
 from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formula
 from e2.r18 import FibonacciProgression
-from e2.r19 import ArithmeticProgression
+from e2.r22 import ExampleList
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -380,6 +380,18 @@ class Test_r19(unittest.TestCase):
         # Previous range formula for amount of elements 
         l_expected_result = (2 ** 63 - 0 + 128 - 1) // 128
         self.assertEqual(l_result, l_expected_result)
+
+class Test_r22(unittest.TestCase):
+
+    def test_eq_examplelist(self):
+        l_el_1 = ExampleList([1,2,3])
+        l_el_2 = ExampleList([1,2,3])
+        l_el_3 = ExampleList([3,2,1,4])
+        self.assertTrue(l_el_1 == l_el_2)
+        self.assertFalse(l_el_2 == l_el_3)
+
+        with self.assertRaises(TypeError):
+            l_el_4 = ExampleList("a sequence but not a list")
 
 if __name__ == '__main__':
     unittest.main()
