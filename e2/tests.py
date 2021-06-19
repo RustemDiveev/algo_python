@@ -18,6 +18,7 @@ from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formu
 from e2.r18 import FibonacciProgression
 from e2.r22 import ExampleList
 from e2.r23 import ExampleList_r23
+from e2.c25 import Vector_c25
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -409,6 +410,22 @@ class Test_r23(unittest.TestCase):
         self.assertTrue(l_el_2 < l_el_4)
         self.assertFalse(l_el_2 < l_el_5)
         self.assertFalse(l_el_2 < l_el_6)
+
+class Test_c25(unittest.TestCase):
+
+    def test_mul_vector(self):
+        l_vector = Vector_c25([1,2,3])
+        with self.assertRaises(TypeError):
+            l_vector * "123"
+
+        self.assertEqual(Vector_c25([2,4,6]), l_vector * 2)
+
+        with self.assertRaises(ValueError):
+            l_another_vector = Vector_c25([1,2,3,4])
+            l_vector * l_another_vector 
+
+        l_result = 1 * 1 + 2 * 2 + 3 * 3 
+        self.assertEqual(l_result, l_vector * l_vector)
 
 if __name__ == '__main__':
     unittest.main()
