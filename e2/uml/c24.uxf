@@ -1,0 +1,21 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>50</x><y>50</y><w>100</w><h>160</h></coordinates><panel_attributes>Book
+--
+_name
+_author
+_pages
+_current_page
+_is_purchased
+--
+read()
+save_and_quit()
+buy()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>190</x><y>50</y><w>150</w><h>80</h></coordinates><panel_attributes>User
+--
+_name
+_books
+--
+get_user_books()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1070</x><y>50</y><w>100</w><h>20</h></coordinates><panel_attributes>SimpleClass</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>380</x><y>50</y><w>210</w><h>80</h></coordinates><panel_attributes>Library
+--
+_books
+--
+get_unpurchased_books(User)</panel_attributes><additional_attributes></additional_attributes></element></diagram>
