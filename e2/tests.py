@@ -19,6 +19,7 @@ from e2.r18 import FibonacciProgression
 from e2.r22 import ExampleList
 from e2.r23 import ExampleList_r23
 from e2.c25 import Vector_c25
+from e2.c26 import ReversedSequenceIterator
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -426,6 +427,17 @@ class Test_c25(unittest.TestCase):
 
         l_result = 1 * 1 + 2 * 2 + 3 * 3 
         self.assertEqual(l_result, l_vector * l_vector)
+
+class Test_c26(unittest.TestCase):
+
+    def test_reversed_sequence_iterator(self):
+        l_rsi = ReversedSequenceIterator(sequence="abcd") 
+        self.assertEqual("d", next(l_rsi))
+        self.assertEqual("c", next(l_rsi))
+        self.assertEqual("b", next(l_rsi))
+        self.assertEqual("a", next(l_rsi))
+        with self.assertRaises(StopIteration):
+            next(l_rsi)
 
 if __name__ == '__main__':
     unittest.main()

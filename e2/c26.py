@@ -26,10 +26,6 @@ class SequenceIterator:
         """
         return self 
 
-#l_si = SequenceIterator(sequence="abcd")
-#while True:
-#    print (next(l_si))
-
 class ReversedSequenceIterator:
 
     def __init__(self, sequence):
