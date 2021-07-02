@@ -31,10 +31,21 @@ class Range:
         """
             Return entry at index k (using standard interpretation if negative)
         """
-        if k > 0:
+        if k < 0:
             k += len(self)
 
         if not 0 <= k < self._length:
             raise IndexError('index out of range')
         
         return self._start + k * self._step 
+
+    def __contains__(self, p_element: int) -> bool:
+        """
+            Return True if element exists in a Range, False otherwise 
+            input:
+                p_element - value, which needs to be searched
+            output:
+                bool
+        """
+        l_result = (p_element - self._start) / self._step
+        return True if l_result % 1 == 0 and l_result < len(self) else False
