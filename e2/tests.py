@@ -1,5 +1,6 @@
 import unittest
 from random import randint
+from time import perf_counter
 
 #Reinforcement 
 from e2.r4 import Flower 
@@ -18,8 +19,10 @@ from e2.r16 import get_element_cnt_in_range_loop, get_element_cnt_in_range_formu
 from e2.r18 import FibonacciProgression
 from e2.r22 import ExampleList
 from e2.r23 import ExampleList_r23
+#Creative
 from e2.c25 import Vector_c25
 from e2.c26 import ReversedSequenceIterator
+from e2.c27 import Range
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -438,6 +441,25 @@ class Test_c26(unittest.TestCase):
         self.assertEqual("a", next(l_rsi))
         with self.assertRaises(StopIteration):
             next(l_rsi)
+
+class Test_c27(unittest.TestCase):
+
+    def test_range_contains(self):
+        self.assertTrue(2 in Range(999999))
+        self.assertTrue(2 in Range(2, 10, 2))
+        self.assertFalse(3 in Range(2, 10, 2))
+        self.assertFalse(10 in Range(2, 10, 2))
+        
+        l_start = perf_counter()
+        2 in Range(100000000)
+        l_time1 = perf_counter() - l_start 
+
+        l_start = perf_counter()
+        99999999 in Range(100000000)
+        l_time2 = perf_counter() - l_start 
+
+        # time of execution of 2nd case is less or equal than 10*1st case
+        self.assertLessEqual(l_time2, l_time1 * 10)
 
 if __name__ == '__main__':
     unittest.main()

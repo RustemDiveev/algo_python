@@ -1,3 +1,5 @@
+# from time import perf_counter
+
 class Range:
     """
         A class that mimic's the built-in range class.
@@ -49,3 +51,17 @@ class Range:
         """
         l_result = (p_element - self._start) / self._step
         return True if l_result % 1 == 0 and l_result < len(self) else False
+
+# l_start = perf_counter()
+# 2 in Range(100000000)
+# l_end = perf_counter()
+# l_time1 = l_end - l_start
+# print(l_time1)
+
+# l_start = perf_counter()
+# 99999999 in Range(100000000)
+# l_end = perf_counter()
+# l_time2 = l_end - l_start
+# print(l_time2)
+
+# print(l_time2 / l_time1)
