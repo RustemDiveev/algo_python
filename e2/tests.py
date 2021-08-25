@@ -23,6 +23,7 @@ from e2.r23 import ExampleList_r23
 from e2.c25 import Vector_c25
 from e2.c26 import ReversedSequenceIterator
 from e2.c27 import Range
+from e2.c28 import CreditCard_c28, get_current_year_and_month
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -460,6 +461,51 @@ class Test_c27(unittest.TestCase):
 
         # time of execution of 2nd case is less or equal than 10*1st case
         self.assertLessEqual(l_time2, l_time1 * 10)
+
+class Test_c28(unittest.TestCase):
+    """
+        сделать 11 вызовов charge и проверим что баланс уменьшился
+        сделать 9 вызовов charge и проверим что баланс уменьшился
+        поменять месяц и год на более ранний, и проверить, что при вызове charge он поменяется
+    """
+    def test_11_charge_calls(self):
+
+        l_instance = CreditCard_c28(
+            customer="Mother Mary",
+            bank="Sderbank",
+            acnt="1111 2222 3333 4444",
+            limit=200000,
+            apr=0
+        )
+        for i in range(11):
+            l_instance.charge(price=10000)
+        self.assertEqual(10000*11 + 1, l_instance.get_balance())
+
+    def test_9_charge_calls(self):
+
+        l_instance = CreditCard_c28(
+            customer="Mother Mary",
+            bank="Sderbank",
+            acnt="1111 2222 3333 4444",
+            limit=200000,
+            apr=0
+        )
+        for i in range(9):
+            l_instance.charge(price=10000)
+        self.assertEqual(10000*9, l_instance.get_balance())
+
+    def test_currentperiod_update(self):
+
+        l_instance = CreditCard_c28(
+            customer="Mother Mary",
+            bank="Sderbank",
+            acnt="1111 2222 3333 4444",
+            limit=200000,
+            apr=0
+        )
+        l_instance._currentperiod = (1, 2020)
+        l_instance.charge(price=10000)
+        self.assertEqual(l_instance._currentperiod, get_current_year_and_month())
 
 if __name__ == '__main__':
     unittest.main()
