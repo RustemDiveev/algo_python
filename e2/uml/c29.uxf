@@ -1,0 +1,25 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>1190</x><y>40</y><w>100</w><h>70</h></coordinates><panel_attributes>SimpleClass</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>30</x><y>20</y><w>190</w><h>200</h></coordinates><panel_attributes>PredatoryCreditCard
+--
+customer
+bank
+account
+limit
+balance
+apr
+--
+charge()
+make_payment()
+process_month()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>290</x><y>20</y><w>250</w><h>210</h></coordinates><panel_attributes>ModifiedPredatoryCreditCard
+--
+customer
+bank
+account
+limit
+balance
+apr
+minimum_monthly_payment_percentage
+late_fee
+--
+charge()
+make_payment()
+process_month() - доработать</panel_attributes><additional_attributes></additional_attributes></element></diagram>
