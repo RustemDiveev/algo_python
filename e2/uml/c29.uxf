@@ -17,9 +17,9 @@ account
 limit
 balance
 apr
-minimum_monthly_payment_percentage
+min_monthly_payment_pct
 late_fee
 --
 charge()
-make_payment()
+make_payment() - доработать 
 process_month() - доработать</panel_attributes><additional_attributes></additional_attributes></element></diagram>
