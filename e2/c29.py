@@ -57,7 +57,7 @@ class PredatoryCreditCard_c29(PredatoryCreditCard):
         """
             Штраф за непогашение минимального месячного платежа 
         """
-        return self._late_fee 
+        return self._late_fee
 
     @late_fee.setter
     def late_fee(self, value):
