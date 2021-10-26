@@ -1,6 +1,7 @@
 import unittest
 from random import randint
 from time import perf_counter
+from unittest.case import TestCase
 
 #Reinforcement 
 from e2.r4 import Flower 
@@ -24,6 +25,7 @@ from e2.c25 import Vector_c25
 from e2.c26 import ReversedSequenceIterator
 from e2.c27 import Range
 from e2.c28 import CreditCard_c28, get_current_year_and_month
+from e2.c29 import PredatoryCreditCard_c29
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -506,6 +508,38 @@ class Test_c28(unittest.TestCase):
         l_instance._currentperiod = (1, 2020)
         l_instance.charge(price=10000)
         self.assertEqual(l_instance._currentperiod, get_current_year_and_month())
+        
+class Test_c29(unittest.TestCase):
+    """
+    Инициализируем карту 
+    Эмулируем ситуацию, что ежемесячный платеж не был погашен
+    Проверяем факт того, что баланс увеличился на нужный процент
+    А также, что баланс обновился и обнулилась сумма платежей 
+    """
+    def test_predatory_credit_card(self):
+
+        l_card = PredatoryCreditCard_c29(
+            customer="Vasya",
+            bank="DCP",
+            acnt="228 282",
+            limit=10000,
+            apr=0,
+            min_monthly_payment_pct=0.5,
+            late_fee=100
+        )
+
+        l_card.charge(price=5000)
+        l_card.process_month()
+
+        # Баланс: 10000-5000, никаких штрафов 
+        self.assertEqual(l_card._balance, 5000)
+
+        # Новый месяц, не погашено 50% от баланса на начало месяца,
+        # Проверяем наличие штрафа 
+        l_card.process_month()
+        self.assertEqual(l_card._balance, 5100)
+        self.assertEqual(l_card._month_begin_balance, 5100)
+        self.assertEqual(l_card._month_customer_payment, 0)
 
 if __name__ == '__main__':
     unittest.main()
