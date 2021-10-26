@@ -569,6 +569,7 @@ class Test_c30(unittest.TestCase):
         self.assertEqual(l_credit_card.balance, 0)
         self.assertEqual(l_predatory_credit_card.balance, 0)
 
+        # Вот тут надо разобраться почему вообще это выполняется...
         with self.assertRaises(AttributeError):
             l_credit_card.balance = 1000
 
