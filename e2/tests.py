@@ -26,6 +26,7 @@ from e2.c26 import ReversedSequenceIterator
 from e2.c27 import Range
 from e2.c28 import CreditCard_c28, get_current_year_and_month
 from e2.c29 import PredatoryCreditCard_c29
+from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -540,6 +541,51 @@ class Test_c29(unittest.TestCase):
         self.assertEqual(l_card._balance, 5100)
         self.assertEqual(l_card._month_begin_balance, 5100)
         self.assertEqual(l_card._month_customer_payment, 0)
+
+class Test_c30(unittest.TestCase):
+    """
+        Инициализируем обе карты 
+        Пытаемся обратиться к балансу, 
+        показываем что баланс можно поменять через метод, 
+        несмотря на то, что метод защищенный 
+    """
+
+    def test_balance_access(self):
+
+        l_credit_card = CreditCard_c30(
+            customer="Diman",
+            bank="GrabBank",
+            acnt="666 777",
+            limit=20000
+        )
+
+        l_predatory_credit_card = PredatoryCreditCard_c30(
+            customer="Kolyan",
+            bank="PKB",
+            acnt="888 999",
+            limit=100000,
+            apr=2000
+        )
+        self.assertEqual(l_credit_card.balance, 0)
+        self.assertEqual(l_predatory_credit_card.balance, 0)
+
+        with self.assertRaises(AttributeError):
+            l_credit_card.balance = 1000
+
+        l_credit_card.__balance = 1000
+        self.assertEqual(l_credit_card.balance, 0)
+
+        l_credit_card._set_balance(4000)
+        self.assertEqual(l_credit_card.balance, 4000)
+
+        with self.assertRaises(AttributeError):
+            l_predatory_credit_card.balance = 1000
+
+        l_predatory_credit_card.__balance = 1000
+        self.assertEqual(l_predatory_credit_card.balance, 0)
+        
+        l_predatory_credit_card._set_balance(2000)
+        self.assertEqual(l_predatory_credit_card.balance, 2000)
 
 if __name__ == '__main__':
     unittest.main()
