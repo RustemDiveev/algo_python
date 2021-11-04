@@ -27,6 +27,7 @@ from e2.c28 import CreditCard_c28, get_current_year_and_month
 from e2.c29 import PredatoryCreditCard_c29
 from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
 from e2.c31 import ProgressionAbs
+from e2.c32 import ProgressionSqrt
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -599,6 +600,17 @@ class Test_c31(unittest.TestCase):
         self.assertEqual(next(l_progression), 198)
         self.assertEqual(next(l_progression), 2)
         self.assertEqual(next(l_progression), 196)
+
+class Test_c32(unittest.TestCase):
+
+    def test_progression_sqrt(self):
+
+        l_progression = ProgressionSqrt(start=256)
+
+        self.assertEqual(next(l_progression), 256)
+        self.assertEqual(next(l_progression), 16)
+        self.assertEqual(next(l_progression), 4)
+        self.assertEqual(next(l_progression), 2)
 
 if __name__ == '__main__':
     unittest.main()
