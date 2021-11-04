@@ -1,7 +1,6 @@
 import unittest
 from random import randint
 from time import perf_counter
-from unittest.case import TestCase
 
 #Reinforcement 
 from e2.r4 import Flower 
@@ -27,6 +26,7 @@ from e2.c27 import Range
 from e2.c28 import CreditCard_c28, get_current_year_and_month
 from e2.c29 import PredatoryCreditCard_c29
 from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
+from e2.c31 import ProgressionAbs
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -587,6 +587,18 @@ class Test_c30(unittest.TestCase):
         
         l_predatory_credit_card._set_balance(2000)
         self.assertEqual(l_predatory_credit_card.balance, 2000)
+
+class Test_c31(unittest.TestCase):
+
+    def test_progression_abs(self):
+
+        l_progression = ProgressionAbs()
+        
+        self.assertEqual(next(l_progression), 2)
+        self.assertEqual(next(l_progression), 200)
+        self.assertEqual(next(l_progression), 198)
+        self.assertEqual(next(l_progression), 2)
+        self.assertEqual(next(l_progression), 196)
 
 if __name__ == '__main__':
     unittest.main()
