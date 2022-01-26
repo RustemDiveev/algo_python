@@ -1,10 +1,12 @@
 from multiprocessing.sharedctypes import Value
-from re import VERBOSE, compile, split, matchall
+from re import VERBOSE, compile, split, fullmatch
 
 """
     Write a Python program that inputs a polynomial in standard algebraic
     notation and outputs the first derivative of that polynomial.
 """
+
+# TODO: после всех исправлений, необходимо организовать класс Polynomial таким образом, чтобы при инициализации сразу же вычислялась первая производная
 
 class PolynomialToken:
 
@@ -94,6 +96,8 @@ class Polynomial:
 
         self.parse()
 
+        # TODO: Добавить проверку
+
     def parse(self):
         """
             Разбираем полином на составляющие
@@ -116,7 +120,7 @@ class Polynomial:
             flags=VERBOSE
         ) 
 
-        l_match_object = l_pattern.matchall(string=p_str)
+        l_match_object = l_pattern.fullmatch(string=p_str)
 
         if l_match_object:
 
@@ -141,7 +145,20 @@ class Polynomial:
         """
             Полином имеет следующий вид:
             ax^n + bx^(n-1) + ... + yx^1 + z
+
+            Перечень проверок:
+            1. Степень все время убывает 
+            2. Используется только одна переменная 
         """
+        # TODO: Реализовать проверки
         pass 
+
+    def get_derivative(self):
+        # TODO: Реализовать получение первой производной
+        pass 
+
+    def derivative_to_string(self):
+        # TODO: Реализовать получение первой производной в виде строки
+        pass
 
 
