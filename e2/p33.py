@@ -6,8 +6,6 @@ from re import VERBOSE, compile, split, fullmatch
     notation and outputs the first derivative of that polynomial.
 """
 
-# TODO: после всех исправлений, необходимо организовать класс Polynomial таким образом, чтобы при инициализации сразу же вычислялась первая производная
-
 class PolynomialToken:
 
     """
@@ -93,10 +91,11 @@ class Polynomial:
 
         self.default_variable = "x"
         self.token_list = []
+        self.token_derivative_list = []
 
         self.parse()
-
-        # TODO: Добавить проверку
+        self.check()
+        self.get_derivative()
 
     def parse(self):
         """
@@ -150,15 +149,43 @@ class Polynomial:
             1. Степень все время убывает 
             2. Используется только одна переменная 
         """
-        # TODO: Реализовать проверки
-        pass 
+        l_pow, l_variable = None 
+
+        for i_token in self.token_list:
+
+            if l_pow:
+                if i_token.pow >= l_pow:
+                    raise ValueError("Полином не записан в стандартной алгебраичной нотации, следующий член имеет большую степень, чем предыдущий")
+                else:
+                    l_pow = i_token.pow
+            
+            if l_variable:
+                if i_token.variable != l_variable:
+                    raise ValueError("Полином не записан в стандартной алгебраичной нотации, используются разные переменные")
+
+            if l_pow is None:
+                l_pow = i_token.pow 
+            if l_variable is None: 
+                l_variable = i_token.variable 
+
 
     def get_derivative(self):
-        # TODO: Реализовать получение первой производной
-        pass 
+        """
+            Возвращает список из экземпляров класса PolynomialToken, от которых взята первая производная
+        """
+        for i_token in self.token_list:
+            self.token_derivative_list.append(i_token.get_derivative())
 
-    def derivative_to_string(self):
-        # TODO: Реализовать получение первой производной в виде строки
-        pass
+    def derivative_to_string(self) -> str:
+        """
+            Возвращает строку с полиномом, от которого взяли первую производную
+        """
+        l_string = ""
+        for i_token in self.token_derivative_list:
+            l_token_str = "+" if i_token.coefficient < 0 else "" + str(i_token.coefficient) + i_token.variable + "^" + str(i_token.pow)
+            l_string += l_token_str
 
+        if l_string[0] == "+":
+            l_string = l_string[1:]
 
+        return l_string
