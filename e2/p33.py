@@ -63,7 +63,6 @@ class PolynomialToken:
 
         if self.pow is None:
             raise ValueError("Показатель степени должен быть заполнен")
-        
 
     def get_derivative(self):
         """
