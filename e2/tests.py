@@ -616,6 +616,8 @@ class Test_c32(unittest.TestCase):
 class Test_p33(unittest.TestCase):
     
     def polynomial_token_correct(self):
+
+        self.assertEqual(1,2)
         # 1. Инициализируем корректно и без ошибок
         l_order_number = 1 
         l_coefficient = 0.23
