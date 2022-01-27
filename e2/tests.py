@@ -736,6 +736,8 @@ class Test_p33(unittest.TestCase):
                 p_variable=l_variable,
                 p_pow=l_pow
             )
+        
+        self.assertEqual(1, 2)
 
     """
         TODO: Список тестов
