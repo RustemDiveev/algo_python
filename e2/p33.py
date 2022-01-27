@@ -24,8 +24,8 @@ class PolynomialToken:
         self.variable = p_variable 
         self.pow = p_pow 
 
-        self.check_type()
         self.check_value()
+        self.check_type()
 
     def check_type(self):
         """

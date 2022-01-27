@@ -191,7 +191,7 @@ class Test_r8(unittest.TestCase):
 
 class Test_r9(unittest.TestCase):
 
-    def check_vector(self):
+    def test_vector(self):
         # Check len
         l_vector = Vector_r9(4)
         self.assertEqual(len(l_vector), 4)
@@ -246,7 +246,7 @@ class Test_r9(unittest.TestCase):
         l_str = "<0, 1, 2, 0>"
         self.assertEqual(l_str, str(l_vector))
 
-    def check_vector_sub(self):
+    def test_vector_sub(self):
         # Check with same length 
         l_vector = Vector_r9(2)
         l_vector[0] = 900
@@ -613,17 +613,134 @@ class Test_c32(unittest.TestCase):
         self.assertEqual(next(l_progression), 4)
         self.assertEqual(next(l_progression), 2)
 
-class Test2_p33(unittest.TestCase):
+class Test_p33(unittest.TestCase):
     
-    def polynomial_token_correct(self):
-        l_a = 1 
-        l_b = 2
-        self.assertEqual(l_a,l_b)
+    def test_polynomial_token_correct(self):
+        # 1. Инициализируем корректно и без ошибок
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2 
 
-class SampleTest(unittest.TestCase):
+        l_cls = PolynomialToken(
+            p_order_number=l_order_number,
+            p_coefficient=l_coefficient,
+            p_variable=l_variable,
+            p_pow=l_pow
+        )
 
-    def sample(self):
-        self.assertEqual(1,2)
+        self.assertEqual(l_cls.order_number, l_order_number)
+        self.assertEqual(l_cls.coefficient, l_coefficient)
+        self.assertEqual(l_cls.variable, l_variable)
+        self.assertEqual(l_cls.pow, l_pow)
+
+    def test_polynomial_token_order_number_is_not_int(self):
+        # 2. Порядковый номер не целое число
+        l_order_number = 1.5 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_coefficient_is_not_a_number(self):
+        # 3. Коэффициент не число
+        l_order_number = 1 
+        l_coefficient = "abc"
+        l_variable = "x"
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_variable_is_not_a_string(self):
+        # 4. Переменная не строка
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = 200
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_variable_has_length_more_than_one(self):
+        # 5. Переменная - строка с длиной больше 1 
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "abc"
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_pow_is_not_a_number(self):
+        # 6. Показатель степени не число
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = "pow"
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_order_number_is_none(self):
+        # 7. Порядковый номер не заполнен
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = "pow"
+
+        with self.assertRaises(ValueError):
+            PolynomialToken(
+                p_order_number=None,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+	
+"""
+    TODO: Список тестов
+    
+    PolynomialToken
+    
+    8. Числовой коэффициент не заполнен 
+    9. Переменная не заполнена 
+    10. Показатель степени не заполнен
+    11. Берем первую производную и проверяем результат 
+
+    Token
+    1. Инициализируем корректно, проверяем, что все ок 
+    2. Инициализируем с неправильным токеном 
+    3. Инициализируем с тем, что степень следующего члена больше предыдущего
+    4. Инициализируем с тем, что полином содержит больше одной переменной 
+    5. Играемся с разными корректными полиномами, проверяем корректность возвращаемой первой производной
+"""
 
 if __name__ == '__main__':
     unittest.main()
