@@ -613,7 +613,7 @@ class Test_c32(unittest.TestCase):
         self.assertEqual(next(l_progression), 4)
         self.assertEqual(next(l_progression), 2)
 
-class Test_p33(unittest.TestCase):
+class Test2_p33(unittest.TestCase):
     
     def polynomial_token_correct(self):
 
