@@ -730,7 +730,7 @@ class Test_p33(unittest.TestCase):
         l_variable = "x"
         l_pow = "pow"
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             PolynomialToken(
                 p_coefficient=l_coefficient,
                 p_variable=l_variable,
