@@ -636,6 +636,7 @@ class Test_p33(unittest.TestCase):
         self.assertEqual(l_cls.variable, l_variable)
         self.assertEqual(l_cls.pow, l_pow)
 
+    """
     def polynomial_token_order_number_is_not_int(self):
         # 2. Порядковый номер не целое число
         l_order_number = 1 
@@ -727,6 +728,7 @@ class Test_p33(unittest.TestCase):
         
     def sample_test(self):
         self.assertEqual(1,2)
+    """
 
     """
         TODO: Список тестов
