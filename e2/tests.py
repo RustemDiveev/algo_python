@@ -28,6 +28,7 @@ from e2.c29 import PredatoryCreditCard_c29
 from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
 from e2.c31 import ProgressionAbs
 from e2.c32 import ProgressionSqrt
+from e2.p33 import PolynomialToken, Polynomial
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -612,29 +613,51 @@ class Test_c32(unittest.TestCase):
         self.assertEqual(next(l_progression), 4)
         self.assertEqual(next(l_progression), 2)
 
-"""
-    TODO: Список тестов
-    
-    PolynomialToken
-    1. Инициализируем корректно и без ошибок
-    2. Порядковый номер не целое число
-    3. Коэффициент не число 
-    4. Переменная не строка
-    5. Переменная строка с длиной больше 1 
-    6. Показатель степени не число
-    7. Порядковый номер не заполнен
-    8. Числовой коэффициент не заполнен 
-    9. Переменная не заполнена 
-    10. Показатель степени не заполнен
-    11. Берем первую производную и проверяем результат 
+class Test_p33(unittest.TestCase):
+    """
+        TODO: Список тестов
+        
+        PolynomialToken
+        
+        2. Порядковый номер не целое число
+        3. Коэффициент не число 
+        4. Переменная не строка
+        5. Переменная строка с длиной больше 1 
+        6. Показатель степени не число
+        7. Порядковый номер не заполнен
+        8. Числовой коэффициент не заполнен 
+        9. Переменная не заполнена 
+        10. Показатель степени не заполнен
+        11. Берем первую производную и проверяем результат 
 
-    Token
-    1. Инициализируем корректно, проверяем, что все ок 
-    2. Инициализируем с неправильным токеном 
-    3. Инициализируем с тем, что степень следующего члена больше предыдущего
-    4. Инициализируем с тем, что полином содержит больше одной переменной 
-    5. Играемся с разными корректными полиномами, проверяем корректность возвращаемой первой производной
-"""
+        Token
+        1. Инициализируем корректно, проверяем, что все ок 
+        2. Инициализируем с неправильным токеном 
+        3. Инициализируем с тем, что степень следующего члена больше предыдущего
+        4. Инициализируем с тем, что полином содержит больше одной переменной 
+        5. Играемся с разными корректными полиномами, проверяем корректность возвращаемой первой производной
+    """
+    
+    def polynomial_token_correct(self):
+        """
+            1. Инициализируем корректно и без ошибок
+        """
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2 
+
+        l_cls = PolynomialToken(
+            p_order_number=l_order_number,
+            p_coefficient=l_coefficient,
+            p_variable=l_variable,
+            p_pow=l_pow
+        )
+
+        self.assertEqual(l_cls.order_number, l_order_number)
+        self.assertEqual(l_cls.coefficient, l_coefficient)
+        self.assertEqual(l_cls.variable, l_variable)
+        self.assertEqual(l_cls.pow, l_pow)
 
 if __name__ == '__main__':
     unittest.main()
