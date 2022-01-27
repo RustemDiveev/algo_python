@@ -616,7 +616,9 @@ class Test_c32(unittest.TestCase):
 class Test2_p33(unittest.TestCase):
     
     def polynomial_token_correct(self):
-        self.assertEqual(1,2)
+        l_a = 1 
+        l_b = 2
+        self.assertEqual(l_a,l_b)
 
 class SampleTest(unittest.TestCase):
 
