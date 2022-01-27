@@ -721,11 +721,27 @@ class Test_p33(unittest.TestCase):
                 p_pow=l_pow
             )
 
+    def polynomial_token_order_number_is_none(self):
+        """
+            7. Порядковый номер не заполнен
+        """
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = "pow"
+
+        with self.assertRaises(ValueError):
+            PolynomialToken(
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
     """
         TODO: Список тестов
         
         PolynomialToken
-        7. Порядковый номер не заполнен
+        
         8. Числовой коэффициент не заполнен 
         9. Переменная не заполнена 
         10. Показатель степени не заполнен
