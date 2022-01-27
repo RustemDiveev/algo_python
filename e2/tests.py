@@ -653,12 +653,44 @@ class Test_p33(unittest.TestCase):
                 p_pow=l_pow
             )
 
+    def polynomial_token_coefficient_is_not_a_number(self):
+        """
+            3. Коэффициент не число
+        """
+        l_order_number = 1 
+        l_coefficient = "abc"
+        l_variable = "x"
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def polynomial_token_variable_is_not_a_string(self):
+        """
+            4. Переменная не строка
+        """
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = 200
+        l_pow = 2 
+
+        with self.assertRaises(TypeError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
     """
         TODO: Список тестов
         
         PolynomialToken
-        3. Коэффициент не число 
-        4. Переменная не строка
         5. Переменная строка с длиной больше 1 
         6. Показатель степени не число
         7. Порядковый номер не заполнен
