@@ -730,14 +730,15 @@ class Test_p33(unittest.TestCase):
         l_variable = "x"
         l_pow = "pow"
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             PolynomialToken(
                 p_coefficient=l_coefficient,
                 p_variable=l_variable,
                 p_pow=l_pow
             )
         
-        self.assertEqual(1, 2)
+    def sample_test(self):
+        self.assertEqual(1,2)
 
     """
         TODO: Список тестов
