@@ -616,9 +616,7 @@ class Test_c32(unittest.TestCase):
 class Test_p33(unittest.TestCase):
     
     def polynomial_token_correct(self):
-        """
-            1. Инициализируем корректно и без ошибок
-        """
+        # 1. Инициализируем корректно и без ошибок
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
@@ -637,9 +635,7 @@ class Test_p33(unittest.TestCase):
         self.assertEqual(l_cls.pow, l_pow)
 
     def polynomial_token_order_number_is_not_int(self):
-        """
-            2. Порядковый номер не целое число
-        """
+        # 2. Порядковый номер не целое число
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
@@ -654,9 +650,7 @@ class Test_p33(unittest.TestCase):
             )
 
     def polynomial_token_coefficient_is_not_a_number(self):
-        """
-            3. Коэффициент не число
-        """
+        # 3. Коэффициент не число
         l_order_number = 1 
         l_coefficient = "abc"
         l_variable = "x"
@@ -671,9 +665,7 @@ class Test_p33(unittest.TestCase):
             )
 
     def polynomial_token_variable_is_not_a_string(self):
-        """
-            4. Переменная не строка
-        """
+        # 4. Переменная не строка
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = 200
@@ -688,9 +680,7 @@ class Test_p33(unittest.TestCase):
             )
 
     def polynomial_token_variable_has_length_more_than_one(self):
-        """
-            5. Переменная строка с длиной больше 1 
-        """
+        # 5. Переменная - строка с длиной больше 1 
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "abc"
@@ -705,9 +695,7 @@ class Test_p33(unittest.TestCase):
             )
 
     def polynomial_token_pow_is_not_a_number(self):
-        """
-            6. Показатель степени не число
-        """
+        # 6. Показатель степени не число
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
@@ -722,9 +710,7 @@ class Test_p33(unittest.TestCase):
             )
 
     def polynomial_token_order_number_is_none(self):
-        """
-            7. Порядковый номер не заполнен
-        """
+        # 7. Порядковый номер не заполнен
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
