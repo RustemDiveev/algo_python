@@ -619,6 +619,7 @@ class Test_p33(unittest.TestCase):
 
         self.assertEqual(1,2)
         # 1. Инициализируем корректно и без ошибок
+        """
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
@@ -635,6 +636,7 @@ class Test_p33(unittest.TestCase):
         self.assertEqual(l_cls.coefficient, l_coefficient)
         self.assertEqual(l_cls.variable, l_variable)
         self.assertEqual(l_cls.pow, l_pow)
+        """
 
     """
     def polynomial_token_order_number_is_not_int(self):
