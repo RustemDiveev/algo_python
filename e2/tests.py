@@ -768,12 +768,38 @@ class Test_p33(unittest.TestCase):
                 p_variable=l_variable,
                 p_pow=None
             )
+
+    def test_polynomial_get_derivative(self):
+        # 11. Берем первую производную и проверяем результат 
+        l_order_number = 1 
+        l_coefficient = 0.23 
+        l_variable = "x"
+        l_pow = 2 
+
+        l_polynomial_token = PolynomialToken(
+            p_order_number=l_order_number,
+            p_coefficient=l_coefficient,
+            p_variable=l_variable,
+            p_pow=l_pow 
+        )
+
+        l_polynomial_token_derivative = l_polynomial_token.get_derivative()
+
+        self.assertEquals(
+            l_polynomial_token_derivative.order_number, l_order_number
+        )
+        self.assertEquals(
+            l_polynomial_token_derivative.coefficient, l_pow * l_coefficient
+        )
+        self.assertEquals(
+            l_polynomial_token_derivative.variable, l_variable 
+        )
+        self.assertEqual(
+            l_polynomial_token_derivative.pow, l_pow - 1
+        )
 	
 """
     TODO: Список тестов
-    
-    PolynomialToken
-    11. Берем первую производную и проверяем результат 
 
     Token
     1. Инициализируем корректно, проверяем, что все ок 
