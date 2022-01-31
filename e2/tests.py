@@ -714,7 +714,7 @@ class Test_p33(unittest.TestCase):
         l_order_number = 1 
         l_coefficient = 0.23
         l_variable = "x"
-        l_pow = "pow"
+        l_pow = 2
 
         with self.assertRaises(ValueError):
             PolynomialToken(
@@ -723,15 +723,56 @@ class Test_p33(unittest.TestCase):
                 p_variable=l_variable,
                 p_pow=l_pow
             )
+
+    def test_polynomial_token_coefficient_is_none(self):
+        # 8. Числовой коэффициент не заполнен
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2
+
+        with self.assertRaises(ValueError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=None,
+                p_variable=l_variable,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_variable_is_none(self):
+        # 9. Переменная не заполнена 
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2
+
+        with self.assertRaises(ValueError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=None,
+                p_pow=l_pow
+            )
+
+    def test_polynomial_token_pow_is_none(self):
+        # 10. Показатель степени не заполнен
+        l_order_number = 1 
+        l_coefficient = 0.23
+        l_variable = "x"
+        l_pow = 2
+
+        with self.assertRaises(ValueError):
+            PolynomialToken(
+                p_order_number=l_order_number,
+                p_coefficient=l_coefficient,
+                p_variable=l_variable,
+                p_pow=None
+            )
 	
 """
     TODO: Список тестов
     
     PolynomialToken
-    
-    8. Числовой коэффициент не заполнен 
-    9. Переменная не заполнена 
-    10. Показатель степени не заполнен
     11. Берем первую производную и проверяем результат 
 
     Token
