@@ -1,5 +1,4 @@
-from multiprocessing.sharedctypes import Value
-from re import VERBOSE, compile, split, fullmatch
+from re import VERBOSE, compile, split, fullmatch, search, findall
 
 """
     Write a Python program that inputs a polynomial in standard algebraic
@@ -109,6 +108,8 @@ class Polynomial:
     
     def parse_token(self, p_str: str, p_order_number: int) -> PolynomialToken:
 
+        # Упрощаю решение - но никаких дробей в коэффициенте и степени 
+
         l_pattern = compile(
             pattern="""
                 (?P<coefficient>[+-]?\d+(?:\.?\d+)?)? # coefficient
@@ -188,3 +189,42 @@ class Polynomial:
             l_string = l_string[1:]
 
         return l_string
+
+"""
+from re import compile, search
+
+l_pattern_coefficient = compile(
+    pattern="^([+-]?\d+(?:\.\d+)?)?(?=[a-zA-Z])"
+)
+
+l_pattern_variable = compile(
+    pattern="[a-zA-Z]+"
+)
+
+l_pattern_pow = compile(
+    pattern="(?<=[a-zA-Z]\^)(-?\d+(\.\d+)?|\(-?\d+(\.\d+)?\))"
+)
+
+
+l_string_list = [
+    "0",
+    "x",
+    "12x",
+    "-12x^2",
+    "1.23x^(3/2)",
+    "-1.234x^(-1)",
+    "0.32x^(1.34)",
+    "0.32x^(-1.34)",
+    "0.32x^(-8/7)",
+    "0.32x^(-8/7)"
+]
+
+for i_str in l_string_list:
+    print(i_str, l_pattern_coefficient.search(i_str))
+    
+for i_str in l_string_list:
+    print(i_str, l_pattern_variable.search(i_str))
+    
+for i_str in l_string_list:
+    print(i_str, l_pattern_pow.search(i_str))
+"""

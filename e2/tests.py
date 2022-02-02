@@ -797,12 +797,21 @@ class Test_p33(unittest.TestCase):
         self.assertEqual(
             l_polynomial_token_derivative.pow, l_pow - 1
         )
+
+    """
+    def test_polynomial(self):
+        # 1. Инициализируем корректно, проверяем, что все ок 
+        l_polynomial = Polynomial(
+            p_str="10x^2+3x-6"
+        )
+        self.assertEqual(l_polynomial.derivative_to_string(), "20x+3")
+    """ 
 	
 """
     TODO: Список тестов
 
     Token
-    1. Инициализируем корректно, проверяем, что все ок 
+    
     2. Инициализируем с неправильным токеном 
     3. Инициализируем с тем, что степень следующего члена больше предыдущего
     4. Инициализируем с тем, что полином содержит больше одной переменной 
