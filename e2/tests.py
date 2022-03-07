@@ -640,5 +640,13 @@ class Test_p33(unittest.TestCase):
         l_cls = Polynomial(p_string=l_string_list[0])
         self.assertEquals(l_cls._findall_result, ["x", "+y"])
 
+        # -x-y 
+        l_cls = Polynomial(p_string=l_string_list[1])
+        self.assertEquals(l_cls._findall_result, ["-x", "-y"])
+
+        # 0+0
+        l_cls = Polynomial(p_string=l_string_list[2])
+        self.assertEquals(l_cls._findall_result, ["0", "+0"])
+
 if __name__ == '__main__':
     unittest.main()
