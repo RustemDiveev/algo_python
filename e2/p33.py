@@ -209,3 +209,39 @@ a(?:c|b|bc|bcd|cd)
 a(?:bcd|cd|bc|b|c)
 Попробуем воспроизвести и проверить, что все тесты отработают
 """
+
+class Polynomial:
+    
+    # Константы, связанные с разбором полинома на отдельные части 
+
+    # Части паттернов для упрощения 
+    C_VARIABLE = "[a-zA-Z]"
+    C_OPERATOR = "[+-]?"
+    C_NUMBER = "\d+(?:\.\d+)?"
+    C_POW = "\^(?:" + C_NUMBER + "|\(-" + C_NUMBER + "\))"
+
+    # Основной паттерн для разбора полинома 
+    C_FINDALL_PATTERN = C_OPERATOR + "(?:" + \
+        C_NUMBER + C_VARIABLE + C_POW + "|" + \
+        C_VARIABLE + C_POW + "|" + \
+        C_NUMBER + C_VARIABLE + "|" + \
+        C_NUMBER + "|" + \
+        C_VARIABLE + ")" 
+
+    C_FINDALL_PATTERN = compile(pattern=C_FINDALL_PATTERN)
+
+    def __init__(self, p_string: str):
+        """
+            Конструктор 
+            input: 
+                p_string - входная строка 
+        """
+        self.string = p_string
+        self._findall()
+
+    def _findall(self):
+        """
+            Разбирает входную строку на слагаемые,
+            записывает результат в переменную класса 
+        """
+        self._findall_result = self.C_FINDALL_PATTERN.findall(string=self.string)

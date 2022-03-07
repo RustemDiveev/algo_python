@@ -28,6 +28,8 @@ from e2.c29 import PredatoryCreditCard_c29
 from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
 from e2.c31 import ProgressionAbs
 from e2.c32 import ProgressionSqrt
+#Project 
+from e2.p33 import Polynomial
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -611,6 +613,32 @@ class Test_c32(unittest.TestCase):
         self.assertEqual(next(l_progression), 16)
         self.assertEqual(next(l_progression), 4)
         self.assertEqual(next(l_progression), 2)
+
+class Test_p33(unittest.TestCase):
+
+    def test_polynomial_findall(self):
+
+        l_string_list = [
+            "x+y",
+            "-x-y",
+            "0+0",
+            "-1-3",
+            "3.43+2.43",
+            "-3.43-4.23",
+            "-10x-8y",
+            "-2.32x-124.23y",
+            "10x^2+20x^3",
+            "-10x^(-2)-40x^(-3)",
+            "123.24x^2.34+213.321y^7.32",
+            "-78.89x^(-23.4)-14.43y^(-23.4)",
+            "x^2+y^3",
+            "-x^(-2)-y^(-3)",
+            "-x^(-2.24)-y^(-3.44)"
+        ]
+
+        # x+y 
+        l_cls = Polynomial(p_string=l_string_list[0])
+        self.assertEquals(l_cls._findall_result, ["x", "+y"])
 
 if __name__ == '__main__':
     unittest.main()
