@@ -638,15 +638,63 @@ class Test_p33(unittest.TestCase):
 
         # x+y 
         l_cls = Polynomial(p_string=l_string_list[0])
-        self.assertEquals(l_cls._findall_result, ["x", "+y"])
+        self.assertEqual(l_cls._findall_result, ["x", "+y"])
 
         # -x-y 
         l_cls = Polynomial(p_string=l_string_list[1])
-        self.assertEquals(l_cls._findall_result, ["-x", "-y"])
+        self.assertEqual(l_cls._findall_result, ["-x", "-y"])
 
         # 0+0
         l_cls = Polynomial(p_string=l_string_list[2])
-        self.assertEquals(l_cls._findall_result, ["0", "+0"])
+        self.assertEqual(l_cls._findall_result, ["0", "+0"])
+
+        # -1-3
+        l_cls = Polynomial(p_string=l_string_list[3])
+        self.assertEqual(l_cls._findall_result, ["-1", "-3"])
+
+        # 3.43+2.43
+        l_cls = Polynomial(p_string=l_string_list[4])
+        self.assertEqual(l_cls._findall_result, ["3.43", "+2.43"])
+
+        # -3.43-4.23
+        l_cls = Polynomial(p_string=l_string_list[5])
+        self.assertEqual(l_cls._findall_result, ["-3.43", "-4.23"])
+
+        # -10x-8y
+        l_cls = Polynomial(p_string=l_string_list[6])
+        self.assertEqual(l_cls._findall_result, ["-10x", "-8y"])
+
+        # -2.32x-124.23y
+        l_cls = Polynomial(p_string=l_string_list[7])
+        self.assertEqual(l_cls._findall_result, ["-2.32x", "-124.23y"])
+
+        # 10x^2+20x^3
+        l_cls = Polynomial(p_string=l_string_list[8])
+        self.assertEqual(l_cls._findall_result, ["10x^2", "+20x^3"])
+
+        # -10x^(-2)-40x^(-3)
+        l_cls = Polynomial(p_string=l_string_list[9])
+        self.assertEqual(l_cls._findall_result, ["-10x^(-2)", "-40x^(-3)"])
+
+        # 123.24x^2.34+213.321y^7.32
+        l_cls = Polynomial(p_string=l_string_list[10])
+        self.assertEqual(l_cls._findall_result, ["123.24x^2.34", "+213.321y^7.32"])
+
+        # -78.89x^(-23.4)-14.43y^(-23.4)
+        l_cls = Polynomial(p_string=l_string_list[11])
+        self.assertEqual(l_cls._findall_result, ["-78.89x^(-23.4)", "-14.43y^(-23.4)"])
+
+        # x^2+y^3
+        l_cls = Polynomial(p_string=l_string_list[12])
+        self.assertEqual(l_cls._findall_result, ["x^2", "+y^3"])
+
+        # -x^(-2)-y^(-3)
+        l_cls = Polynomial(p_string=l_string_list[13])
+        self.assertEqual(l_cls._findall_result, ["-x^(-2)", "-y^(-3)"])
+
+        # -x^(-2.24)-y^(-3.44)
+        l_cls = Polynomial(p_string=l_string_list[14])
+        self.assertEqual(l_cls._findall_result, ["-x^(-2.24)", "-y^(-3.44)"])
 
 if __name__ == '__main__':
     unittest.main()
