@@ -696,5 +696,25 @@ class Test_p33(unittest.TestCase):
         l_cls = Polynomial(p_string=l_string_list[14])
         self.assertEqual(l_cls._findall_result, ["-x^(-2.24)", "-y^(-3.44)"])
 
+    def test_polynomial_findall_complex(self):
+
+        l_string_list = [
+            "20x^10-100x^8.23+723.324y^(-123.456)+10",
+            "-3.4323x^(-23.45)+123-2230+800y^123-9.324x^(-234.35)",
+            "2+2x+10y^2-20z^3.2+30z^4.87456-0+10x"
+        ]
+
+        # "20x^10-100x^8.23+723.324y^(-123.456)+10"
+        l_cls = Polynomial(p_string=l_string_list[0])
+        self.assertEqual(l_cls._findall_result, ["20x^10", "-100x^8.23", "+723.324y^(-123.456)", "+10"])
+
+        # "-3.4323x^(-23.45)+123-2230+800y^123-9.324x^(-234.35)"
+        l_cls = Polynomial(p_string=l_string_list[1])
+        self.assertEqual(l_cls._findall_result, ["-3.4323x^(-23.45)", "+123", "-2230", "+800y^123", "-9.324x^(-234.35)"])
+
+        # "2+2x+10y^2-20z^3.2+30z^4.87456-0+10x"
+        l_cls = Polynomial(p_string=l_string_list[2])
+        self.assertEqual(l_cls._findall_result, ["2", "+2x", "+10y^2", "-20z^3.2", "+30z^4.87456", "-0", "+10x"])
+
 if __name__ == '__main__':
     unittest.main()
