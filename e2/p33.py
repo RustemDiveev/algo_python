@@ -56,8 +56,15 @@ class Polynomial:
             input: 
                 p_string - входная строка 
         """
-        self.string = p_string
+        # Убираем пробелы из строки 
+        self.string = p_string.replace(" ", "")
+
+        # Проверка на пустоту 
+        if not self.string:
+            raise ValueError("Переданная строка с полиномом является пустой")
+
         self._findall()
+        self._check_length()
 
     def _findall(self):
         """
@@ -65,3 +72,17 @@ class Polynomial:
             записывает результат в переменную класса 
         """
         self._findall_result = self.C_FINDALL_PATTERN.findall(string=self.string)
+
+    def _check_length(self):
+        """
+            Проверяем совпадает ли длина строки-полинома с убранными пробелами 
+            с суммарной длиной всех найденных элементов 
+            Если длина отличается, то считаем, что на вход подана неверная строка 
+        """
+        l_input_length = len(self.string)
+        l_findall_length = 0 
+        for i_elem in self._findall_result:
+            l_findall_length += len(i_elem)
+
+        if l_input_length != l_findall_length:
+            raise ValueError("Переданная строка не является полиномом: ", self.string)

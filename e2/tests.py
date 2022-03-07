@@ -716,5 +716,17 @@ class Test_p33(unittest.TestCase):
         l_cls = Polynomial(p_string=l_string_list[2])
         self.assertEqual(l_cls._findall_result, ["2", "+2x", "+10y^2", "-20z^3.2", "+30z^4.87456", "-0", "+10x"])
 
+    def test_polynomial_input_string_empty(self):
+        
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="")
+
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="   ")
+
+    def test_polynomial_input_string_is_invalid(self):
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="Привет, дружок!")
+
 if __name__ == '__main__':
     unittest.main()
