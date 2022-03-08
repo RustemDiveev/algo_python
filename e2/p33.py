@@ -28,12 +28,14 @@
     Блок 4: Инициализация класса Полином и генерация производной и её печать 
 """
 
-from re import compile
+from re import compile, VERBOSE
 
 class Polynomial:
-    
-    # Константы, связанные с разбором полинома на отдельные части 
+    """
+        Класс, реализующий полином и взятие производной от него
+    """
 
+    # Константы, связанные с разбором полинома на отдельные части 
     # Части паттернов для упрощения 
     C_VARIABLE = "[a-zA-Z]"
     C_OPERATOR = "[+-]?"
@@ -87,3 +89,76 @@ class Polynomial:
 
         if l_input_length != l_findall_length:
             raise ValueError("Переданная строка не является полиномом: ", self.string)
+
+
+class Term:
+    """
+        Класс, реализующий слагаемое полинома
+    """
+
+    C_COEFFICIENT_PATTERN = compile(
+        pattern="^[+-]?\d+(?:\.\d+)?"
+    )
+
+    C_VARIABLE_PATTERN = compile(
+        pattern="[a-zA-Z]"
+    )
+
+    C_POW_PATTERN = compile(
+        pattern="""
+            (?<=\^)
+            (?:\()?
+            (-?\d+(?:\.\d+)?)
+            (?:\))?
+        """,
+        flags=VERBOSE
+    )
+    
+    def __init__(self, p_string: str):
+        """
+            Конструктор
+            input: 
+                p_string - входная строка со слагаемым полинома 
+        """
+        self.string = p_string 
+        self.coefficient, self.variable, self.pow = None, None, None 
+        
+    def _parse_coefficient(self): 
+        """
+            Поиск коэффициента в одночлене
+        """
+        l_result = self.C_COEFFICIENT_PATTERN.search(string=self.string)
+        if l_result:
+            self.coefficient = l_result[0]
+
+    def _parse_variable(self):
+        """
+            Поиск переменной в одночлене
+        """
+        l_result = self.C_VARIABLE_PATTERN.search(string=self.string)
+        if l_result:
+            self.variable = l_result[0]
+
+    def _parse_pow(self):
+        """
+            Поиск показателя степени в одночлене 
+        """
+        l_result = self.C_POW_PATTERN.search(string=self.string)
+        if l_result:
+            self.pow = l_result[0]
+
+    def _parse(self):
+        """
+            Парсинг исходной строки, и нахождение коэффициента, переменной и степени 
+        """
+        self._parse_coefficient()
+        self._parse_variable()
+        self._parse_pow()
+
+        # Обработка специальных случаев:
+        # Если ничего не найдено, то коэффициент - 0
+        # Если найден коэффициент или переменная, а степень не найдена, то степень - 1 
+        
+        if self.coefficient is None and self.variable is None and self.variable is None:
+            self.coefficient = 0 
+        
