@@ -63,15 +63,16 @@ class Polynomial:
         if not self.string:
             raise ValueError("Переданная строка с полиномом является пустой")
 
+        # Разбор полинома на слагаемые
         self._findall()
-        self._check_length()
 
     def _findall(self):
         """
-            Разбирает входную строку на слагаемые,
-            записывает результат в переменную класса 
+            Разбирает входную строку на слагаемые, записывает результат в переменную класса 
+
         """
         self._findall_result = self.C_FINDALL_PATTERN.findall(string=self.string)
+        self._check_length()
 
     def _check_length(self):
         """
