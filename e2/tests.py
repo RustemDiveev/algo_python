@@ -728,5 +728,45 @@ class Test_p33(unittest.TestCase):
         with self.assertRaises(ValueError):
             l_cls = Polynomial(p_string="Привет, дружок!")
 
+    def test_term_parse(self):
+        
+        # 3x^2 
+        l_cls = Term(p_string="3x^2")
+        self.assertEqual(l_cls.coefficient, 3)
+        self.assertEqual(l_cls.variable, "x")
+        self.assertEqual(l_cls.pow, 2)
+
+        #+3.32y^3.231
+        l_cls = Term(p_string="+3.32y^3.231")
+        self.assertEqual(l_cls.coefficient, 3.32)
+        self.assertEqual(l_cls.variable, "y")
+        self.assertEqual(l_cls.pow, 3.231)
+
+        # -10y^(-23)
+        l_cls = Term(p_string="-10y^(-23)")
+        self.assertEqual(l_cls.coefficient, -10)
+        self.assertEqual(l_cls.variable, "y")
+        self.assertEqual(l_cls.pow, -23)
+
+        # -2.234x^(-123.32)
+        l_cls = Term(p_string="-2.234x^(-123.32)")
+        self.assertEqual(l_cls.coefficient, -2.234)
+        self.assertEqual(l_cls.variable, "x")
+        self.assertEqual(l_cls.pow, -123.32)
+
+    def test_term_parse_special(self):
+
+        # 5 
+        l_cls = Term(p_string="5")
+        self.assertEqual(l_cls.coefficient, 5)
+        self.assertEqual(l_cls.variable, None)
+        self.assertEqual(l_cls.pow, 1)
+
+        # x
+        l_cls = Term(p_string="x")
+        self.assertEqual(l_cls.coefficient, 1)
+        self.assertEqual(l_cls.variable, "x")
+        self.assertEqual(l_cls.pow, 1)
+
 if __name__ == '__main__':
     unittest.main()

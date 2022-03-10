@@ -97,7 +97,7 @@ class Term:
     """
 
     C_COEFFICIENT_PATTERN = compile(
-        pattern="^[+-]?\d+(?:\.\d+)?"
+        pattern="^([+-]?\d+(?:\.\d+)?)"
     )
 
     C_VARIABLE_PATTERN = compile(
@@ -122,7 +122,7 @@ class Term:
         """
         self.string = p_string 
         self.coefficient, self.variable, self.pow = None, None, None
-        self._parse 
+        self._parse() 
         
     def _parse_coefficient(self): 
         """
@@ -130,7 +130,7 @@ class Term:
         """
         l_result = self.C_COEFFICIENT_PATTERN.search(string=self.string)
         if l_result:
-            self.coefficient = l_result[0]
+            self.coefficient = float(l_result[0])
 
     def _parse_variable(self):
         """
@@ -146,7 +146,7 @@ class Term:
         """
         l_result = self.C_POW_PATTERN.search(string=self.string)
         if l_result:
-            self.pow = l_result[0]
+            self.pow = float(l_result[1])
 
     def _parse(self):
         """
@@ -156,12 +156,15 @@ class Term:
         self._parse_variable()
         self._parse_pow()
 
-        # Обработка специальных случаев:
-        # Если ничего не найдено, то коэффициент - 0
-        # Если найден коэффициент или переменная, а степень не найдена, то степень - 1 
-        
-        if self.coefficient is None and self.variable is None and self.variable is None:
-            self.coefficient = 0 
-        elif self.pow is None and (self.variable is None or self.coefficient is None):
-            self.pow = 1 
+        # Обработка специальных случаев: 5, x, 
+        # Если обычное число, то степень - 1
+        # Если просто переменная, то коэффициент - 1 
 
+        if self.variable is None:
+            self.pow = 1
+        
+        if self.coefficient is None:
+            self.coefficient = 1 
+
+        if self.pow is None:
+            self.pow = 1
