@@ -121,7 +121,8 @@ class Term:
                 p_string - входная строка со слагаемым полинома 
         """
         self.string = p_string 
-        self.coefficient, self.variable, self.pow = None, None, None 
+        self.coefficient, self.variable, self.pow = None, None, None
+        self._parse 
         
     def _parse_coefficient(self): 
         """
@@ -161,4 +162,6 @@ class Term:
         
         if self.coefficient is None and self.variable is None and self.variable is None:
             self.coefficient = 0 
-        
+        elif self.pow is None and (self.variable is None or self.coefficient is None):
+            self.pow = 1 
+

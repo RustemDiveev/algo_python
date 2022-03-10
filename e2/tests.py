@@ -29,7 +29,7 @@ from e2.c30 import CreditCard_c30, PredatoryCreditCard_c30
 from e2.c31 import ProgressionAbs
 from e2.c32 import ProgressionSqrt
 #Project 
-from e2.p33 import Polynomial
+from e2.p33 import Polynomial, Term
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
