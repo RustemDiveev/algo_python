@@ -167,7 +167,7 @@ class Term:
         # Если просто переменная, то коэффициент - 1 
 
         if self.variable is None:
-            self.pow = 1
+            self.pow = 0
         
         if self.coefficient is None:
             self.coefficient = 1 
@@ -182,7 +182,6 @@ class Term:
         """
         l_coefficient = self.coefficient * self.pow 
         l_pow = self.pow - 1 
-        print(l_pow)
 
         # Классика - через шаблон 
         C_RESULT_TEMPLATE = "#COEFFICIENT##VARIABLE#^#POW#"
@@ -215,4 +214,4 @@ class Term:
                 l_result = l_result.replace("#POW#", l_pow)
         
         self.derivative_string = l_result
-            
+        

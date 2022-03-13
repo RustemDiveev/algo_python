@@ -760,13 +760,41 @@ class Test_p33(unittest.TestCase):
         l_cls = Term(p_string="5")
         self.assertEqual(l_cls.coefficient, 5)
         self.assertEqual(l_cls.variable, None)
-        self.assertEqual(l_cls.pow, 1)
+        self.assertEqual(l_cls.pow, 0)
 
         # x
         l_cls = Term(p_string="x")
         self.assertEqual(l_cls.coefficient, 1)
         self.assertEqual(l_cls.variable, "x")
         self.assertEqual(l_cls.pow, 1)
+
+    def test_term_get_derivative(self):
+
+        # 24 -> +0 
+        l_cls = Term(p_string="24")
+        l_cls._get_derivative()
+        self.assertEqual(l_cls.derivative_string, "+0")
+
+        # 900x -> +900 
+        l_cls = Term(p_string="900x")
+        l_cls._get_derivative()
+        self.assertEqual(l_cls.derivative_string, "+900")
+
+        # 8x^2 -> +16x
+        l_cls = Term(p_string="8x^2")
+        l_cls._get_derivative()
+        self.assertEqual(l_cls.derivative_string, "+16x")
+
+        #10.5x^0.2 -> +2.1x^(-0.8)
+        l_cls = Term(p_string="10.5x^0.2")
+        l_cls._get_derivative()
+        self.assertEqual(l_cls.derivative_string, "+2.1x^(-0.8)")
+
+        #-2.5x^(-2.5) -> +6.25x^(-3.5)
+        l_cls = Term(p_string="-2.5x^(-2.5)")
+        l_cls._get_derivative()
+        self.assertEqual(l_cls.derivative_string, "+6.25x^(-3.5)")
+
 
 if __name__ == '__main__':
     unittest.main()
