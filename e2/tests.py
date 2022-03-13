@@ -795,6 +795,20 @@ class Test_p33(unittest.TestCase):
         l_cls._get_derivative()
         self.assertEqual(l_cls.derivative_string, "+6.25x^(-3.5)")
 
+    def test_polynomial_check_algebraic_notation(self):
+
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="8x+2y")
+            l_cls.get_derivative()
+
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="8x^2+20x^3")
+            l_cls.get_derivative()
+
+        with self.assertRaises(ValueError):
+            l_cls = Polynomial(p_string="5x + 30x")
+            l_cls.get_derivative()
+
 
 if __name__ == '__main__':
     unittest.main()

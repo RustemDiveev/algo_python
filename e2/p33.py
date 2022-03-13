@@ -75,6 +75,7 @@ class Polynomial:
         """
         self._findall_result = self.C_FINDALL_PATTERN.findall(string=self.string)
         self._check_length()
+        self.terms = [Term(p_string=i_element) for i_element in self._findall_result]
 
     def _check_length(self):
         """
@@ -89,6 +90,44 @@ class Polynomial:
 
         if l_input_length != l_findall_length:
             raise ValueError("Переданная строка не является полиномом: ", self.string)
+
+    def _check_algebraic_notation(self):
+        """
+            Проверяет, является ли входной полином записанным в алгебраической нотации 
+        """   
+
+        l_pow, l_variable = None, None
+
+        for i_term in self.terms:
+            l_variable = i_term.variable if l_variable is None and i_term.variable else l_variable
+            l_pow = i_term.pow if l_pow is None and i_term.pow else l_pow
+
+            if l_variable and i_term.variable:
+                if l_variable != i_term.variable:
+                    raise ValueError(
+                        "Полином", self.string, "не записан в алгебраической нотации. Обнаружена переменная ", 
+                        i_term.variable, "вместе с переменной ", l_variable
+                    )
+
+            if l_pow and i_term.pow:
+                if l_pow == i_term.pow:
+                    raise ValueError(
+                        "Полином", self.string, "не записан в алгебраической нотации.", 
+                        "Обнаружен повторяющийся показатель степени у одночлена", i_term.string
+                    )
+
+                if l_pow < i_term.pow:
+                    raise ValueError(
+                        "Полином", self.string, "не записан в алгебраической нотации.", 
+                        "Степень должна быть убывающей"
+                    )
+
+    def get_derivative(self) -> str:
+        """
+            Возвращает строку с первой производной
+        """
+        self._check_algebraic_notation()
+        return None
 
 
 class Term:
