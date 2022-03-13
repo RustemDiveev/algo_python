@@ -130,7 +130,10 @@ class Term:
         """
         l_result = self.C_COEFFICIENT_PATTERN.search(string=self.string)
         if l_result:
-            self.coefficient = float(l_result[0])
+            try:
+                self.coefficient = int(l_result[0])
+            except ValueError:
+                self.coefficient = float(l_result[0])
 
     def _parse_variable(self):
         """
@@ -146,7 +149,10 @@ class Term:
         """
         l_result = self.C_POW_PATTERN.search(string=self.string)
         if l_result:
-            self.pow = float(l_result[1])
+            try:
+                self.pow = int(l_result[1])
+            except ValueError:
+                self.pow = float(l_result[1])
 
     def _parse(self):
         """
@@ -168,3 +174,45 @@ class Term:
 
         if self.pow is None:
             self.pow = 1
+
+    def _get_derivative(self):
+        """
+            Формирует строку с первой производной одночлена 
+            записывает результат в переменную класса 
+        """
+        l_coefficient = self.coefficient * self.pow 
+        l_pow = self.pow - 1 
+        print(l_pow)
+
+        # Классика - через шаблон 
+        C_RESULT_TEMPLATE = "#COEFFICIENT##VARIABLE#^#POW#"
+
+        """
+            Возможны крайние случаи 
+            1. Коэффициент равен 0 и переменная неизвестна - выводим 0 
+            2. Степень равна 0, выводим только коэффициент
+            3. Степень равна 1, ничего не выводим 
+        """
+
+        if l_coefficient == 0:
+            l_result = "+0"
+        else:
+            l_coefficient = "+" + str(l_coefficient) if l_coefficient > 0 else "-" + str(l_coefficient)
+            if l_pow == 0:
+                l_result = l_coefficient
+            elif l_pow == 1:
+                l_result = C_RESULT_TEMPLATE.replace("#COEFFICIENT#", l_coefficient)
+                l_result = l_result.replace("#VARIABLE#", self.variable)
+                l_result = l_result.replace("^#POW#", "")
+            elif l_pow > 0:
+                l_result = C_RESULT_TEMPLATE.replace("#COEFFICIENT#", l_coefficient)
+                l_result = l_result.replace("#VARIABLE#", self.variable)
+                l_result = l_result.replace("#POW#", str(l_pow))
+            else:
+                l_pow = "(" + str(l_pow) + ")"
+                l_result = C_RESULT_TEMPLATE.replace("#COEFFICIENT#", l_coefficient)
+                l_result = l_result.replace("#VARIABLE#", self.variable)               
+                l_result = l_result.replace("#POW#", l_pow)
+        
+        self.derivative_string = l_result
+            
