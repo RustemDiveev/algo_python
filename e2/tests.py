@@ -809,6 +809,31 @@ class Test_p33(unittest.TestCase):
             l_cls = Polynomial(p_string="5x + 30x")
             l_cls.get_derivative()
 
+    def test_polynomial_get_derivative(self):
+
+        """
+            0
+            80x^2 + 40x
+            2.34x^4 - 1.23x^3 + 8.24x^(-21)
+            1000x^0.001 - 1000
+        """
+
+        # 0 -> 0
+        l_cls = Polynomial(p_string="0")
+        self.assertEqual(l_cls.get_derivative(), "0")
+
+        # 80x^2 + 40x -> 160x+40
+        l_cls = Polynomial(p_string="80x^2 + 40x")
+        self.assertEqual(l_cls.get_derivative(), "160x+40")
+
+        # 2.34x^4 - 1.23x^3 + 8.24x^(-21) -> 9.36x^3-3.69x^2-173.04x^(-22)
+        l_cls = Polynomial(p_string="2.34x^4 - 1.23x^3 + 8.24x^(-21)")
+        self.assertEqual(l_cls.get_derivative(), "9.36x^3-3.69x^2-173.04x^(-22)")
+
+        # 1000x^0.001 - 1000 -> x^(-0.999)
+        l_cls = Polynomial(p_string="1000x^0.001")
+        self.assertEqual(l_cls.get_derivative(), "x^(-0.999)")
+
 
 if __name__ == '__main__':
     unittest.main()

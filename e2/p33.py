@@ -28,7 +28,7 @@
     Блок 4: Инициализация класса Полином и генерация производной и её печать 
 """
 
-from re import compile, VERBOSE
+from re import compile, sub, VERBOSE
 
 class Polynomial:
     """
@@ -99,8 +99,6 @@ class Polynomial:
         l_pow, l_variable = None, None
 
         for i_term in self.terms:
-            l_variable = i_term.variable if l_variable is None and i_term.variable else l_variable
-            l_pow = i_term.pow if l_pow is None and i_term.pow else l_pow
 
             if l_variable and i_term.variable:
                 if l_variable != i_term.variable:
@@ -122,12 +120,35 @@ class Polynomial:
                         "Степень должна быть убывающей"
                     )
 
+            l_variable = i_term.variable if l_variable is None and i_term.variable else l_variable
+            l_pow = i_term.pow if l_pow is None and i_term.pow else l_pow
+
+
     def get_derivative(self) -> str:
         """
             Возвращает строку с первой производной
         """
         self._check_algebraic_notation()
-        return None
+        l_result = ""
+        for i_term in self.terms:
+            i_term._get_derivative()
+            l_result += i_term.derivative_string
+
+        # убираем первый символ, если он +
+        if l_result[0] == "+":
+            l_result = l_result[1:]
+
+        # убираем ненужные нули 
+        l_result = sub(
+            pattern="[+-]0(?=[+-])",
+            repl="",
+            string=l_result
+        )
+        
+        if len(l_result) == 0:
+            l_result = "0"
+
+        return l_result
 
 
 class Term:
@@ -193,6 +214,9 @@ class Term:
             except ValueError:
                 self.pow = float(l_result[1])
 
+    def __str__(self) -> str:
+        return self.string
+
     def _parse(self):
         """
             Парсинг исходной строки, и нахождение коэффициента, переменной и степени 
@@ -220,7 +244,12 @@ class Term:
             записывает результат в переменную класса 
         """
         l_coefficient = self.coefficient * self.pow 
+        if float(l_coefficient) - int(l_coefficient) == 0:
+            l_coefficient = int(l_coefficient)
+
         l_pow = self.pow - 1 
+        if float(l_pow) - int(l_pow) == 0:
+            l_pow = int(l_pow)
 
         # Классика - через шаблон 
         C_RESULT_TEMPLATE = "#COEFFICIENT##VARIABLE#^#POW#"
@@ -235,7 +264,14 @@ class Term:
         if l_coefficient == 0:
             l_result = "+0"
         else:
-            l_coefficient = "+" + str(l_coefficient) if l_coefficient > 0 else "-" + str(l_coefficient)
+            l_coefficient = "+" + str(l_coefficient) if l_coefficient > 0 else str(l_coefficient)
+
+            if l_coefficient == "+1" and self.variable:
+                l_coefficient = "+"
+
+            if l_coefficient == "-1" and self.variable:
+                l_coefficient = "-"
+
             if l_pow == 0:
                 l_result = l_coefficient
             elif l_pow == 1:
@@ -253,4 +289,3 @@ class Term:
                 l_result = l_result.replace("#POW#", l_pow)
         
         self.derivative_string = l_result
-        
