@@ -236,7 +236,7 @@ class Test_r9(unittest.TestCase):
         l_vector5[0] = 2
         l_vector5[1] = 1
         l_vector5[2] = 0
-        self.assertNotEquals(l_vector, l_vector5)
+        self.assertNotEqual(l_vector, l_vector5)
         self.assertFalse(l_vector == l_vector5)
 
         # Check ne 
