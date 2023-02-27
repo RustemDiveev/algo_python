@@ -3,3 +3,4 @@ __pycache__/
 *$py.class
 desktop.ini
 .ipynb_checkpoints/
+venv/
