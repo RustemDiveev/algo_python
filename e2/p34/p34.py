@@ -20,7 +20,7 @@ class FileLetterCounter:
             Проверка типа данных path 
             Проверка существования файла 
         """
-        if not isinstance(self.path, (str,)):
+        if not isinstance(self.path, str):
             raise TypeError("Параметр path должен быть строкой")
         
         _, file_extension = splitext(self.path)
