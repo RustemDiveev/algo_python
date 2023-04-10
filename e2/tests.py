@@ -30,6 +30,8 @@ from e2.c31 import ProgressionAbs
 from e2.c32 import ProgressionSqrt
 #Project 
 from e2.p33 import Polynomial, Term
+from e2.p34.p34 import FileLetterCounter  
+
 
 #Reinforcement 
 class Test_r4(unittest.TestCase):
@@ -833,6 +835,63 @@ class Test_p33(unittest.TestCase):
         # 1000x^0.001 - 1000 -> x^(-0.999)
         l_cls = Polynomial(p_string="1000x^0.001")
         self.assertEqual(l_cls.get_derivative(), "x^(-0.999)")
+
+
+class Test_p34(unittest.TestCase):
+    def test_parameter_not_specified(self):
+        """
+            Проверка на наличие параметра 
+        """
+        with self.assertRaises(TypeError):
+            f = FileLetterCounter()
+
+    def test_parameter_has_wrong_type(self):
+        """
+            Проверка на тип параметра
+        """
+        with self.assertRaises(TypeError):
+            f = FileLetterCounter(1)
+
+    def test_file_has_wrong_extension(self):
+        """
+            Проверка на неправильное расширение файла
+        """
+        with self.assertRaises(ValueError):
+            f = FileLetterCounter("e2/p34/example.pdf")
+    
+    def test_file_not_exists(self):
+        """
+            Проверка на несуществующий файл
+        """
+        with self.assertRaises(FileNotFoundError) :
+            f = FileLetterCounter("e2/p34/fantasticFile.txt")
+
+    def test_file_is_empty(self):
+        """
+            Счетчик должен быть пустым для пустого файла 
+        """
+        f = FileLetterCounter("e2/p34/empty.txt") 
+        self.assertEqual(len(f.counter), 0)
+
+    def test_file_has_no_letters(self):
+        """
+            Проверка файла, в котором нет символов 
+        """
+        f = FileLetterCounter("e2/p34/numbers_only.txt")
+        self.assertEqual(len(f.counter), 0)
+
+    def test_existsing_file_letter_count(self):
+        """
+            Проверка того, что в файле 
+            с четко определенным количеством букв,
+            счетчик заполняется корректно  
+        """
+        f = FileLetterCounter("e2/p34/letters_test.txt") 
+        self.assertEqual(f.counter["A"], 1)
+        self.assertEqual(f.counter["B"], 2)
+        self.assertEqual(f.counter["C"], 3)
+        self.assertEqual(f.counter["D"], 4)
+        self.assertEqual(len(f.counter), 4)
 
 
 if __name__ == '__main__':

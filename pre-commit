@@ -1,11 +1,14 @@
 #!/bin/sh C:/Program\ Files/Git/usr/bin/sh.exe
 
+source venv/Scripts/activate
 py -m unittest -b tests.py
 
 if [ $? -eq 0 ]; then
 	echo "All tests passed!"
-	exit 0
+	EXIT_STATUS=0
 else
 	echo "Some tests failed!"
-	exit 1
+	EXIT_STATUS=1
 fi
+
+exit $EXIT_STATUS
